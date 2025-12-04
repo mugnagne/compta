@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compta Neuille - V9 MAGIC BALANCE</title>
+    <title>Compta Neuille - V10 DIFFICULTY</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,700&family=Roboto+Mono:wght@400;700&family=Inter:wght@400;800&display=swap" rel="stylesheet">
 
@@ -110,6 +110,17 @@
         }
         .sig-value { font-family: 'Roboto Mono', monospace; color: var(--neon-yellow); }
         .pixelated-img { image-rendering: pixelated; }
+
+        /* DIFFICULTY SELECTOR STYLES */
+        .diff-btn {
+            transition: all 0.2s;
+        }
+        .diff-btn.active {
+            background-color: var(--neon-yellow);
+            color: var(--dark);
+            font-weight: 800;
+            box-shadow: inset 2px 2px 0px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body class="selection:bg-[#ccff00] min-h-screen relative pb-64">
@@ -134,13 +145,23 @@
                     <h1 class="text-3xl md:text-4xl font-extrabold tracking-tighter uppercase italic transform -rotate-1">
                         Compta<span class="text-[#ccff00] bg-gray-900 px-2">Neuille</span>
                     </h1>
-                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V9.0 MAGIC BALANCE</span>
+                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V10.0 DIFFICULTY</span>
                 </div>
                 <h2 id="company-name" class="mt-2 text-xl font-serif-header font-bold text-gray-800 border-b-2 border-[#ccff00] inline-block">Chargement...</h2>
             </div>
-            <button onclick="initGame()" class="px-4 py-2 bg-white border-2 border-gray-900 shadow-[3px_3px_0px_0px_#ccff00] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all font-bold font-mono-code uppercase text-xs cursor-pointer">
-                ⚡ Nouvelle Entreprise
-            </button>
+
+            <div class="flex flex-col md:flex-row gap-4 items-end">
+                
+                <div class="flex items-center gap-1 bg-white border-2 border-gray-900 p-1 shadow-[3px_3px_0px_0px_rgba(0,0,0,0.2)]" style="border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;">
+                    <button onclick="setDifficulty('EASY')" id="btn-easy" class="diff-btn active px-3 py-1 font-mono-code text-xs font-bold rounded-sm">EASY</button>
+                    <button onclick="setDifficulty('NORMAL')" id="btn-normal" class="diff-btn px-3 py-1 font-mono-code text-xs font-bold rounded-sm hover:bg-gray-100">NORMAL</button>
+                    <button onclick="setDifficulty('HARDCORE')" id="btn-hardcore" class="diff-btn px-3 py-1 font-mono-code text-xs font-bold rounded-sm text-gray-400 cursor-not-allowed" title="Bientôt disponible">HARDCORE</button>
+                </div>
+
+                <button onclick="initGame()" class="px-4 py-2 bg-white border-2 border-gray-900 shadow-[3px_3px_0px_0px_#ccff00] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all font-bold font-mono-code uppercase text-xs cursor-pointer">
+                    ⚡ Nouvelle Entreprise
+                </button>
+            </div>
         </header>
 
         <div class="grid grid-cols-12 gap-6">
@@ -273,6 +294,9 @@
     </div>
 
     <script>
+        // --- ETAT DU JEU ---
+        let currentDifficulty = 'EASY'; // 'EASY', 'NORMAL', 'HARDCORE'
+
         // --- NOMS ---
         const prefixes = ["Boulangerie", "Garage", "Start-up", "Cabinet", "Boucherie", "Agence", "Pizzeria", "Crèche", "Pharmacie", "Salle de Sport", "EHPAD", "Night Club", "Camping", "Pompes Funèbres", "Kebab"];
         const suffixes = ["'Chez Dédé'", "'Le Gouffre'", "'L'Avenir Incertain'", "'Fraude & Co'", "'L'Optimiste'", "'Dernier Recours'", "'Le Blanchisseur'", "'Au Bonheur des Dames'", "'Le Petit Escroc'"];
@@ -285,7 +309,6 @@
             CAPITAUX: 'CAPITAUX', DETTES: 'DETTES'
         };
 
-        // --- DATABASE TEMPLATE (Sans Banque ni Résultat) ---
         const DATABASE_TEMPLATE = [
             { label: "Achat Marchandises", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '607' },
             { label: "Loyer", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '613' },
@@ -313,6 +336,26 @@
 
         let gameItems = [];
 
+        // --- GESTION DIFFICULTÉ ---
+        function setDifficulty(mode) {
+            // Pour l'instant on bloque le Hardcore
+            if(mode === 'HARDCORE') {
+                alert("Mode Hardcore en cours de développement !");
+                return;
+            }
+
+            currentDifficulty = mode;
+            
+            // UI Updates
+            document.querySelectorAll('.diff-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`btn-${mode.toLowerCase()}`).classList.add('active');
+
+            // Reboot game with new settings
+            initGame();
+        }
+
         function initGame() {
             document.getElementById('company-name').innerText = generateCompanyName();
             closeModal();
@@ -324,10 +367,7 @@
             document.getElementById('validate-btn').classList.remove('bg-white');
             document.getElementById('validate-btn').classList.add('bg-[#ccff00]');
 
-            // 1. GENERATION DE LA DONNEE "MAGIC BALANCE"
             gameItems = [];
-            
-            // On prend X opérations aléatoires (sauf banque/résultat)
             const selection = [...DATABASE_TEMPLATE].sort(() => 0.5 - Math.random()).slice(0, 14);
             
             let totalCharges = 0;
@@ -335,7 +375,6 @@
             let totalActifPartiel = 0;
             let totalPassifPartiel = 0;
 
-            // Création des items avec montants
             selection.forEach((op, index) => {
                 const amount = Math.floor(Math.random() * 4000) + 100;
                 gameItems.push({ ...op, id: `op-${index}`, amount: amount });
@@ -346,31 +385,20 @@
                 if(op.type === TYPES.PASSIF) totalPassifPartiel += amount;
             });
 
-            // 2. CALCUL DU RÉSULTAT
             const result = totalProduits - totalCharges;
-            // On ajoute la carte "Résultat de l'exercice"
             gameItems.push({
                 id: 'op-res',
                 label: "Résultat de l'exercice",
                 type: TYPES.PASSIF,
                 sub: SUBS.CAPITAUX,
                 code: '120',
-                amount: result // Peut être négatif
+                amount: result 
             });
 
-            // Le résultat s'ajoute au passif (si benef) ou se retire (si perte)
-            // Note: En compta, une perte au passif est un montant négatif qui réduit les capitaux
             totalPassifPartiel += result; 
-
-            // 3. CALCUL DE LA BANQUE (Le Plug)
-            // Actif doit être égal au Passif
-            // Donc (Actif Partiel + Banque) = Passif Total
-            // Banque = Passif Total - Actif Partiel
-            
             const bankAmount = totalPassifPartiel - totalActifPartiel;
 
             if (bankAmount >= 0) {
-                // Banque positive -> Actif Circulant
                 gameItems.push({
                     id: 'op-bank',
                     label: "Banque (Solde)",
@@ -380,20 +408,17 @@
                     amount: bankAmount
                 });
             } else {
-                // Banque négative -> Passif (Découvert)
                 gameItems.push({
                     id: 'op-bank',
                     label: "Découvert Bancaire",
                     type: TYPES.PASSIF,
                     sub: SUBS.DETTES,
                     code: '512 (Cr)',
-                    amount: Math.abs(bankAmount) // On affiche en positif coté passif
+                    amount: Math.abs(bankAmount)
                 });
             }
 
-            // 4. RENDERING
             const sourceZone = document.getElementById('source-zone');
-            // On mélange tout avant d'afficher
             const finalDisplay = gameItems.sort(() => 0.5 - Math.random());
             
             finalDisplay.forEach(item => {
@@ -413,16 +438,25 @@
             div.dataset.sub = op.sub;
             div.dataset.amount = op.amount;
 
-            // Affichage spécial pour le résultat négatif si besoin
             let displayAmount = op.amount.toLocaleString('fr-FR') + ' €';
             if(op.code === '120' && op.amount < 0) {
                 div.className += " border-red-500";
             }
 
+            // GESTION DIFFICULTÉ DANS L'AFFICHAGE
+            let codeDisplay = '';
+            if (currentDifficulty === 'EASY') {
+                // Easy: On affiche le code
+                codeDisplay = `<span class="font-mono-code text-[0.65rem] bg-gray-200 px-1 rounded text-gray-800">${op.code}</span>`;
+            } else {
+                // Normal / Hardcore: On cache le code
+                codeDisplay = ``;
+            }
+
             div.innerHTML = `
                 <div class="flex justify-between items-start pointer-events-none">
                     <span class="font-bold leading-tight pr-2">${op.label}</span>
-                    <span class="font-mono-code text-[0.65rem] bg-gray-200 px-1 rounded text-gray-800">${op.code}</span>
+                    ${codeDisplay}
                 </div>
                 <div class="mt-1 text-right font-mono-code font-bold text-gray-600 pointer-events-none">
                     ${displayAmount}
@@ -521,7 +555,6 @@
             document.getElementById('grand-total-passif').innerText = total_passif.toLocaleString('fr-FR') + ' €';
 
             const bilanCheck = document.getElementById('bilan-check');
-            // On accepte une toute petite marge d'erreur pour les arrondis éventuels
             if(total_actif > 0 && Math.abs(total_actif - total_passif) < 2) {
                 bilanCheck.innerText = "OUI";
                 bilanCheck.className = "font-bold text-lg text-[#ccff00] animate-pulse";
@@ -556,7 +589,6 @@
             const leftOvers = document.getElementById('source-zone').children.length;
             totalCards += leftOvers;
 
-            // Pour gagner, il faut 0 erreurs ET que le bilan soit équilibré dans le DOM
             const isBalanced = document.getElementById('bilan-check').innerText === "OUI";
             
             const btn = document.getElementById('validate-btn');
