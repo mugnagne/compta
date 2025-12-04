@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compta Neuille - V11 HARDCORE</title>
+    <title>Compta Neuille - V13 THE AUDITOR</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,700&family=Roboto+Mono:wght@400;700&family=Inter:wght@400;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
@@ -30,7 +30,7 @@
         .font-mono-code { font-family: 'Roboto Mono', monospace; }
         .font-hand { font-family: 'Gloria Hallelujah', cursive; }
 
-        /* --- SKETCHY UI --- */
+        /* SKETCHY UI */
         .sketchy-card {
             background: var(--paper);
             border: 2px solid var(--dark);
@@ -83,17 +83,17 @@
             color: var(--dark);
         }
 
-        /* JOURNAL PAPER STYLE */
+        /* JOURNAL STYLE */
         .journal-paper {
             background-color: #fefce8;
             background-image: repeating-linear-gradient(var(--ledger-line) 0 1px, transparent 1px 100%);
             background-size: 100% 2rem;
             line-height: 2rem;
             box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
-            border-left: 4px double #ef4444; /* Marge rouge */
+            border-left: 4px double #ef4444; 
         }
 
-        /* INPUT IN HARDCORE MODE */
+        /* INPUTS */
         .hardcore-input {
             border: none;
             border-bottom: 2px solid var(--dark);
@@ -104,42 +104,9 @@
             font-weight: bold;
             color: #2563eb;
         }
-        .hardcore-input:focus {
-            outline: none;
-            background: #e0f2fe;
-            border-color: #2563eb;
-        }
+        .hardcore-input:focus { outline: none; background: #e0f2fe; border-color: #2563eb; }
 
-        /* Feedback validation */
-        .valid-success { background-color: #d9f99d !important; border-color: #365314; }
-        .valid-error { background-color: #fca5a5 !important; border-color: #7f1d1d; }
-
-        .dragging { opacity: 0.4; transform: scale(0.9); }
-        
-        .ledger-container {
-            background: #fff;
-            border: 3px solid var(--dark);
-            border-radius: 4px;
-            box-shadow: 5px 5px 0px 0px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        @keyframes pop {
-            0% { transform: scale(0.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .animate-pop { animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-
-        /* DASHBOARD SIG */
-        .sig-panel {
-            background: var(--dark);
-            color: #fff;
-            border-top: 4px solid var(--neon-yellow);
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.2);
-        }
-        .sig-value { font-family: 'Roboto Mono', monospace; color: var(--neon-yellow); }
-        .pixelated-img { image-rendering: pixelated; }
-
+        /* ACTIONS & SLIDER */
         .diff-btn { transition: all 0.2s; }
         .diff-btn.active {
             background-color: var(--neon-yellow);
@@ -147,6 +114,19 @@
             font-weight: 800;
             box-shadow: inset 2px 2px 0px rgba(0,0,0,0.1);
         }
+
+        input[type=range] {
+            accent-color: var(--neon-yellow);
+        }
+
+        .pixelated-img { image-rendering: pixelated; }
+
+        /* VALIDATION */
+        .valid-success { background-color: #d9f99d !important; border-color: #365314; }
+        .valid-error { background-color: #fca5a5 !important; border-color: #7f1d1d; }
+        .dragging { opacity: 0.4; transform: scale(0.9); }
+        .animate-pop { animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body class="selection:bg-[#ccff00] min-h-screen relative pb-64">
@@ -158,30 +138,40 @@
                 <img src="https://i.redd.it/i-just-started-in-pixel-art-and-i-found-my-place-here-im-v0-rinjy9fqy4p81.png?width=1024&format=png&auto=webp&s=a237871800a73431f0d9b4c745e73b1b49b3c637" 
                      alt="Pixel Art Victory" class="w-32 h-32 mx-auto mb-4 border-4 border-gray-900 rounded-full bg-[#ccff00] pixelated-img object-cover">
                 <h2 class="text-4xl font-black font-mono-code uppercase text-[#dc2626] leading-tight mb-2 transform -rotate-2">Félicitations<br>Camarade !</h2>
-                <p id="victory-msg" class="font-serif-header italic text-gray-600 text-sm mt-4">"L'Actif est égal au Passif."</p>
+                <p id="victory-msg" class="font-serif-header italic text-gray-600 text-sm mt-4">"Les comptes sont exacts."</p>
             </div>
         </div>
     </div>
 
     <div class="max-w-[1800px] mx-auto p-4 md:p-6">
         
-        <header class="mb-6 flex flex-col md:flex-row justify-between items-end border-b-4 border-gray-900 pb-4 border-double">
+        <header class="mb-6 flex flex-col xl:flex-row justify-between items-end border-b-4 border-gray-900 pb-4 border-double gap-4">
             <div>
                 <div class="flex items-center gap-3">
                     <h1 class="text-3xl md:text-4xl font-extrabold tracking-tighter uppercase italic transform -rotate-1">
                         Compta<span class="text-[#ccff00] bg-gray-900 px-2">Neuille</span>
                     </h1>
-                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V11 HARDCORE</span>
+                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V13 AUDITOR</span>
                 </div>
                 <h2 id="company-name" class="mt-2 text-xl font-serif-header font-bold text-gray-800 border-b-2 border-[#ccff00] inline-block">Chargement...</h2>
             </div>
 
-            <div class="flex flex-col md:flex-row gap-4 items-end">
+            <div class="flex flex-col md:flex-row gap-6 items-end">
+                
+                <div id="duration-control" class="flex flex-col items-end gap-1 hidden">
+                    <label class="text-xs font-bold font-mono-code uppercase text-gray-500">Durée Exercice</label>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs">Court</span>
+                        <input type="range" id="game-duration" min="1" max="3" step="1" value="1" class="w-24 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer border border-gray-900">
+                        <span class="text-xs">Long</span>
+                    </div>
+                </div>
+
                 <div class="flex items-center gap-1 bg-white border-2 border-gray-900 p-1 shadow-[3px_3px_0px_0px_rgba(0,0,0,0.2)]" style="border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;">
                     <button onclick="setDifficulty('EASY')" id="btn-easy" class="diff-btn active px-3 py-1 font-mono-code text-xs font-bold rounded-sm">EASY</button>
-                    <button onclick="setDifficulty('NORMAL')" id="btn-normal" class="diff-btn px-3 py-1 font-mono-code text-xs font-bold rounded-sm hover:bg-gray-100">NORMAL</button>
                     <button onclick="setDifficulty('HARDCORE')" id="btn-hardcore" class="diff-btn px-3 py-1 font-mono-code text-xs font-bold rounded-sm hover:bg-gray-100 text-red-600">HARDCORE 🔥</button>
                 </div>
+
                 <button onclick="initGame()" class="px-4 py-2 bg-white border-2 border-gray-900 shadow-[3px_3px_0px_0px_#ccff00] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all font-bold font-mono-code uppercase text-xs cursor-pointer">
                     ⚡ Nouvelle Entreprise
                 </button>
@@ -193,12 +183,11 @@
             <div class="col-span-12 lg:col-span-3">
                 
                 <div id="journal-panel" class="hidden mb-6">
-                    <div class="journal-paper p-4 border border-gray-300 min-h-[500px] shadow-xl relative transform -rotate-1">
+                    <div class="journal-paper p-4 border border-gray-300 min-h-[400px] max-h-[600px] overflow-y-auto shadow-xl relative transform -rotate-1">
                         <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-3 py-1 text-sm font-bold font-mono-code rotate-1">
                             JOURNAL DES OPÉRATIONS
                         </div>
-                        <div id="journal-content" class="font-hand text-gray-800 text-sm pt-4 space-y-4">
-                            </div>
+                        <div id="journal-content" class="font-hand text-gray-800 text-sm pt-4 space-y-4"></div>
                     </div>
                 </div>
 
@@ -219,7 +208,7 @@
                         <div class="bg-gray-200 p-2 font-bold text-center border-b-2 border-gray-900">CHARGES (Cl. 6)</div>
                         <div class="p-2 space-y-2">
                             <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="EXPLOIT">
-                                <div class="block-header"><span>Exploitation</span><span class="text-[0.6rem] opacity-70">60-65</span></div>
+                                <div class="block-header"><span>Exploitation</span><span class="text-[0.6rem] opacity-70">60-65+68</span></div>
                                 <div id="zone-charge-exploit" class="min-h-[40px] space-y-1 mt-2"></div>
                                 <div class="zone-total" id="total-charge-exploit">0 €</div>
                             </div>
@@ -265,7 +254,7 @@
                         <div class="bg-blue-100 p-2 font-bold text-center border-b-2 border-blue-900 text-blue-900">ACTIF (Emplois)</div>
                         <div class="p-2 space-y-2">
                             <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="ACTIF" data-subtype="IMMO">
-                                <div class="block-header bg-blue-900"><span>Actif Immobilisé</span><span class="text-[0.6rem] opacity-70">Cl. 2</span></div>
+                                <div class="block-header bg-blue-900"><span>Actif Immobilisé</span><span class="text-[0.6rem] opacity-70">Cl. 2 (Brut + Amort)</span></div>
                                 <div id="zone-actif-immo" class="min-h-[60px] space-y-1 mt-2"></div>
                                 <div class="zone-total" id="total-actif-immo">0 €</div>
                             </div>
@@ -307,11 +296,6 @@
     <div class="sig-panel fixed bottom-0 left-0 w-full px-4 py-3 z-40 flex flex-col md:flex-row justify-between items-center gap-4 text-sm md:text-base">
         <div class="flex flex-wrap gap-6 items-center justify-center md:justify-start">
             <div class="flex flex-col">
-                <span class="text-[0.65rem] uppercase text-gray-400">Résultat Exploitation</span>
-                <span id="sig-res-exploit" class="sig-value font-bold text-lg">0 €</span>
-            </div>
-            <div class="w-px h-8 bg-gray-700 hidden md:block"></div>
-            <div class="flex flex-col">
                 <span class="text-[0.65rem] uppercase text-gray-400">Résultat Net</span>
                 <span id="sig-res-net" class="sig-value font-bold text-xl text-white">0 €</span>
             </div>
@@ -322,85 +306,72 @@
             </div>
         </div>
 
-        <button id="validate-btn" onclick="validate()" class="px-8 py-3 bg-[#ccff00] text-gray-900 font-black uppercase tracking-widest hover:bg-white transition-colors shadow-lg cursor-pointer rounded-sm">
-            Vérifier
-        </button>
+        <div class="flex gap-4">
+            <button onclick="exportToTXT()" class="px-6 py-3 bg-gray-700 text-white font-bold uppercase tracking-widest hover:bg-gray-600 transition-colors shadow-lg cursor-pointer rounded-sm flex items-center gap-2 text-xs md:text-sm">
+                📁 Exporter pour IA
+            </button>
+            <button id="validate-btn" onclick="validate()" class="px-8 py-3 bg-[#ccff00] text-gray-900 font-black uppercase tracking-widest hover:bg-white transition-colors shadow-lg cursor-pointer rounded-sm">
+                Vérifier
+            </button>
+        </div>
     </div>
 
     <script>
         let currentDifficulty = 'EASY'; 
         let currentCompanyName = "";
+        let journalEntries = []; // Pour l'export
 
-        // --- NOMS D'ENTREPRISES & TIERS ---
-        const prefixes = ["Boulangerie", "Garage", "Start-up", "Cabinet", "Boucherie", "Agence", "Pizzeria", "Crèche", "Pharmacie", "EHPAD", "Night Club", "Camping", "Pompes Funèbres", "Kebab"];
-        const suffixes = ["'Chez Dédé'", "'Le Gouffre'", "'L'Avenir Incertain'", "'Fraude & Co'", "'L'Optimiste'", "'Dernier Recours'", "'Le Blanchisseur'", "'Au Bonheur des Dames'", "'Le Petit Escroc'"];
+        // CONFIG
+        const prefixes = ["Boulangerie", "Garage", "Start-up", "Cabinet", "Boucherie", "Agence", "Pizzeria", "Crèche", "Pharmacie", "EHPAD"];
+        const suffixes = ["'Chez Dédé'", "'Le Gouffre'", "'L'Optimiste'", "'Dernier Recours'", "'Le Blanchisseur'", "'Au Bonheur'"];
+        const suppliers = ["Sologest", "Manuflex", "Trans'Ap", "BuroPlus", "Enerco", "ImmoPro", "TechCorp"];
         
-        // Noms B2B pour le journal
-        const suppliers = ["Sologest", "Manuflex", "Trans'Ap", "BuroPlus", "Enerco", "ImmoPro", "TechCorp", "Consulting&Co", "Metallica Ind.", "AgroFood", "CleanService"];
-        const clients = ["Client A", "Client B", "Société X", "Grand Groupe Y", "Mairie de Neuille"];
-
-        function generateCompanyName() { return `${prefixes[Math.floor(Math.random() * prefixes.length)]} ${suffixes[Math.floor(Math.random() * suffixes.length)]}`; }
-        function getTierName(list) { return list[Math.floor(Math.random() * list.length)]; }
-
-        // --- TYPES ---
         const TYPES = { CHARGE: 'CHARGE', PRODUIT: 'PRODUIT', ACTIF: 'ACTIF', PASSIF: 'PASSIF' };
-        const SUBS = { 
-            EXPLOIT: 'EXPLOIT', FINANCE: 'FINANCE', EXCEP: 'EXCEP',
-            IMMO: 'IMMO', CIRC: 'CIRC',
-            CAPITAUX: 'CAPITAUX', DETTES: 'DETTES'
-        };
+        const SUBS = { EXPLOIT: 'EXPLOIT', FINANCE: 'FINANCE', EXCEP: 'EXCEP', IMMO: 'IMMO', CIRC: 'CIRC', CAPITAUX: 'CAPITAUX', DETTES: 'DETTES' };
 
-        // --- BASE DE DONNÉES CLASSIQUE (EASY/NORMAL) ---
-        const DATABASE_TEMPLATE = [
+        const DATABASE_EASY = [
             { label: "Achat Marchandises", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '607' },
             { label: "Loyer", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '613' },
-            { label: "Assurances", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '616' },
             { label: "Salaires", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '641' },
-            { label: "Publicité", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '623' },
-            { label: "Intérêts Emprunt", type: TYPES.CHARGE, sub: SUBS.FINANCE, code: '661' },
             { label: "Vente Marchandises", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '707' },
-            { label: "Prestations Services", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '706' },
-            { label: "Matériel Informatique", type: TYPES.ACTIF, sub: SUBS.IMMO, code: '2183' },
-            { label: "Mobilier Bureau", type: TYPES.ACTIF, sub: SUBS.IMMO, code: '2184' },
-            { label: "Stock Marchandises", type: TYPES.ACTIF, sub: SUBS.CIRC, code: '37' },
-            { label: "Créances Clients", type: TYPES.ACTIF, sub: SUBS.CIRC, code: '411' },
             { label: "Capital Social", type: TYPES.PASSIF, sub: SUBS.CAPITAUX, code: '101' },
-            { label: "Emprunts Bancaires", type: TYPES.PASSIF, sub: SUBS.DETTES, code: '164' },
-            { label: "Dettes Fournisseurs", type: TYPES.PASSIF, sub: SUBS.DETTES, code: '401' },
-            { label: "TVA à payer", type: TYPES.PASSIF, sub: SUBS.DETTES, code: '4455' }
+            { label: "Emprunts", type: TYPES.PASSIF, sub: SUBS.DETTES, code: '164' },
+            { label: "Stock Final", type: TYPES.ACTIF, sub: SUBS.CIRC, code: '37' }
         ];
 
-        let gameItems = []; // Contient les objets {id, label, type, amount, expectedInput}
-        
-        // --- GESTION DIFFICULTÉ ---
+        let gameItems = [];
+
         function setDifficulty(mode) {
             currentDifficulty = mode;
             document.querySelectorAll('.diff-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`btn-${mode.toLowerCase()}`).classList.add('active');
             
-            // Afficher/Cacher Journal
             const journal = document.getElementById('journal-panel');
-            if(mode === 'HARDCORE') journal.classList.remove('hidden');
-            else journal.classList.add('hidden');
-
+            const slider = document.getElementById('duration-control');
+            
+            if(mode === 'HARDCORE') {
+                journal.classList.remove('hidden');
+                slider.classList.remove('hidden');
+            } else {
+                journal.classList.add('hidden');
+                slider.classList.add('hidden');
+            }
             initGame();
         }
 
         function initGame() {
-            currentCompanyName = generateCompanyName();
+            currentCompanyName = `${prefixes[Math.floor(Math.random() * prefixes.length)]} ${suffixes[Math.floor(Math.random() * suffixes.length)]}`;
             document.getElementById('company-name').innerText = currentCompanyName;
             closeModal();
+            journalEntries = [];
             
-            // Clear UI
             document.querySelectorAll('.drop-zone div[id^="zone-"]').forEach(z => z.innerHTML = '');
             document.getElementById('source-zone').innerHTML = '';
             document.getElementById('journal-content').innerHTML = '';
             
-            // Reset Button
             const btn = document.getElementById('validate-btn');
             btn.innerText = "Vérifier";
-            btn.classList.remove('bg-white', 'animate-pulse');
-            btn.classList.add('bg-[#ccff00]');
+            btn.classList.replace('bg-white', 'bg-[#ccff00]');
 
             if (currentDifficulty === 'HARDCORE') {
                 initHardcoreMode();
@@ -409,185 +380,162 @@
             }
         }
 
-        // ==========================================
-        // STANDARD MODE (EASY/NORMAL)
-        // ==========================================
+        // ========================
+        // EASY MODE (Auto-balance)
+        // ========================
         function initStandardMode() {
             gameItems = [];
-            const selection = [...DATABASE_TEMPLATE].sort(() => 0.5 - Math.random()).slice(0, 14);
+            // Simple logic: pick random items, calc Result & Bank plug
+            const selection = [...DATABASE_EASY].sort(() => 0.5 - Math.random()).slice(0, 10);
             
-            let totalCharges = 0, totalProduits = 0, totalActif = 0, totalPassif = 0;
+            let tC = 0, tP = 0, tA = 0, tPas = 0;
 
-            selection.forEach((op, index) => {
+            selection.forEach((op, i) => {
                 const amount = Math.floor(Math.random() * 4000) + 100;
-                gameItems.push({ ...op, id: `op-${index}`, amount: amount });
-                if(op.type === TYPES.CHARGE) totalCharges += amount;
-                if(op.type === TYPES.PRODUIT) totalProduits += amount;
-                if(op.type === TYPES.ACTIF) totalActif += amount;
-                if(op.type === TYPES.PASSIF) totalPassif += amount;
+                gameItems.push({ ...op, id: `op-${i}`, amount });
+                if(op.type === TYPES.CHARGE) tC += amount;
+                if(op.type === TYPES.PRODUIT) tP += amount;
+                if(op.type === TYPES.ACTIF) tA += amount;
+                if(op.type === TYPES.PASSIF) tPas += amount;
             });
 
-            // Résultat
-            const result = totalProduits - totalCharges;
-            gameItems.push({
-                id: 'op-res', label: "Résultat de l'exercice",
-                type: TYPES.PASSIF, sub: SUBS.CAPITAUX, code: '120', amount: result
-            });
-            totalPassif += result;
+            const res = tP - tC;
+            gameItems.push({ id: 'op-res', label: "Résultat", type: TYPES.PASSIF, sub: SUBS.CAPITAUX, code: '120', amount: res });
+            tPas += res;
 
-            // Banque (Équilibre)
-            const bankAmount = totalPassif - totalActif;
-            if (bankAmount >= 0) {
-                gameItems.push({
-                    id: 'op-bank', label: "Banque (Solde)",
-                    type: TYPES.ACTIF, sub: SUBS.CIRC, code: '512', amount: bankAmount
-                });
-            } else {
-                gameItems.push({
-                    id: 'op-bank', label: "Découvert Bancaire",
-                    type: TYPES.PASSIF, sub: SUBS.DETTES, code: '512 (Cr)', amount: Math.abs(bankAmount)
-                });
-            }
+            const bank = tPas - tA;
+            if (bank >= 0) gameItems.push({ id: 'op-bank', label: "Banque (Solde)", type: TYPES.ACTIF, sub: SUBS.CIRC, code: '512', amount: bank });
+            else gameItems.push({ id: 'op-bank', label: "Découvert", type: TYPES.PASSIF, sub: SUBS.DETTES, code: '512', amount: Math.abs(bank) });
 
             renderCards();
             updateCalculations();
         }
 
-        // ==========================================
-        // HARDCORE MODE (SCENARIO GENERATOR)
-        // ==========================================
+        // ========================
+        // HARDCORE MODE (Journal)
+        // ========================
         function initHardcoreMode() {
             gameItems = [];
             const journalDiv = document.getElementById('journal-content');
-            
-            // État des comptes en cours de jeu
             const ledger = {}; 
-            // Fonction utilitaire pour impacter le ledger
+            const durationMul = parseInt(document.getElementById('game-duration').value); // 1, 2, 3
+
             const impact = (label, type, sub, code, amount, isDebit) => {
-                // Si le compte n'existe pas, on le crée pour les cartes à jouer
                 const key = code; 
-                if(!ledger[key]) {
-                    ledger[key] = { label, type, sub, code, balance: 0 };
-                }
-                // Convention : Actif/Charge augmente au débit (+), Passif/Produit augmente au crédit (-)
-                // Pour simplifier ici : on suit la logique mathématique du bilan
-                // Actif/Charge = Positif, Passif/Produit = Positif dans le bilan, mais comptablement inversé.
-                // On va faire simple : on stocke le montant absolu final attendu.
-                
-                // On simule : 
-                // Actif : Debit +, Credit -
-                // Charge : Debit +, Credit -
-                // Passif : Credit +, Debit -
-                // Produit : Credit +, Debit -
-                
+                if(!ledger[key]) ledger[key] = { label, type, sub, code, balance: 0 };
+                // Convention simplifiée pour jeu: Stockage valeur absolue attendue à la fin
+                // Actif/Charge augmentent au débit. Passif/Produit augmentent au crédit.
+                // Ici on calcule le solde comptable
                 if (type === TYPES.ACTIF || type === TYPES.CHARGE) {
                     ledger[key].balance += isDebit ? amount : -amount;
                 } else {
-                    ledger[key].balance += isDebit ? -amount : amount;
+                    ledger[key].balance += isDebit ? -amount : amount; // Credit increases Passif/Prod
                 }
             };
 
             const addEntry = (date, text) => {
+                journalEntries.push(`${date} : ${text}`); // Save for export
                 const p = document.createElement('p');
                 p.innerHTML = `<strong>${date}</strong> : ${text}`;
                 p.className = "border-b border-blue-200 pb-1";
                 journalDiv.appendChild(p);
             };
 
-            // SCENARIO
             let currentDate = new Date(2024, 0, 1);
-            const nextDate = () => {
-                currentDate.setDate(currentDate.getDate() + Math.floor(Math.random() * 10) + 1);
+            const nextDate = (days = 5) => {
+                currentDate.setDate(currentDate.getDate() + Math.floor(Math.random() * days) + 2);
                 return currentDate.toLocaleDateString('fr-FR');
             };
 
-            // 1. Création
-            const capital = Math.floor(Math.random() * 20) * 1000 + 10000; // 10k à 30k
+            // 1. CREATION
+            const capital = 20000 + (Math.floor(Math.random() * 10) * 1000);
             impact("Capital Social", TYPES.PASSIF, SUBS.CAPITAUX, '101', capital, false);
             impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', capital, true);
-            addEntry("01/01/2024", `Création de l'entreprise. Apport des associés au capital de ${capital}€ déposés en banque.`);
+            addEntry("01/01/2024", `Apport en capital de ${capital}€.`);
 
-            // 2. Emprunt (50% chance)
-            if(Math.random() > 0.5) {
-                const loan = 10000;
-                impact("Emprunts Bancaires", TYPES.PASSIF, SUBS.DETTES, '164', loan, false);
-                impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', loan, true);
-                addEntry(nextDate(), `Obtention d'un prêt bancaire de ${loan}€.`);
+            // BOUCLE D'OPERATIONS SELON SLIDER
+            const loops = 3 * durationMul; 
+            
+            for(let i=0; i<loops; i++) {
+                const rand = Math.random();
+                
+                // ACHAT STOCK
+                if(rand < 0.3) {
+                    const amount = Math.floor(Math.random() * 2000) + 500;
+                    impact("Achat Marchandises", TYPES.CHARGE, SUBS.EXPLOIT, '607', amount, true);
+                    impact("Dettes Fournisseurs", TYPES.PASSIF, SUBS.DETTES, '401', amount, false);
+                    addEntry(nextDate(), `Achat marchandise à crédit (${amount}€).`);
+                }
+                // VENTE
+                else if(rand < 0.6) {
+                    const amount = Math.floor(Math.random() * 3000) + 1000;
+                    impact("Vente Marchandises", TYPES.PRODUIT, SUBS.EXPLOIT, '707', amount, false);
+                    impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', amount, true);
+                    addEntry(nextDate(), `Vente client comptant (${amount}€).`);
+                }
+                // PAIEMENT
+                else if (rand < 0.8) {
+                    const amount = 500;
+                    impact("Dettes Fournisseurs", TYPES.PASSIF, SUBS.DETTES, '401', amount, true);
+                    impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', amount, false);
+                    addEntry(nextDate(), `Paiement fournisseur partiel (${amount}€).`);
+                }
+                // CHARGE DIVERS
+                else {
+                    const amount = 200;
+                    impact("Charges Diverses (Pub...)", TYPES.CHARGE, SUBS.EXPLOIT, '623', amount, true);
+                    impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', amount, false);
+                    addEntry(nextDate(), `Paiement pub Facebook (${amount}€).`);
+                }
             }
 
-            // 3. Achat Immo
-            const immoPrice = Math.floor(Math.random() * 5000) + 2000;
-            const immoName = "Matériel Industriel";
-            const supplierImmo = getTierName(suppliers);
-            impact(immoName, TYPES.ACTIF, SUBS.IMMO, '215', immoPrice, true);
-            impact("Dettes Fournisseurs", TYPES.PASSIF, SUBS.DETTES, '401', immoPrice, false); // A crédit
-            addEntry(nextDate(), `Achat de ${immoName.toLowerCase()} auprès de ${supplierImmo} pour ${immoPrice}€ à crédit.`);
+            // IMMO & DAP (Le morceau complexe)
+            const immoPrice = 6000;
+            const years = 5;
+            // Achat en milieu d'année pour complexifier le calcul prorata ?
+            // On va dire achat le 01/07 pour simplifier le calcul mental (6 mois)
+            const buyDate = "01/07/2024";
+            impact("Matériel Industriel", TYPES.ACTIF, SUBS.IMMO, '215', immoPrice, true);
+            impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', immoPrice, false);
+            addEntry(buyDate, `Achat Matériel Industriel comptant : ${immoPrice}€. Amortissable linéairement sur ${years} ans.`);
 
-            // 4. Achat Stock
-            const stockPrice = Math.floor(Math.random() * 3000) + 500;
-            impact("Achat Marchandises", TYPES.CHARGE, SUBS.EXPLOIT, '607', stockPrice, true);
-            impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', stockPrice, false); // Comptant
-            addEntry(nextDate(), `Achat de stock de marchandises (paiement comptant) : ${stockPrice}€.`);
-
-            // 5. Vente
-            const salePrice = Math.floor(stockPrice * 1.5) + 1000; // Marge
-            impact("Vente Marchandises", TYPES.PRODUIT, SUBS.EXPLOIT, '707', salePrice, false);
-            impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', salePrice, true);
-            addEntry(nextDate(), `Vente de marchandises au comptant pour un total de ${salePrice}€.`);
-
-            // 6. Paiement dette fournisseur (partiel ou total)
-            const payment = Math.floor(immoPrice / 2);
-            impact("Dettes Fournisseurs", TYPES.PASSIF, SUBS.DETTES, '401', payment, true); // Debit dette
-            impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', payment, false); // Credit banque
-            addEntry(nextDate(), `${currentCompanyName} rembourse une partie de sa dette fournisseur (${payment}€) par virement.`);
-
-            // 7. Salaire
-            const salary = 2000;
-            impact("Salaires", TYPES.CHARGE, SUBS.EXPLOIT, '641', salary, true);
-            impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', salary, false);
-            addEntry(nextDate(), `Paiement des salaires du mois : ${salary}€.`);
-
-            // 8. Calcul du résultat pour l'équilibre
-            // En Hardcore, on ne demande pas de carte "Résultat" explicite sauf si on veut complexifier.
-            // Pour simplifier l'UI Hardcore : L'utilisateur doit équilibrer Bilan et CDR séparément, 
-            // MAIS pour que le bilan soit juste, il faut que Actif = Passif + (Produits - Charges).
-            // Astuce : On va demander à l'utilisateur de placer une carte "Résultat (Calculé)" qu'il doit déduire lui-même ?
-            // NON, plus simple : on génère automatiquement la carte "Résultat de l'exercice" dans la liste, mais VIDÉE.
+            // Calcul DAP
+            // Annuité complète = 6000 / 5 = 1200.
+            // Prorata (Juillet à Dec) = 6 mois. -> 1200 * 6/12 = 600.
+            const dap = (immoPrice / years) * (6/12);
             
-            let totalCharges = 0;
-            let totalProduits = 0;
+            // Ecriture d'inventaire
+            impact("Dotation Amortissements", TYPES.CHARGE, SUBS.EXPLOIT, '681', dap, true);
+            impact("Amortissements Cumulés", TYPES.ACTIF, SUBS.IMMO, '281', dap, false); // Credit Actif (soustraction)
+            addEntry("31/12/2024", `Inventaire : Enregistrement de l'amortissement du matériel.`);
+
+            // GENERATION ITEMS
+            // Calcul Résultat Attendu
+            let tC = 0, tP = 0;
             Object.values(ledger).forEach(acc => {
-                if(acc.type === TYPES.CHARGE) totalCharges += acc.balance;
-                if(acc.type === TYPES.PRODUIT) totalProduits += acc.balance;
+                if(acc.type === TYPES.CHARGE) tC += acc.balance;
+                if(acc.type === TYPES.PRODUIT) tP += acc.balance;
             });
-            const result = totalProduits - totalCharges;
-            
+            const result = tP - tC;
             ledger['120'] = { label: "Résultat (à calculer !)", type: TYPES.PASSIF, sub: SUBS.CAPITAUX, code: '120', balance: result };
 
-            // Conversion Ledger -> GameItems
             Object.values(ledger).forEach((acc, i) => {
-                if (Math.abs(acc.balance) > 0) { // On ne garde que les comptes non nuls
+                if (Math.abs(acc.balance) > 0) {
                     gameItems.push({
-                        id: `op-${i}`,
-                        label: acc.label,
-                        type: acc.type,
-                        sub: acc.sub,
-                        code: acc.code,
-                        amount: acc.balance, // C'est la valeur attendue
-                        isHardcore: true // Flag pour l'affichage input
+                        id: `op-${i}`, label: acc.label, type: acc.type, sub: acc.sub, code: acc.code,
+                        amount: acc.balance, // Valeur attendue
+                        isHardcore: true
                     });
                 }
             });
 
             renderCards();
-            updateCalculations(); // Init à 0
+            updateCalculations();
         }
 
         function renderCards() {
             const sourceZone = document.getElementById('source-zone');
-            // Shuffle
-            const shuffled = gameItems.sort(() => 0.5 - Math.random());
-            shuffled.forEach(item => {
+            gameItems.sort(() => 0.5 - Math.random()).forEach(item => {
                 sourceZone.appendChild(createCard(item));
             });
         }
@@ -597,33 +545,29 @@
             div.id = item.id;
             div.className = "sketchy-card p-2 cursor-grab animate-pop mb-2 text-sm"; 
             div.draggable = true;
-            // Stockage des vérités
+            // DATA FOR VALIDATION
             div.dataset.type = item.type;
             div.dataset.sub = item.sub;
-            div.dataset.trueAmount = item.amount; // Montant correct
-            div.dataset.currentAmount = currentDifficulty === 'HARDCORE' ? 0 : item.amount; // Montant affiché/saisi
+            div.dataset.trueAmount = item.amount;
+            div.dataset.currentAmount = currentDifficulty === 'HARDCORE' ? 0 : item.amount;
+            div.dataset.label = item.label; // For export
 
-            // Contenu
-            let displayAmount;
-            let codeDisplay = "";
+            let displayAmount, codeDisplay;
 
             if (currentDifficulty === 'HARDCORE') {
-                // Input mode
+                // INPUT MODE
                 displayAmount = `<input type="number" class="hardcore-input" placeholder="?" onmousedown="event.stopPropagation()" oninput="updateCardAmount(this)"> €`;
-                codeDisplay = `<span class="font-mono-code text-[0.65rem] bg-gray-200 px-1 rounded text-gray-800">${item.code}</span>`;
+                // HIDDEN CODE
+                codeDisplay = ``; 
             } else {
-                // Static mode
                 displayAmount = `${item.amount.toLocaleString('fr-FR')} €`;
-                if (currentDifficulty === 'EASY') {
-                    codeDisplay = `<span class="font-mono-code text-[0.65rem] bg-gray-200 px-1 rounded text-gray-800">${item.code}</span>`;
-                } else {
-                    codeDisplay = ``;
-                }
+                codeDisplay = `<span class="font-mono-code text-[0.65rem] bg-gray-200 px-1 rounded text-gray-800">${item.code}</span>`;
             }
 
+            // FIX COLOR TEXT
             div.innerHTML = `
                 <div class="flex justify-between items-start pointer-events-none">
-                    <span class="font-bold leading-tight pr-2">${item.label}</span>
+                    <span class="font-bold leading-tight pr-2 text-gray-900">${item.label}</span>
                     ${codeDisplay}
                 </div>
                 <div class="mt-1 text-right font-mono-code font-bold text-gray-600">
@@ -644,16 +588,13 @@
             return div;
         }
 
-        // Met à jour la valeur "virtuelle" de la carte quand on tape dans l'input
         function updateCardAmount(input) {
             const card = input.closest('.sketchy-card');
-            const val = parseInt(input.value) || 0;
-            card.dataset.currentAmount = val;
-            updateCalculations(); // Recalcul temps réel des totaux zones
+            card.dataset.currentAmount = parseInt(input.value) || 0;
+            updateCalculations();
         }
 
         function allowDrop(ev) { ev.preventDefault(); }
-
         function drop(ev) {
             ev.preventDefault();
             const data = ev.dataTransfer.getData("text");
@@ -661,24 +602,14 @@
             if(!draggedElement) return;
 
             let target = ev.target;
-            while (target && !target.classList.contains('drop-zone') && target.id !== 'source-zone') {
-                target = target.parentNode;
-            }
+            while (target && !target.classList.contains('drop-zone') && target.id !== 'source-zone') target = target.parentNode;
+            if (!target) return;
             
-            let container = target;
-            if(target.classList.contains('drop-zone')) {
-                container = target.querySelector('div[id^="zone-"]');
-            } else if (target.id === 'source-zone') {
-                // keep
-            } else { return; }
-
+            let container = target.classList.contains('drop-zone') ? target.querySelector('div[id^="zone-"]') : target;
             if(container) {
                 container.appendChild(draggedElement);
-                if(container.id !== 'source-zone') {
-                    draggedElement.style.transform = `rotate(${Math.random() * 2 - 1}deg)`;
-                } else {
-                    draggedElement.style.transform = 'none';
-                }
+                if(container.id !== 'source-zone') draggedElement.style.transform = `rotate(${Math.random() * 2 - 1}deg)`;
+                else draggedElement.style.transform = 'none';
             }
             updateCalculations();
         }
@@ -688,10 +619,7 @@
                 const zone = document.getElementById(id);
                 if(!zone) return 0;
                 let total = 0;
-                for(let child of zone.children) {
-                    // On utilise currentAmount (qui vaut amount en Easy/Normal, et input.value en Hardcore)
-                    total += parseInt(child.dataset.currentAmount || 0);
-                }
+                for(let child of zone.children) total += parseInt(child.dataset.currentAmount || 0);
                 return total;
             };
 
@@ -708,96 +636,114 @@
                 'zone-passif-dettes': 'total-passif-dettes'
             };
 
-            for(const [zoneId, displayId] of Object.entries(map)) {
-                const s = sumZone(zoneId);
-                document.getElementById(displayId).innerText = s.toLocaleString('fr-FR') + ' €';
-            }
+            for(const [z, d] of Object.entries(map)) document.getElementById(d).innerText = sumZone(z).toLocaleString('fr-FR') + ' €';
 
-            // Calcul SIG
-            const c_exploit = sumZone('zone-charge-exploit');
-            const p_exploit = sumZone('zone-produit-exploit');
-            const res_exploit = p_exploit - c_exploit;
+            const tA = sumZone('zone-actif-immo') + sumZone('zone-actif-circ');
+            const tP = sumZone('zone-passif-capitaux') + sumZone('zone-passif-dettes');
+
+            const charges = sumZone('zone-charge-exploit') + sumZone('zone-charge-finance') + sumZone('zone-charge-excep');
+            const prods = sumZone('zone-produit-exploit') + sumZone('zone-produit-finance') + sumZone('zone-produit-excep');
             
-            const c_fin = sumZone('zone-charge-finance');
-            const p_fin = sumZone('zone-produit-finance');
-            const c_excep = sumZone('zone-charge-excep');
-            const p_excep = sumZone('zone-produit-excep');
-            const res_net = res_exploit + (p_fin - c_fin) + (p_excep - c_excep);
+            document.getElementById('sig-res-net').innerText = (prods - charges).toLocaleString('fr-FR') + ' €';
+            document.getElementById('grand-total-actif').innerText = tA.toLocaleString('fr-FR') + ' €';
+            document.getElementById('grand-total-passif').innerText = tP.toLocaleString('fr-FR') + ' €';
 
-            const total_actif = sumZone('zone-actif-immo') + sumZone('zone-actif-circ');
-            const total_passif = sumZone('zone-passif-capitaux') + sumZone('zone-passif-dettes');
-
-            document.getElementById('sig-res-exploit').innerText = res_exploit.toLocaleString('fr-FR') + ' €';
-            document.getElementById('sig-res-net').innerText = res_net.toLocaleString('fr-FR') + ' €';
-            
-            const bilanCheck = document.getElementById('bilan-check');
-            // On vérifie l'équilibre strictement sur les valeurs saisies
-            if(total_actif > 0 && Math.abs(total_actif - total_passif) < 2) {
-                bilanCheck.innerText = "OUI";
-                bilanCheck.className = "font-bold text-lg text-[#ccff00] animate-pulse";
+            const check = document.getElementById('bilan-check');
+            if(tA > 0 && Math.abs(tA - tP) < 2) {
+                check.innerText = "OUI";
+                check.className = "font-bold text-lg text-[#ccff00]";
             } else {
-                bilanCheck.innerText = "NON";
-                bilanCheck.className = "font-bold text-lg text-red-500";
+                check.innerText = "NON";
+                check.className = "font-bold text-lg text-red-500";
             }
         }
 
         function validate() {
-            let totalCards = 0;
-            let errors = 0;
-            const dropZones = document.querySelectorAll('.drop-zone');
-
-            dropZones.forEach(zone => {
-                const container = zone.querySelector('div[id^="zone-"]');
-                const expectedType = zone.dataset.type;
-                const expectedSub = zone.dataset.subtype;
-                
-                for(let item of container.children) {
-                    totalCards++;
-                    const itemType = item.dataset.type;
-                    const itemSub = item.dataset.sub;
-                    
-                    // Verif position
-                    let isPosCorrect = (expectedType === itemType && expectedSub === itemSub);
-                    
-                    // Verif montant (HARDCORE)
-                    let isAmountCorrect = true;
-                    if (currentDifficulty === 'HARDCORE') {
-                        const entered = parseInt(item.dataset.currentAmount);
-                        const truth = parseInt(item.dataset.trueAmount);
-                        // On tolère 0 de marge d'erreur en hardcore !
-                        if (entered !== truth) isAmountCorrect = false;
+            let total = 0, errors = 0;
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                const expT = zone.dataset.type;
+                const expS = zone.dataset.subtype;
+                for(let item of zone.querySelector('div[id^="zone-"]').children) {
+                    total++;
+                    let posOk = (item.dataset.type === expT && item.dataset.sub === expS);
+                    let valOk = true;
+                    if(currentDifficulty === 'HARDCORE') {
+                        // En Hardcore, l'amortissement (281) a une valeur négative comptable (Crédit)
+                        // Mais dans l'UI on tape souvent en positif.
+                        // Pour le jeu, on compare la valeur absolue ou la valeur signée si le user est fort.
+                        // SIMPLIFICATION : on compare la valeur saisie (parseInt) avec la trueAmount
+                        // Attention : trueAmount peut être négatif si c'est un crédit stocké.
+                        // On compare Math.abs pour éviter la confusion débit/crédit pour le débutant
+                        valOk = Math.abs(parseInt(item.dataset.currentAmount)) === Math.abs(parseInt(item.dataset.trueAmount));
                     }
-
+                    
                     item.classList.remove('valid-success', 'valid-error');
-                    if (isPosCorrect && isAmountCorrect) {
-                        item.classList.add('valid-success');
-                    } else {
-                        item.classList.add('valid-error');
-                        errors++;
+                    if(posOk && valOk) item.classList.add('valid-success');
+                    else { item.classList.add('valid-error'); errors++; }
+                }
+            });
+            
+            const left = document.getElementById('source-zone').children.length;
+            const bal = document.getElementById('bilan-check').innerText === "OUI";
+            const btn = document.getElementById('validate-btn');
+
+            if(errors === 0 && left === 0 && bal) {
+                btn.innerText = "Parfait !";
+                document.getElementById('victory-modal').classList.remove('hidden');
+            } else {
+                btn.innerText = `${errors} Erreurs / ${left} Restants`;
+                setTimeout(() => btn.innerText = "Vérifier", 2000);
+            }
+        }
+
+        // ========================
+        // EXPORT TO LLM
+        // ========================
+        function exportToTXT() {
+            let content = `EXERCICE COMPTABILITE - ${currentCompanyName}\n`;
+            content += `DIFFICULTE: ${currentDifficulty}\n\n`;
+            
+            content += "=== JOURNAL DES OPERATIONS ===\n";
+            if(journalEntries.length > 0) {
+                journalEntries.forEach(e => content += e + "\n");
+            } else {
+                content += "(Mode Easy - Pas de journal, génération aléatoire)\n";
+            }
+            
+            content += "\n=== ETAT DU JEU (REPONSES UTILISATEUR) ===\n";
+            
+            // On parcourt toutes les zones pour voir où sont les cartes
+            const zones = document.querySelectorAll('.drop-zone, #source-zone');
+            zones.forEach(z => {
+                let zoneName = z.id;
+                if(z.dataset.type) zoneName = `${z.dataset.type} - ${z.dataset.subtype || 'ROOT'}`;
+                
+                // Chercher le container interne s'il existe
+                const container = z.querySelector('div[id^="zone-"]') || z;
+                
+                if(container.children.length > 0) {
+                    content += `\nZONE: ${zoneName}\n`;
+                    for(let item of container.children) {
+                        const userVal = item.dataset.currentAmount;
+                        const trueVal = item.dataset.trueAmount;
+                        const label = item.dataset.label;
+                        const correctType = item.dataset.type;
+                        const correctSub = item.dataset.sub;
+                        
+                        content += ` - CARTE: "${label}" | Valeur Saisie: ${userVal} | Valeur Attendue: ${trueVal} | Type Attendu: ${correctType}-${correctSub}\n`;
                     }
                 }
             });
 
-            const leftOvers = document.getElementById('source-zone').children.length;
-            totalCards += leftOvers;
+            content += "\n=== CONSIGNE POUR L'IA ===\n";
+            content += "Analyse ce fichier. Je suis un étudiant en comptabilité. Identifie mes erreurs de placement (mauvaise case) et mes erreurs de calcul (mauvais montant saisi par rapport au journal). Explique-moi pourquoi j'ai faux, notamment sur les amortissements ou la TVA si applicable.";
 
-            const isBalanced = document.getElementById('bilan-check').innerText === "OUI";
-            const btn = document.getElementById('validate-btn');
-            
-            if (errors === 0 && leftOvers === 0 && isBalanced) {
-                btn.innerText = "Parfait !";
-                btn.classList.replace('bg-[#ccff00]', 'bg-white');
-                document.getElementById('victory-msg').innerText = currentDifficulty === 'HARDCORE' ? "Incroyable ! Tu es un vrai Expert-Comptable." : "Bien joué Camarade.";
-                document.getElementById('victory-modal').classList.remove('hidden');
-            } else {
-                let msg = "";
-                if(errors > 0) msg = "Erreurs détectées (Position ou Montant).";
-                if(leftOvers > 0) msg = "Place toutes les cartes.";
-                if(!isBalanced) msg = "Le Bilan n'est pas équilibré.";
-                
-                btn.innerText = "Faux !";
-                setTimeout(() => btn.innerText = "Vérifier", 2000);
-            }
+            const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `compta_export_${Date.now()}.txt`;
+            a.click();
         }
 
         function closeModal() { document.getElementById('victory-modal').classList.add('hidden'); }
