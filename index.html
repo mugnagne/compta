@@ -12,6 +12,7 @@
             --neon-yellow: #ccff00;
             --dark: #1a1a1a;
             --paper: #ffffff;
+            --marx-red: #dc2626;
         }
         
         body {
@@ -64,14 +65,8 @@
         }
 
         /* Feedback validation */
-        .valid-success { 
-            background-color: #d9f99d !important; 
-            border-color: #365314; 
-        }
-        .valid-error { 
-            background-color: #fca5a5 !important; 
-            border-color: #7f1d1d; 
-        }
+        .valid-success { background-color: #d9f99d !important; border-color: #365314; }
+        .valid-error { background-color: #fca5a5 !important; border-color: #7f1d1d; }
 
         .dragging { opacity: 0.4; transform: scale(0.9); }
         
@@ -87,9 +82,40 @@
             100% { transform: scale(1); opacity: 1; }
         }
         .animate-pop { animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+        /* MARX MODAL STYLES */
+        .pixelated-img {
+            image-rendering: pixelated;
+        }
     </style>
 </head>
-<body class="selection:bg-[#ccff00] min-h-screen">
+<body class="selection:bg-[#ccff00] min-h-screen relative">
+
+    <div id="marx-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden flex items-center justify-center z-[100] backdrop-blur-sm">
+        <div class="bg-white border-4 border-gray-900 p-8 relative max-w-md w-full text-center shadow-[10px_10px_0px_0px_#dc2626] animate-pop" style="border-radius: 5px 25px 5px 25px;">
+            
+            <button onclick="closeModal()" class="absolute top-2 right-4 text-3xl font-bold text-gray-400 hover:text-gray-900 transition-colors">&times;</button>
+            
+            <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20">
+                <div class="absolute top-10 left-10 text-2xl animate-bounce">⭐</div>
+                <div class="absolute top-20 right-20 text-2xl animate-bounce" style="animation-delay: 0.2s">🚩</div>
+                <div class="absolute bottom-10 left-1/2 text-2xl animate-bounce" style="animation-delay: 0.5s">☭</div>
+            </div>
+
+            <div class="relative z-10">
+                <img src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Marx&hair=short01,short02,short03,short04,short05&beard=beard03&beardProbability=100&clothing=shirt" 
+                     alt="Pixel Karl" 
+                     class="w-40 h-40 mx-auto mb-6 border-4 border-gray-900 rounded-full bg-[#ccff00] pixelated-img">
+                
+                <h2 class="text-4xl font-black font-mono-code uppercase text-[#dc2626] leading-tight mb-2 transform -rotate-2">
+                    Félicitations<br>Camarades !
+                </h2>
+                <p class="font-serif-header italic text-gray-600 text-lg mt-4">
+                    "L'accumulation du savoir comptable est une victoire pour le prolétariat."
+                </p>
+            </div>
+        </div>
+    </div>
 
     <div class="max-w-[1400px] mx-auto p-4 md:p-6 pb-32">
         
@@ -269,182 +295,7 @@
 
         function initGame() {
             document.getElementById('company-name').innerText = generateCompanyName();
+            closeModal();
 
             const zones = ['source-zone', 'zone-charge-exploit', 'zone-charge-finance', 'zone-charge-excep',
-                'zone-produit-exploit', 'zone-produit-finance', 'zone-produit-excep', 'zone-bilan'];
-            zones.forEach(id => document.getElementById(id).innerHTML = '');
-            
-            document.getElementById('result-area').classList.add('hidden');
-            document.getElementById('validate-btn').innerText = "Vérifier";
-            document.getElementById('validate-btn').classList.remove('bg-[#ccff00]', 'text-gray-900');
-            document.getElementById('validate-btn').classList.add('bg-gray-900', 'text-[#ccff00]');
-
-            const shuffled = [...DATABASE].sort(() => 0.5 - Math.random()).slice(0, 9);
-
-            shuffled.forEach((op, index) => {
-                const amount = Math.floor(Math.random() * 5000) + 50;
-                const id = `op-${index}`;
-                const card = createCard(id, op, amount);
-                document.getElementById('source-zone').appendChild(card);
-            });
-        }
-
-        function createCard(id, op, amount) {
-            const div = document.createElement('div');
-            div.id = id;
-            div.className = "sketchy-card p-3 cursor-grab animate-pop"; 
-            div.draggable = true;
-            div.dataset.type = op.type;
-            div.dataset.sub = op.sub;
-
-            div.innerHTML = `
-                <div class="flex justify-between items-start pointer-events-none">
-                    <span class="font-bold text-sm leading-tight pr-2">${op.label}</span>
-                    <span class="font-mono-code text-xs bg-gray-200 px-1 rounded text-gray-800">${op.code}</span>
-                </div>
-                <div class="mt-2 text-right font-mono-code text-xs text-gray-500 pointer-events-none">
-                    ${amount} €
-                </div>
-            `;
-
-            div.addEventListener('dragstart', (e) => {
-                // Au début du drag, on enlève les couleurs de validation pour "nettoyer" la carte
-                e.target.classList.remove('valid-success', 'valid-error');
-                e.dataTransfer.setData("text", e.target.id);
-                setTimeout(() => e.target.classList.add('dragging'), 0);
-            });
-            div.addEventListener('dragend', (e) => {
-                e.target.classList.remove('dragging');
-            });
-            return div;
-        }
-
-        function allowDrop(ev) { ev.preventDefault(); }
-
-        function drop(ev) {
-            ev.preventDefault();
-            const data = ev.dataTransfer.getData("text");
-            const draggedElement = document.getElementById(data);
-            if(!draggedElement) return;
-
-            let target = ev.target;
-            while (target && !target.hasAttribute('ondrop')) {
-                target = target.parentNode;
-            }
-            if (!target) return;
-
-            let targetId;
-            const type = target.dataset.type;
-            const sub = target.dataset.subtype;
-
-            if (type === 'TODO') targetId = 'source-zone';
-            else if (type === 'BILAN') targetId = 'zone-bilan';
-            else if (type === 'CHARGE') {
-                if (sub === 'EXPLOIT') targetId = 'zone-charge-exploit';
-                if (sub === 'FINANCE') targetId = 'zone-charge-finance';
-                if (sub === 'EXCEP') targetId = 'zone-charge-excep';
-            }
-            else if (type === 'PRODUIT') {
-                if (sub === 'EXPLOIT') targetId = 'zone-produit-exploit';
-                if (sub === 'FINANCE') targetId = 'zone-produit-finance';
-                if (sub === 'EXCEP') targetId = 'zone-produit-excep';
-            }
-
-            if (targetId) {
-                document.getElementById(targetId).appendChild(draggedElement);
-                // Petite rotation pour le style
-                draggedElement.style.transform = `rotate(${Math.random() * 2 - 1}deg)`;
-            }
-        }
-
-        function validate() {
-            let total = 0;
-            let errors = 0;
-
-            // On sélectionne toutes les zones de jeu (sauf la source)
-            const dropZones = document.querySelectorAll('.drop-zone, [data-type="BILAN"]');
-
-            dropZones.forEach(zone => {
-                // Trouver le container qui contient les cartes à l'intérieur de la zone
-                // Si la zone est un div simple (comme BILAN), c'est l'ID interne
-                // Si la zone est une drop-zone complex, on cherche le div enfant direct qui stocke les items
-                let itemContainer = zone.querySelector('div[id^="zone-"]');
-                if (!itemContainer && zone.id && zone.id.startsWith('zone-bilan')) {
-                    itemContainer = document.getElementById('zone-bilan'); // Cas spécial pour le bilan qui a l'ID directement sur le conteneur interne
-                }
-                if (!itemContainer && zone.dataset.type === 'BILAN') {
-                     itemContainer = document.getElementById('zone-bilan');
-                }
-                
-                if (!itemContainer) return; // Sécurité
-
-                const expectedType = zone.dataset.type;
-                const expectedSub = zone.dataset.subtype;
-                
-                const items = itemContainer.children;
-
-                for (let item of items) {
-                    total++;
-                    const itemType = item.dataset.type;
-                    const itemSub = item.dataset.sub;
-                    let isCorrect = false;
-
-                    // Logique de validation
-                    if (expectedType === 'BILAN') {
-                        // Pour le bilan, on vérifie juste que l'item est de type BILAN
-                        if (itemType === 'BILAN') isCorrect = true;
-                    } else {
-                        // Pour le compte de résultat, Type ET Sous-Type doivent matcher
-                        if (expectedType === itemType && expectedSub === itemSub) {
-                            isCorrect = true;
-                        }
-                    }
-
-                    // Application du style
-                    item.classList.remove('valid-success', 'valid-error');
-                    if (isCorrect) {
-                        item.classList.add('valid-success');
-                    } else {
-                        item.classList.add('valid-error');
-                        errors++;
-                    }
-                }
-            });
-
-            // Pénalité pour les items restés dans la zone de départ
-            const leftOvers = document.getElementById('source-zone').children.length;
-            total += leftOvers;
-            // On compte les leftovers comme incomplets, donc impactent le score, mais pas comme erreur rouge.
-
-            const score = total === 0 ? 0 : Math.round(((total - (errors + leftOvers)) / total) * 100);
-
-            // Affichage UI
-            const resultArea = document.getElementById('result-area');
-            const feedback = document.getElementById('feedback-text');
-            const scoreDisplay = document.getElementById('score-display');
-            const btn = document.getElementById('validate-btn');
-            
-            resultArea.classList.remove('hidden');
-            scoreDisplay.innerText = `${score}%`;
-            
-            if (score === 100) {
-                scoreDisplay.className = "text-3xl font-black font-mono-code text-[#ccff00] bg-gray-900 px-2 transform -rotate-3 inline-block";
-                feedback.innerText = "Bilan équilibré. Parfait.";
-                btn.innerText = "Tout Bon !";
-            } else if (score >= 70) {
-                scoreDisplay.className = "text-3xl font-black font-mono-code text-gray-900";
-                feedback.innerText = "Pas mal. Corrige les rouges et réessaie.";
-                btn.innerText = "Re-vérifier";
-            } else {
-                scoreDisplay.className = "text-3xl font-black font-mono-code text-red-600";
-                feedback.innerText = "Catastrophique. Déplace les cartes rouges.";
-                btn.innerText = "Re-vérifier";
-            }
-        }
-
-        // Démarrage
-        initGame();
-
-    </script>
-</body>
-</html>
+                'zone-produit-exploit', 'zone-produit-finance', 'zone-produit-excep',
