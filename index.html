@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compta Neuille - V10 DIFFICULTY</title>
+    <title>Compta Neuille - V11 HARDCORE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,700&family=Roboto+Mono:wght@400;700&family=Inter:wght@400;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --neon-yellow: #ccff00;
             --dark: #1a1a1a;
             --paper: #ffffff;
-            --marx-red: #dc2626;
             --soft-grid: #e5e7eb;
+            --ledger-line: #bfdbfe;
         }
         
         body {
@@ -27,6 +28,7 @@
 
         .font-serif-header { font-family: 'Playfair Display', serif; }
         .font-mono-code { font-family: 'Roboto Mono', monospace; }
+        .font-hand { font-family: 'Gloria Hallelujah', cursive; }
 
         /* --- SKETCHY UI --- */
         .sketchy-card {
@@ -81,6 +83,33 @@
             color: var(--dark);
         }
 
+        /* JOURNAL PAPER STYLE */
+        .journal-paper {
+            background-color: #fefce8;
+            background-image: repeating-linear-gradient(var(--ledger-line) 0 1px, transparent 1px 100%);
+            background-size: 100% 2rem;
+            line-height: 2rem;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+            border-left: 4px double #ef4444; /* Marge rouge */
+        }
+
+        /* INPUT IN HARDCORE MODE */
+        .hardcore-input {
+            border: none;
+            border-bottom: 2px solid var(--dark);
+            background: #f3f4f6;
+            text-align: right;
+            font-family: 'Roboto Mono', monospace;
+            width: 80px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+        .hardcore-input:focus {
+            outline: none;
+            background: #e0f2fe;
+            border-color: #2563eb;
+        }
+
         /* Feedback validation */
         .valid-success { background-color: #d9f99d !important; border-color: #365314; }
         .valid-error { background-color: #fca5a5 !important; border-color: #7f1d1d; }
@@ -111,10 +140,7 @@
         .sig-value { font-family: 'Roboto Mono', monospace; color: var(--neon-yellow); }
         .pixelated-img { image-rendering: pixelated; }
 
-        /* DIFFICULTY SELECTOR STYLES */
-        .diff-btn {
-            transition: all 0.2s;
-        }
+        .diff-btn { transition: all 0.2s; }
         .diff-btn.active {
             background-color: var(--neon-yellow);
             color: var(--dark);
@@ -132,12 +158,12 @@
                 <img src="https://i.redd.it/i-just-started-in-pixel-art-and-i-found-my-place-here-im-v0-rinjy9fqy4p81.png?width=1024&format=png&auto=webp&s=a237871800a73431f0d9b4c745e73b1b49b3c637" 
                      alt="Pixel Art Victory" class="w-32 h-32 mx-auto mb-4 border-4 border-gray-900 rounded-full bg-[#ccff00] pixelated-img object-cover">
                 <h2 class="text-4xl font-black font-mono-code uppercase text-[#dc2626] leading-tight mb-2 transform -rotate-2">Félicitations<br>Camarade !</h2>
-                <p class="font-serif-header italic text-gray-600 text-sm mt-4">"L'Actif est égal au Passif. L'harmonie est totale."</p>
+                <p id="victory-msg" class="font-serif-header italic text-gray-600 text-sm mt-4">"L'Actif est égal au Passif."</p>
             </div>
         </div>
     </div>
 
-    <div class="max-w-[1600px] mx-auto p-4 md:p-6">
+    <div class="max-w-[1800px] mx-auto p-4 md:p-6">
         
         <header class="mb-6 flex flex-col md:flex-row justify-between items-end border-b-4 border-gray-900 pb-4 border-double">
             <div>
@@ -145,19 +171,17 @@
                     <h1 class="text-3xl md:text-4xl font-extrabold tracking-tighter uppercase italic transform -rotate-1">
                         Compta<span class="text-[#ccff00] bg-gray-900 px-2">Neuille</span>
                     </h1>
-                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V10.0 DIFFICULTY</span>
+                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V11 HARDCORE</span>
                 </div>
                 <h2 id="company-name" class="mt-2 text-xl font-serif-header font-bold text-gray-800 border-b-2 border-[#ccff00] inline-block">Chargement...</h2>
             </div>
 
             <div class="flex flex-col md:flex-row gap-4 items-end">
-                
                 <div class="flex items-center gap-1 bg-white border-2 border-gray-900 p-1 shadow-[3px_3px_0px_0px_rgba(0,0,0,0.2)]" style="border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;">
                     <button onclick="setDifficulty('EASY')" id="btn-easy" class="diff-btn active px-3 py-1 font-mono-code text-xs font-bold rounded-sm">EASY</button>
                     <button onclick="setDifficulty('NORMAL')" id="btn-normal" class="diff-btn px-3 py-1 font-mono-code text-xs font-bold rounded-sm hover:bg-gray-100">NORMAL</button>
-                    <button onclick="setDifficulty('HARDCORE')" id="btn-hardcore" class="diff-btn px-3 py-1 font-mono-code text-xs font-bold rounded-sm text-gray-400 cursor-not-allowed" title="Bientôt disponible">HARDCORE</button>
+                    <button onclick="setDifficulty('HARDCORE')" id="btn-hardcore" class="diff-btn px-3 py-1 font-mono-code text-xs font-bold rounded-sm hover:bg-gray-100 text-red-600">HARDCORE 🔥</button>
                 </div>
-
                 <button onclick="initGame()" class="px-4 py-2 bg-white border-2 border-gray-900 shadow-[3px_3px_0px_0px_#ccff00] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all font-bold font-mono-code uppercase text-xs cursor-pointer">
                     ⚡ Nouvelle Entreprise
                 </button>
@@ -166,24 +190,37 @@
 
         <div class="grid grid-cols-12 gap-6">
             
-            <div class="col-span-12 lg:col-span-2">
-                <div class="bg-gray-800 p-3 border-2 border-gray-900 min-h-[500px] rounded-lg relative shadow-xl sticky top-4">
+            <div class="col-span-12 lg:col-span-3">
+                
+                <div id="journal-panel" class="hidden mb-6">
+                    <div class="journal-paper p-4 border border-gray-300 min-h-[500px] shadow-xl relative transform -rotate-1">
+                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-3 py-1 text-sm font-bold font-mono-code rotate-1">
+                            JOURNAL DES OPÉRATIONS
+                        </div>
+                        <div id="journal-content" class="font-hand text-gray-800 text-sm pt-4 space-y-4">
+                            </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 p-3 border-2 border-gray-900 rounded-lg relative shadow-xl">
                     <h3 class="text-neon-yellow font-bold mb-4 font-mono-code uppercase text-xs tracking-widest border-b border-gray-600 pb-2">
-                        Flux_Entrant
+                        Comptes à classer
                     </h3>
-                    <div id="source-zone" class="space-y-2 min-h-[400px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="TODO"></div>
+                    <div id="source-zone" class="space-y-2 min-h-[200px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="TODO"></div>
                 </div>
             </div>
 
-            <div class="col-span-12 lg:col-span-5 flex flex-col gap-4">
-                <h3 class="font-black text-xl italic uppercase border-l-4 border-[#ccff00] pl-2">Compte de Résultat</h3>
-                <div class="grid grid-cols-2 gap-2">
+            <div class="col-span-12 lg:col-span-9 grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div class="flex flex-col gap-4">
+                    <h3 class="font-black text-xl italic uppercase border-l-4 border-[#ccff00] pl-2">Compte de Résultat</h3>
+                    
                     <div class="ledger-container">
                         <div class="bg-gray-200 p-2 font-bold text-center border-b-2 border-gray-900">CHARGES (Cl. 6)</div>
                         <div class="p-2 space-y-2">
-                            <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="EXPLOIT">
+                            <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="EXPLOIT">
                                 <div class="block-header"><span>Exploitation</span><span class="text-[0.6rem] opacity-70">60-65</span></div>
-                                <div id="zone-charge-exploit" class="min-h-[60px] space-y-1 mt-2"></div>
+                                <div id="zone-charge-exploit" class="min-h-[40px] space-y-1 mt-2"></div>
                                 <div class="zone-total" id="total-charge-exploit">0 €</div>
                             </div>
                             <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="FINANCE">
@@ -202,9 +239,9 @@
                     <div class="ledger-container">
                         <div class="bg-gray-200 p-2 font-bold text-center border-b-2 border-gray-900">PRODUITS (Cl. 7)</div>
                         <div class="p-2 space-y-2">
-                            <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="EXPLOIT">
+                            <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="EXPLOIT">
                                 <div class="block-header"><span>Exploitation</span><span class="text-[0.6rem] opacity-70">70-75</span></div>
-                                <div id="zone-produit-exploit" class="min-h-[60px] space-y-1 mt-2"></div>
+                                <div id="zone-produit-exploit" class="min-h-[40px] space-y-1 mt-2"></div>
                                 <div class="zone-total" id="total-produit-exploit">0 €</div>
                             </div>
                             <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="FINANCE">
@@ -220,23 +257,21 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-span-12 lg:col-span-5 flex flex-col gap-4">
-                <h3 class="font-black text-xl italic uppercase border-l-4 border-blue-500 pl-2">Bilan (Patrimoine)</h3>
-                <div class="grid grid-cols-2 gap-2">
+                <div class="flex flex-col gap-4">
+                    <h3 class="font-black text-xl italic uppercase border-l-4 border-blue-500 pl-2">Bilan (Patrimoine)</h3>
                     
                     <div class="ledger-container border-blue-900">
                         <div class="bg-blue-100 p-2 font-bold text-center border-b-2 border-blue-900 text-blue-900">ACTIF (Emplois)</div>
                         <div class="p-2 space-y-2">
-                            <div class="drop-zone p-2 rounded min-h-[150px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="ACTIF" data-subtype="IMMO">
+                            <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="ACTIF" data-subtype="IMMO">
                                 <div class="block-header bg-blue-900"><span>Actif Immobilisé</span><span class="text-[0.6rem] opacity-70">Cl. 2</span></div>
-                                <div id="zone-actif-immo" class="min-h-[100px] space-y-1 mt-2"></div>
+                                <div id="zone-actif-immo" class="min-h-[60px] space-y-1 mt-2"></div>
                                 <div class="zone-total" id="total-actif-immo">0 €</div>
                             </div>
-                            <div class="drop-zone p-2 rounded min-h-[150px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="ACTIF" data-subtype="CIRC">
+                            <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="ACTIF" data-subtype="CIRC">
                                 <div class="block-header bg-blue-800"><span>Actif Circulant</span><span class="text-[0.6rem] opacity-70">Cl. 3, 4, 5</span></div>
-                                <div id="zone-actif-circ" class="min-h-[100px] space-y-1 mt-2"></div>
+                                <div id="zone-actif-circ" class="min-h-[60px] space-y-1 mt-2"></div>
                                 <div class="zone-total" id="total-actif-circ">0 €</div>
                             </div>
                         </div>
@@ -248,14 +283,14 @@
                     <div class="ledger-container border-red-900">
                         <div class="bg-red-100 p-2 font-bold text-center border-b-2 border-red-900 text-red-900">PASSIF (Ressources)</div>
                         <div class="p-2 space-y-2">
-                            <div class="drop-zone p-2 rounded min-h-[150px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PASSIF" data-subtype="CAPITAUX">
+                            <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PASSIF" data-subtype="CAPITAUX">
                                 <div class="block-header bg-red-900"><span>Capitaux Propres</span><span class="text-[0.6rem] opacity-70">Cl. 1 (Haut)</span></div>
-                                <div id="zone-passif-capitaux" class="min-h-[100px] space-y-1 mt-2"></div>
+                                <div id="zone-passif-capitaux" class="min-h-[60px] space-y-1 mt-2"></div>
                                 <div class="zone-total" id="total-passif-capitaux">0 €</div>
                             </div>
-                            <div class="drop-zone p-2 rounded min-h-[150px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PASSIF" data-subtype="DETTES">
+                            <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PASSIF" data-subtype="DETTES">
                                 <div class="block-header bg-red-800"><span>Dettes</span><span class="text-[0.6rem] opacity-70">Cl. 16, 40, 42...</span></div>
-                                <div id="zone-passif-dettes" class="min-h-[100px] space-y-1 mt-2"></div>
+                                <div id="zone-passif-dettes" class="min-h-[60px] space-y-1 mt-2"></div>
                                 <div class="zone-total" id="total-passif-dettes">0 €</div>
                             </div>
                         </div>
@@ -263,7 +298,6 @@
                             TOTAL PASSIF: <span id="grand-total-passif">0 €</span>
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -294,14 +328,21 @@
     </div>
 
     <script>
-        // --- ETAT DU JEU ---
-        let currentDifficulty = 'EASY'; // 'EASY', 'NORMAL', 'HARDCORE'
+        let currentDifficulty = 'EASY'; 
+        let currentCompanyName = "";
 
-        // --- NOMS ---
-        const prefixes = ["Boulangerie", "Garage", "Start-up", "Cabinet", "Boucherie", "Agence", "Pizzeria", "Crèche", "Pharmacie", "Salle de Sport", "EHPAD", "Night Club", "Camping", "Pompes Funèbres", "Kebab"];
+        // --- NOMS D'ENTREPRISES & TIERS ---
+        const prefixes = ["Boulangerie", "Garage", "Start-up", "Cabinet", "Boucherie", "Agence", "Pizzeria", "Crèche", "Pharmacie", "EHPAD", "Night Club", "Camping", "Pompes Funèbres", "Kebab"];
         const suffixes = ["'Chez Dédé'", "'Le Gouffre'", "'L'Avenir Incertain'", "'Fraude & Co'", "'L'Optimiste'", "'Dernier Recours'", "'Le Blanchisseur'", "'Au Bonheur des Dames'", "'Le Petit Escroc'"];
-        function generateCompanyName() { return `${prefixes[Math.floor(Math.random() * prefixes.length)]} ${suffixes[Math.floor(Math.random() * suffixes.length)]}`; }
+        
+        // Noms B2B pour le journal
+        const suppliers = ["Sologest", "Manuflex", "Trans'Ap", "BuroPlus", "Enerco", "ImmoPro", "TechCorp", "Consulting&Co", "Metallica Ind.", "AgroFood", "CleanService"];
+        const clients = ["Client A", "Client B", "Société X", "Grand Groupe Y", "Mairie de Neuille"];
 
+        function generateCompanyName() { return `${prefixes[Math.floor(Math.random() * prefixes.length)]} ${suffixes[Math.floor(Math.random() * suffixes.length)]}`; }
+        function getTierName(list) { return list[Math.floor(Math.random() * list.length)]; }
+
+        // --- TYPES ---
         const TYPES = { CHARGE: 'CHARGE', PRODUIT: 'PRODUIT', ACTIF: 'ACTIF', PASSIF: 'PASSIF' };
         const SUBS = { 
             EXPLOIT: 'EXPLOIT', FINANCE: 'FINANCE', EXCEP: 'EXCEP',
@@ -309,161 +350,289 @@
             CAPITAUX: 'CAPITAUX', DETTES: 'DETTES'
         };
 
+        // --- BASE DE DONNÉES CLASSIQUE (EASY/NORMAL) ---
         const DATABASE_TEMPLATE = [
             { label: "Achat Marchandises", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '607' },
             { label: "Loyer", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '613' },
             { label: "Assurances", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '616' },
             { label: "Salaires", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '641' },
-            { label: "Charges Soc.", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '645' },
             { label: "Publicité", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '623' },
             { label: "Intérêts Emprunt", type: TYPES.CHARGE, sub: SUBS.FINANCE, code: '661' },
-            { label: "Amendes", type: TYPES.CHARGE, sub: SUBS.EXCEP, code: '671' },
-
             { label: "Vente Marchandises", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '707' },
             { label: "Prestations Services", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '706' },
-            { label: "Produits financiers", type: TYPES.PRODUIT, sub: SUBS.FINANCE, code: '76' },
-
             { label: "Matériel Informatique", type: TYPES.ACTIF, sub: SUBS.IMMO, code: '2183' },
             { label: "Mobilier Bureau", type: TYPES.ACTIF, sub: SUBS.IMMO, code: '2184' },
             { label: "Stock Marchandises", type: TYPES.ACTIF, sub: SUBS.CIRC, code: '37' },
             { label: "Créances Clients", type: TYPES.ACTIF, sub: SUBS.CIRC, code: '411' },
-
             { label: "Capital Social", type: TYPES.PASSIF, sub: SUBS.CAPITAUX, code: '101' },
             { label: "Emprunts Bancaires", type: TYPES.PASSIF, sub: SUBS.DETTES, code: '164' },
             { label: "Dettes Fournisseurs", type: TYPES.PASSIF, sub: SUBS.DETTES, code: '401' },
             { label: "TVA à payer", type: TYPES.PASSIF, sub: SUBS.DETTES, code: '4455' }
         ];
 
-        let gameItems = [];
-
+        let gameItems = []; // Contient les objets {id, label, type, amount, expectedInput}
+        
         // --- GESTION DIFFICULTÉ ---
         function setDifficulty(mode) {
-            // Pour l'instant on bloque le Hardcore
-            if(mode === 'HARDCORE') {
-                alert("Mode Hardcore en cours de développement !");
-                return;
-            }
-
             currentDifficulty = mode;
-            
-            // UI Updates
-            document.querySelectorAll('.diff-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
+            document.querySelectorAll('.diff-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`btn-${mode.toLowerCase()}`).classList.add('active');
+            
+            // Afficher/Cacher Journal
+            const journal = document.getElementById('journal-panel');
+            if(mode === 'HARDCORE') journal.classList.remove('hidden');
+            else journal.classList.add('hidden');
 
-            // Reboot game with new settings
             initGame();
         }
 
         function initGame() {
-            document.getElementById('company-name').innerText = generateCompanyName();
+            currentCompanyName = generateCompanyName();
+            document.getElementById('company-name').innerText = currentCompanyName;
             closeModal();
-            const zones = document.querySelectorAll('.drop-zone div[id^="zone-"]');
-            zones.forEach(z => z.innerHTML = '');
-            document.getElementById('source-zone').innerHTML = '';
             
-            document.getElementById('validate-btn').innerText = "Vérifier";
-            document.getElementById('validate-btn').classList.remove('bg-white');
-            document.getElementById('validate-btn').classList.add('bg-[#ccff00]');
+            // Clear UI
+            document.querySelectorAll('.drop-zone div[id^="zone-"]').forEach(z => z.innerHTML = '');
+            document.getElementById('source-zone').innerHTML = '';
+            document.getElementById('journal-content').innerHTML = '';
+            
+            // Reset Button
+            const btn = document.getElementById('validate-btn');
+            btn.innerText = "Vérifier";
+            btn.classList.remove('bg-white', 'animate-pulse');
+            btn.classList.add('bg-[#ccff00]');
 
+            if (currentDifficulty === 'HARDCORE') {
+                initHardcoreMode();
+            } else {
+                initStandardMode();
+            }
+        }
+
+        // ==========================================
+        // STANDARD MODE (EASY/NORMAL)
+        // ==========================================
+        function initStandardMode() {
             gameItems = [];
             const selection = [...DATABASE_TEMPLATE].sort(() => 0.5 - Math.random()).slice(0, 14);
             
-            let totalCharges = 0;
-            let totalProduits = 0;
-            let totalActifPartiel = 0;
-            let totalPassifPartiel = 0;
+            let totalCharges = 0, totalProduits = 0, totalActif = 0, totalPassif = 0;
 
             selection.forEach((op, index) => {
                 const amount = Math.floor(Math.random() * 4000) + 100;
                 gameItems.push({ ...op, id: `op-${index}`, amount: amount });
-
                 if(op.type === TYPES.CHARGE) totalCharges += amount;
                 if(op.type === TYPES.PRODUIT) totalProduits += amount;
-                if(op.type === TYPES.ACTIF) totalActifPartiel += amount;
-                if(op.type === TYPES.PASSIF) totalPassifPartiel += amount;
+                if(op.type === TYPES.ACTIF) totalActif += amount;
+                if(op.type === TYPES.PASSIF) totalPassif += amount;
             });
 
+            // Résultat
             const result = totalProduits - totalCharges;
             gameItems.push({
-                id: 'op-res',
-                label: "Résultat de l'exercice",
-                type: TYPES.PASSIF,
-                sub: SUBS.CAPITAUX,
-                code: '120',
-                amount: result 
+                id: 'op-res', label: "Résultat de l'exercice",
+                type: TYPES.PASSIF, sub: SUBS.CAPITAUX, code: '120', amount: result
             });
+            totalPassif += result;
 
-            totalPassifPartiel += result; 
-            const bankAmount = totalPassifPartiel - totalActifPartiel;
-
+            // Banque (Équilibre)
+            const bankAmount = totalPassif - totalActif;
             if (bankAmount >= 0) {
                 gameItems.push({
-                    id: 'op-bank',
-                    label: "Banque (Solde)",
-                    type: TYPES.ACTIF,
-                    sub: SUBS.CIRC,
-                    code: '512',
-                    amount: bankAmount
+                    id: 'op-bank', label: "Banque (Solde)",
+                    type: TYPES.ACTIF, sub: SUBS.CIRC, code: '512', amount: bankAmount
                 });
             } else {
                 gameItems.push({
-                    id: 'op-bank',
-                    label: "Découvert Bancaire",
-                    type: TYPES.PASSIF,
-                    sub: SUBS.DETTES,
-                    code: '512 (Cr)',
-                    amount: Math.abs(bankAmount)
+                    id: 'op-bank', label: "Découvert Bancaire",
+                    type: TYPES.PASSIF, sub: SUBS.DETTES, code: '512 (Cr)', amount: Math.abs(bankAmount)
                 });
             }
 
-            const sourceZone = document.getElementById('source-zone');
-            const finalDisplay = gameItems.sort(() => 0.5 - Math.random());
-            
-            finalDisplay.forEach(item => {
-                const card = createCard(item);
-                sourceZone.appendChild(card);
-            });
-
+            renderCards();
             updateCalculations();
         }
 
-        function createCard(op) {
-            const div = document.createElement('div');
-            div.id = op.id;
-            div.className = "sketchy-card p-2 cursor-grab animate-pop mb-2 text-sm"; 
-            div.draggable = true;
-            div.dataset.type = op.type;
-            div.dataset.sub = op.sub;
-            div.dataset.amount = op.amount;
+        // ==========================================
+        // HARDCORE MODE (SCENARIO GENERATOR)
+        // ==========================================
+        function initHardcoreMode() {
+            gameItems = [];
+            const journalDiv = document.getElementById('journal-content');
+            
+            // État des comptes en cours de jeu
+            const ledger = {}; 
+            // Fonction utilitaire pour impacter le ledger
+            const impact = (label, type, sub, code, amount, isDebit) => {
+                // Si le compte n'existe pas, on le crée pour les cartes à jouer
+                const key = code; 
+                if(!ledger[key]) {
+                    ledger[key] = { label, type, sub, code, balance: 0 };
+                }
+                // Convention : Actif/Charge augmente au débit (+), Passif/Produit augmente au crédit (-)
+                // Pour simplifier ici : on suit la logique mathématique du bilan
+                // Actif/Charge = Positif, Passif/Produit = Positif dans le bilan, mais comptablement inversé.
+                // On va faire simple : on stocke le montant absolu final attendu.
+                
+                // On simule : 
+                // Actif : Debit +, Credit -
+                // Charge : Debit +, Credit -
+                // Passif : Credit +, Debit -
+                // Produit : Credit +, Debit -
+                
+                if (type === TYPES.ACTIF || type === TYPES.CHARGE) {
+                    ledger[key].balance += isDebit ? amount : -amount;
+                } else {
+                    ledger[key].balance += isDebit ? -amount : amount;
+                }
+            };
 
-            let displayAmount = op.amount.toLocaleString('fr-FR') + ' €';
-            if(op.code === '120' && op.amount < 0) {
-                div.className += " border-red-500";
+            const addEntry = (date, text) => {
+                const p = document.createElement('p');
+                p.innerHTML = `<strong>${date}</strong> : ${text}`;
+                p.className = "border-b border-blue-200 pb-1";
+                journalDiv.appendChild(p);
+            };
+
+            // SCENARIO
+            let currentDate = new Date(2024, 0, 1);
+            const nextDate = () => {
+                currentDate.setDate(currentDate.getDate() + Math.floor(Math.random() * 10) + 1);
+                return currentDate.toLocaleDateString('fr-FR');
+            };
+
+            // 1. Création
+            const capital = Math.floor(Math.random() * 20) * 1000 + 10000; // 10k à 30k
+            impact("Capital Social", TYPES.PASSIF, SUBS.CAPITAUX, '101', capital, false);
+            impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', capital, true);
+            addEntry("01/01/2024", `Création de l'entreprise. Apport des associés au capital de ${capital}€ déposés en banque.`);
+
+            // 2. Emprunt (50% chance)
+            if(Math.random() > 0.5) {
+                const loan = 10000;
+                impact("Emprunts Bancaires", TYPES.PASSIF, SUBS.DETTES, '164', loan, false);
+                impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', loan, true);
+                addEntry(nextDate(), `Obtention d'un prêt bancaire de ${loan}€.`);
             }
 
-            // GESTION DIFFICULTÉ DANS L'AFFICHAGE
-            let codeDisplay = '';
-            if (currentDifficulty === 'EASY') {
-                // Easy: On affiche le code
-                codeDisplay = `<span class="font-mono-code text-[0.65rem] bg-gray-200 px-1 rounded text-gray-800">${op.code}</span>`;
+            // 3. Achat Immo
+            const immoPrice = Math.floor(Math.random() * 5000) + 2000;
+            const immoName = "Matériel Industriel";
+            const supplierImmo = getTierName(suppliers);
+            impact(immoName, TYPES.ACTIF, SUBS.IMMO, '215', immoPrice, true);
+            impact("Dettes Fournisseurs", TYPES.PASSIF, SUBS.DETTES, '401', immoPrice, false); // A crédit
+            addEntry(nextDate(), `Achat de ${immoName.toLowerCase()} auprès de ${supplierImmo} pour ${immoPrice}€ à crédit.`);
+
+            // 4. Achat Stock
+            const stockPrice = Math.floor(Math.random() * 3000) + 500;
+            impact("Achat Marchandises", TYPES.CHARGE, SUBS.EXPLOIT, '607', stockPrice, true);
+            impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', stockPrice, false); // Comptant
+            addEntry(nextDate(), `Achat de stock de marchandises (paiement comptant) : ${stockPrice}€.`);
+
+            // 5. Vente
+            const salePrice = Math.floor(stockPrice * 1.5) + 1000; // Marge
+            impact("Vente Marchandises", TYPES.PRODUIT, SUBS.EXPLOIT, '707', salePrice, false);
+            impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', salePrice, true);
+            addEntry(nextDate(), `Vente de marchandises au comptant pour un total de ${salePrice}€.`);
+
+            // 6. Paiement dette fournisseur (partiel ou total)
+            const payment = Math.floor(immoPrice / 2);
+            impact("Dettes Fournisseurs", TYPES.PASSIF, SUBS.DETTES, '401', payment, true); // Debit dette
+            impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', payment, false); // Credit banque
+            addEntry(nextDate(), `${currentCompanyName} rembourse une partie de sa dette fournisseur (${payment}€) par virement.`);
+
+            // 7. Salaire
+            const salary = 2000;
+            impact("Salaires", TYPES.CHARGE, SUBS.EXPLOIT, '641', salary, true);
+            impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', salary, false);
+            addEntry(nextDate(), `Paiement des salaires du mois : ${salary}€.`);
+
+            // 8. Calcul du résultat pour l'équilibre
+            // En Hardcore, on ne demande pas de carte "Résultat" explicite sauf si on veut complexifier.
+            // Pour simplifier l'UI Hardcore : L'utilisateur doit équilibrer Bilan et CDR séparément, 
+            // MAIS pour que le bilan soit juste, il faut que Actif = Passif + (Produits - Charges).
+            // Astuce : On va demander à l'utilisateur de placer une carte "Résultat (Calculé)" qu'il doit déduire lui-même ?
+            // NON, plus simple : on génère automatiquement la carte "Résultat de l'exercice" dans la liste, mais VIDÉE.
+            
+            let totalCharges = 0;
+            let totalProduits = 0;
+            Object.values(ledger).forEach(acc => {
+                if(acc.type === TYPES.CHARGE) totalCharges += acc.balance;
+                if(acc.type === TYPES.PRODUIT) totalProduits += acc.balance;
+            });
+            const result = totalProduits - totalCharges;
+            
+            ledger['120'] = { label: "Résultat (à calculer !)", type: TYPES.PASSIF, sub: SUBS.CAPITAUX, code: '120', balance: result };
+
+            // Conversion Ledger -> GameItems
+            Object.values(ledger).forEach((acc, i) => {
+                if (Math.abs(acc.balance) > 0) { // On ne garde que les comptes non nuls
+                    gameItems.push({
+                        id: `op-${i}`,
+                        label: acc.label,
+                        type: acc.type,
+                        sub: acc.sub,
+                        code: acc.code,
+                        amount: acc.balance, // C'est la valeur attendue
+                        isHardcore: true // Flag pour l'affichage input
+                    });
+                }
+            });
+
+            renderCards();
+            updateCalculations(); // Init à 0
+        }
+
+        function renderCards() {
+            const sourceZone = document.getElementById('source-zone');
+            // Shuffle
+            const shuffled = gameItems.sort(() => 0.5 - Math.random());
+            shuffled.forEach(item => {
+                sourceZone.appendChild(createCard(item));
+            });
+        }
+
+        function createCard(item) {
+            const div = document.createElement('div');
+            div.id = item.id;
+            div.className = "sketchy-card p-2 cursor-grab animate-pop mb-2 text-sm"; 
+            div.draggable = true;
+            // Stockage des vérités
+            div.dataset.type = item.type;
+            div.dataset.sub = item.sub;
+            div.dataset.trueAmount = item.amount; // Montant correct
+            div.dataset.currentAmount = currentDifficulty === 'HARDCORE' ? 0 : item.amount; // Montant affiché/saisi
+
+            // Contenu
+            let displayAmount;
+            let codeDisplay = "";
+
+            if (currentDifficulty === 'HARDCORE') {
+                // Input mode
+                displayAmount = `<input type="number" class="hardcore-input" placeholder="?" onmousedown="event.stopPropagation()" oninput="updateCardAmount(this)"> €`;
+                codeDisplay = `<span class="font-mono-code text-[0.65rem] bg-gray-200 px-1 rounded text-gray-800">${item.code}</span>`;
             } else {
-                // Normal / Hardcore: On cache le code
-                codeDisplay = ``;
+                // Static mode
+                displayAmount = `${item.amount.toLocaleString('fr-FR')} €`;
+                if (currentDifficulty === 'EASY') {
+                    codeDisplay = `<span class="font-mono-code text-[0.65rem] bg-gray-200 px-1 rounded text-gray-800">${item.code}</span>`;
+                } else {
+                    codeDisplay = ``;
+                }
             }
 
             div.innerHTML = `
                 <div class="flex justify-between items-start pointer-events-none">
-                    <span class="font-bold leading-tight pr-2">${op.label}</span>
+                    <span class="font-bold leading-tight pr-2">${item.label}</span>
                     ${codeDisplay}
                 </div>
-                <div class="mt-1 text-right font-mono-code font-bold text-gray-600 pointer-events-none">
+                <div class="mt-1 text-right font-mono-code font-bold text-gray-600">
                     ${displayAmount}
                 </div>
             `;
 
             div.addEventListener('dragstart', (e) => {
+                if(e.target.tagName === 'INPUT') { e.preventDefault(); return; }
                 e.target.classList.remove('valid-success', 'valid-error');
                 e.dataTransfer.setData("text", e.target.id);
                 setTimeout(() => e.target.classList.add('dragging'), 0);
@@ -473,6 +642,14 @@
                 updateCalculations();
             });
             return div;
+        }
+
+        // Met à jour la valeur "virtuelle" de la carte quand on tape dans l'input
+        function updateCardAmount(input) {
+            const card = input.closest('.sketchy-card');
+            const val = parseInt(input.value) || 0;
+            card.dataset.currentAmount = val;
+            updateCalculations(); // Recalcul temps réel des totaux zones
         }
 
         function allowDrop(ev) { ev.preventDefault(); }
@@ -492,7 +669,7 @@
             if(target.classList.contains('drop-zone')) {
                 container = target.querySelector('div[id^="zone-"]');
             } else if (target.id === 'source-zone') {
-                // keep container
+                // keep
             } else { return; }
 
             if(container) {
@@ -512,7 +689,8 @@
                 if(!zone) return 0;
                 let total = 0;
                 for(let child of zone.children) {
-                    total += parseInt(child.dataset.amount || 0);
+                    // On utilise currentAmount (qui vaut amount en Easy/Normal, et input.value en Hardcore)
+                    total += parseInt(child.dataset.currentAmount || 0);
                 }
                 return total;
             };
@@ -535,6 +713,7 @@
                 document.getElementById(displayId).innerText = s.toLocaleString('fr-FR') + ' €';
             }
 
+            // Calcul SIG
             const c_exploit = sumZone('zone-charge-exploit');
             const p_exploit = sumZone('zone-produit-exploit');
             const res_exploit = p_exploit - c_exploit;
@@ -551,10 +730,8 @@
             document.getElementById('sig-res-exploit').innerText = res_exploit.toLocaleString('fr-FR') + ' €';
             document.getElementById('sig-res-net').innerText = res_net.toLocaleString('fr-FR') + ' €';
             
-            document.getElementById('grand-total-actif').innerText = total_actif.toLocaleString('fr-FR') + ' €';
-            document.getElementById('grand-total-passif').innerText = total_passif.toLocaleString('fr-FR') + ' €';
-
             const bilanCheck = document.getElementById('bilan-check');
+            // On vérifie l'équilibre strictement sur les valeurs saisies
             if(total_actif > 0 && Math.abs(total_actif - total_passif) < 2) {
                 bilanCheck.innerText = "OUI";
                 bilanCheck.className = "font-bold text-lg text-[#ccff00] animate-pulse";
@@ -578,11 +755,26 @@
                     totalCards++;
                     const itemType = item.dataset.type;
                     const itemSub = item.dataset.sub;
-                    let isCorrect = (expectedType === itemType && expectedSub === itemSub);
                     
+                    // Verif position
+                    let isPosCorrect = (expectedType === itemType && expectedSub === itemSub);
+                    
+                    // Verif montant (HARDCORE)
+                    let isAmountCorrect = true;
+                    if (currentDifficulty === 'HARDCORE') {
+                        const entered = parseInt(item.dataset.currentAmount);
+                        const truth = parseInt(item.dataset.trueAmount);
+                        // On tolère 0 de marge d'erreur en hardcore !
+                        if (entered !== truth) isAmountCorrect = false;
+                    }
+
                     item.classList.remove('valid-success', 'valid-error');
-                    if (isCorrect) item.classList.add('valid-success');
-                    else { item.classList.add('valid-error'); errors++; }
+                    if (isPosCorrect && isAmountCorrect) {
+                        item.classList.add('valid-success');
+                    } else {
+                        item.classList.add('valid-error');
+                        errors++;
+                    }
                 }
             });
 
@@ -590,18 +782,21 @@
             totalCards += leftOvers;
 
             const isBalanced = document.getElementById('bilan-check').innerText === "OUI";
-            
             const btn = document.getElementById('validate-btn');
             
             if (errors === 0 && leftOvers === 0 && isBalanced) {
                 btn.innerText = "Parfait !";
                 btn.classList.replace('bg-[#ccff00]', 'bg-white');
+                document.getElementById('victory-msg').innerText = currentDifficulty === 'HARDCORE' ? "Incroyable ! Tu es un vrai Expert-Comptable." : "Bien joué Camarade.";
                 document.getElementById('victory-modal').classList.remove('hidden');
             } else {
-                let msg = errors > 0 ? `${errors} erreurs. ` : "";
-                if(leftOvers > 0) msg += "Carte manquante. ";
-                if(!isBalanced) msg += "Bilan non équilibré.";
-                btn.innerText = "Non Valide";
+                let msg = "";
+                if(errors > 0) msg = "Erreurs détectées (Position ou Montant).";
+                if(leftOvers > 0) msg = "Place toutes les cartes.";
+                if(!isBalanced) msg = "Le Bilan n'est pas équilibré.";
+                
+                btn.innerText = "Faux !";
+                setTimeout(() => btn.innerText = "Vérifier", 2000);
             }
         }
 
