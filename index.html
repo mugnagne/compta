@@ -32,18 +32,18 @@
             border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
             box-shadow: 3px 3px 0px 0px rgba(0,0,0,0.8);
             transition: all 0.2s ease;
-            /* FIX DU TEXTE INVISIBLE : On force la couleur noire ici */
-            color: var(--dark); 
+            color: var(--dark);
+            position: relative;
         }
         .sketchy-card:hover {
             transform: translateY(-2px) rotate(1deg);
             box-shadow: 5px 5px 0px 0px var(--neon-yellow);
-            z-index: 10;
+            z-index: 50;
         }
 
         /* Zones de dépôt */
         .drop-zone {
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, border-color 0.3s;
             border: 2px dashed #9ca3af;
             background-color: rgba(255, 255, 255, 0.5);
         }
@@ -64,8 +64,14 @@
         }
 
         /* Feedback validation */
-        .valid-success { background-color: #d9f99d !important; border-color: #365314; }
-        .valid-error { background-color: #fca5a5 !important; border-color: #7f1d1d; }
+        .valid-success { 
+            background-color: #d9f99d !important; 
+            border-color: #365314; 
+        }
+        .valid-error { 
+            background-color: #fca5a5 !important; 
+            border-color: #7f1d1d; 
+        }
 
         .dragging { opacity: 0.4; transform: scale(0.9); }
         
@@ -85,7 +91,7 @@
 </head>
 <body class="selection:bg-[#ccff00] min-h-screen">
 
-    <div class="max-w-[1400px] mx-auto p-4 md:p-6">
+    <div class="max-w-[1400px] mx-auto p-4 md:p-6 pb-32">
         
         <header class="mb-8 flex flex-col md:flex-row justify-between items-end border-b-4 border-gray-900 pb-4 border-double">
             <div>
@@ -102,14 +108,14 @@
             </div>
             
             <button onclick="initGame()" class="mt-4 md:mt-0 px-6 py-2 bg-white border-2 border-gray-900 shadow-[4px_4px_0px_0px_#ccff00] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all font-bold font-mono-code uppercase text-sm cursor-pointer flex items-center gap-2">
-                <span>🎲</span> Autre Entreprise
+                <span>⚡</span> Nouvelle Entreprise
             </button>
         </header>
 
         <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
             
             <div class="xl:col-span-2">
-                <div class="bg-gray-800 p-4 border-2 border-gray-900 min-h-[500px] rounded-lg relative text-white shadow-xl">
+                <div class="bg-gray-800 p-4 border-2 border-gray-900 min-h-[500px] rounded-lg relative shadow-xl">
                     <h3 class="text-neon-yellow font-bold mb-4 font-mono-code flex items-center gap-2 uppercase text-sm tracking-widest">
                         flux_entrant
                     </h3>
@@ -177,11 +183,11 @@
         </div>
 
         <div class="fixed bottom-0 left-0 w-full bg-white border-t-2 border-gray-900 p-4 shadow-[0_-5px_15px_rgba(0,0,0,0.1)] flex justify-between items-center z-50">
-            <div class="text-sm font-mono-code text-gray-500 hidden md:block">
-                Drag & Drop. Attention aux contrôles fiscaux !
+            <div class="text-sm font-mono-code text-gray-500 hidden md:block pl-4">
+                Glisse les opérations. Clique sur vérifier pour corriger.
             </div>
             
-            <div class="flex items-center gap-6 mx-auto md:mx-0">
+            <div class="flex items-center gap-6 mx-auto md:mx-0 pr-4">
                  <div id="result-area" class="hidden flex items-center gap-4">
                     <span id="score-display" class="text-3xl font-black font-mono-code"></span>
                     <span id="feedback-text" class="font-serif-header italic text-sm md:text-base max-w-[300px] leading-tight"></span>
@@ -192,23 +198,23 @@
                 </button>
             </div>
         </div>
-        <div class="h-24"></div>
 
     </div>
 
     <script>
-        // --- NOMS D'ENTREPRISES GOOFY / HUMOUR NOIR ---
+        // --- NOMS D'ENTREPRISES (CLEAN & DARK HUMOR) ---
         const prefixes = [
             "Pompes Funèbres", "Kebab", "Auto-École", "Clinique Esthétique", "Start-up", 
             "Boucherie", "Agence Matrimoniale", "Pizzeria", "Crèche", "Pharmacie", 
-            "Salle de Sport", "EHPAD", "Night Club", "Cabinet d'Avocats", "Camping"
+            "Salle de Sport", "EHPAD", "Night Club", "Cabinet d'Avocats", "Camping",
+            "Agence de Détectives", "Salle d'Arcade"
         ];
         
         const suffixes = [
             "'À Bientôt'", "'Viande Mystère'", "'Le Mur'", "'Low Cost'", "'Ponzi Scheme'", 
-            "'Végane (ou pas)'", "'Désespoir'", "'La Diarrhée'", "'Le Petit Spartiate'", "'Placebo'",
-            "'No Pain No Gain'", "'Dernier Souffle'", "'L'Amnésie'", "'Divorce Express'", "'Les Moustiques'",
-            "'Blanchiment Facile'", "'Le Tétanos'", "'Chat Perdu'", "'Fisc & Furious'"
+            "'Végane (ou pas)'", "'Désespoir'", "'L'Impasse'", "'Le Petit Spartiate'", "'Placebo'",
+            "'No Pain No Gain'", "'Dernier Souffle'", "'L'Amnésie'", "'Divorce Express'", 
+            "'Blanchiment Facile'", "'Chat Perdu'", "'Fisc & Furious'", "'Dépôt de Bilan'"
         ];
 
         function generateCompanyName() {
@@ -217,39 +223,49 @@
             return `${prefix} ${suffix}`;
         }
 
-        // --- DATA & LOGIQUE ---
+        // --- DATA & LOGIQUE (SERIEUX PCG) ---
         const TYPES = { CHARGE: 'CHARGE', PRODUIT: 'PRODUIT', BILAN: 'BILAN' };
         const SUBS = { EXPLOIT: 'EXPLOIT', FINANCE: 'FINANCE', EXCEP: 'EXCEP', BILAN: 'BILAN' };
 
         const DATABASE = [
-            { label: "Achat matière première", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '601' },
-            { label: "Loyer local insalubre", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '613' },
-            { label: "Assurance 'Au Tiers'", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '616' },
-            { label: "Salaires non déclarés", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '641' }, // Humour comptable
-            { label: "Campagne Pub TikTok", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '623' },
-            
-            { label: "Intérêts découverts", type: TYPES.CHARGE, sub: SUBS.FINANCE, code: '661' },
-            { label: "Pertes Bitcoin", type: TYPES.CHARGE, sub: SUBS.FINANCE, code: '666' },
-            
-            { label: "Redressement Fiscal", type: TYPES.CHARGE, sub: SUBS.EXCEP, code: '671' },
-            { label: "Amende Stationnement", type: TYPES.CHARGE, sub: SUBS.EXCEP, code: '671' },
+            // EXPLOITATION (Charges)
+            { label: "Achat matières premières", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '601' },
+            { label: "Location immobilière", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '613' },
+            { label: "Primes d'assurances", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '616' },
+            { label: "Rémunération personnel", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '641' },
+            { label: "Publicité & publipostage", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '623' },
+            { label: "Entretien et réparations", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '615' },
 
-            { label: "Vente de camelote", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '707' },
-            { label: "Prestations douteuses", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '706' },
+            // FINANCIER (Charges)
+            { label: "Charges d'intérêts", type: TYPES.CHARGE, sub: SUBS.FINANCE, code: '661' },
+            { label: "Pertes de change", type: TYPES.CHARGE, sub: SUBS.FINANCE, code: '666' },
+
+            // EXCEPTIONNEL (Charges)
+            { label: "Pénalités et amendes", type: TYPES.CHARGE, sub: SUBS.EXCEP, code: '671' },
+            { label: "VNC élts d'actif cédés", type: TYPES.CHARGE, sub: SUBS.EXCEP, code: '675' },
+
+            // EXPLOITATION (Produits)
+            { label: "Vente de marchandises", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '707' },
+            { label: "Prestations de services", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '706' },
+            { label: "Subvention exploitation", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '740' },
             
-            { label: "Gains Bourse (Chance)", type: TYPES.PRODUIT, sub: SUBS.FINANCE, code: '766' },
-            { label: "Dividendes reçus", type: TYPES.PRODUIT, sub: SUBS.FINANCE, code: '761' },
+            // FINANCIER (Produits)
+            { label: "Gains de change", type: TYPES.PRODUIT, sub: SUBS.FINANCE, code: '766' },
+            { label: "Produits participations", type: TYPES.PRODUIT, sub: SUBS.FINANCE, code: '761' },
             
-            { label: "Cession vieux PC", type: TYPES.PRODUIT, sub: SUBS.EXCEP, code: '775' },
+            // EXCEPTIONNEL (Produits)
+            { label: "Produits cession d'actif", type: TYPES.PRODUIT, sub: SUBS.EXCEP, code: '775' },
+            { label: "Dégrèvement d'impôts", type: TYPES.PRODUIT, sub: SUBS.EXCEP, code: '777' },
             
-            { label: "Achat Ferrari (Patron)", type: TYPES.BILAN, sub: SUBS.BILAN, code: '2182' },
-            { label: "Capital Social (1€)", type: TYPES.BILAN, sub: SUBS.BILAN, code: '101' },
-            { label: "Emprunt Usurier", type: TYPES.BILAN, sub: SUBS.BILAN, code: '164' },
-            { label: "Stock invendu", type: TYPES.BILAN, sub: SUBS.BILAN, code: '37' },
-            { label: "Dette TVA", type: TYPES.BILAN, sub: SUBS.BILAN, code: '4455' },
+            // BILAN (Mélange Actif/Passif)
+            { label: "Matériel de transport", type: TYPES.BILAN, sub: SUBS.BILAN, code: '2182' },
+            { label: "Capital Social", type: TYPES.BILAN, sub: SUBS.BILAN, code: '101' },
+            { label: "Emprunts bancaires", type: TYPES.BILAN, sub: SUBS.BILAN, code: '164' },
+            { label: "Stocks de marchandises", type: TYPES.BILAN, sub: SUBS.BILAN, code: '37' },
+            { label: "TVA à décaisser", type: TYPES.BILAN, sub: SUBS.BILAN, code: '4455' },
+            { label: "Créances clients", type: TYPES.BILAN, sub: SUBS.BILAN, code: '411' },
+            { label: "Dettes fournisseurs", type: TYPES.BILAN, sub: SUBS.BILAN, code: '401' },
         ];
-
-        let gameLocked = false;
 
         function initGame() {
             document.getElementById('company-name').innerText = generateCompanyName();
@@ -259,10 +275,11 @@
             zones.forEach(id => document.getElementById(id).innerHTML = '');
             
             document.getElementById('result-area').classList.add('hidden');
-            document.getElementById('validate-btn').classList.remove('hidden');
-            gameLocked = false;
+            document.getElementById('validate-btn').innerText = "Vérifier";
+            document.getElementById('validate-btn').classList.remove('bg-[#ccff00]', 'text-gray-900');
+            document.getElementById('validate-btn').classList.add('bg-gray-900', 'text-[#ccff00]');
 
-            const shuffled = [...DATABASE].sort(() => 0.5 - Math.random()).slice(0, 8);
+            const shuffled = [...DATABASE].sort(() => 0.5 - Math.random()).slice(0, 9);
 
             shuffled.forEach((op, index) => {
                 const amount = Math.floor(Math.random() * 5000) + 50;
@@ -275,8 +292,7 @@
         function createCard(id, op, amount) {
             const div = document.createElement('div');
             div.id = id;
-            // FIX ICI : Ajout de text-gray-900 pour forcer la couleur foncée
-            div.className = "sketchy-card p-3 cursor-grab animate-pop text-gray-900"; 
+            div.className = "sketchy-card p-3 cursor-grab animate-pop"; 
             div.draggable = true;
             div.dataset.type = op.type;
             div.dataset.sub = op.sub;
@@ -292,7 +308,8 @@
             `;
 
             div.addEventListener('dragstart', (e) => {
-                if(gameLocked) { e.preventDefault(); return; }
+                // Au début du drag, on enlève les couleurs de validation pour "nettoyer" la carte
+                e.target.classList.remove('valid-success', 'valid-error');
                 e.dataTransfer.setData("text", e.target.id);
                 setTimeout(() => e.target.classList.add('dragging'), 0);
             });
@@ -335,35 +352,36 @@
 
             if (targetId) {
                 document.getElementById(targetId).appendChild(draggedElement);
+                // Petite rotation pour le style
                 draggedElement.style.transform = `rotate(${Math.random() * 2 - 1}deg)`;
             }
         }
 
         function validate() {
-            gameLocked = true;
             let total = 0;
             let errors = 0;
 
-            const zones = document.querySelectorAll('[data-type]:not([data-type="TODO"])');
+            // On sélectionne toutes les zones de jeu (sauf la source)
+            const dropZones = document.querySelectorAll('.drop-zone, [data-type="BILAN"]');
 
-            zones.forEach(zone => {
-                const zoneType = zone.dataset.type;
-                const zoneSub = zone.dataset.subtype;
+            dropZones.forEach(zone => {
+                // Trouver le container qui contient les cartes à l'intérieur de la zone
+                // Si la zone est un div simple (comme BILAN), c'est l'ID interne
+                // Si la zone est une drop-zone complex, on cherche le div enfant direct qui stocke les items
+                let itemContainer = zone.querySelector('div[id^="zone-"]');
+                if (!itemContainer && zone.id && zone.id.startsWith('zone-bilan')) {
+                    itemContainer = document.getElementById('zone-bilan'); // Cas spécial pour le bilan qui a l'ID directement sur le conteneur interne
+                }
+                if (!itemContainer && zone.dataset.type === 'BILAN') {
+                     itemContainer = document.getElementById('zone-bilan');
+                }
                 
-                let containerId;
-                if (zoneType === 'BILAN') containerId = 'zone-bilan';
-                else if (zoneType === 'CHARGE') {
-                    if (zoneSub === 'EXPLOIT') containerId = 'zone-charge-exploit';
-                    if (zoneSub === 'FINANCE') containerId = 'zone-charge-finance';
-                    if (zoneSub === 'EXCEP') containerId = 'zone-charge-excep';
-                }
-                else if (zoneType === 'PRODUIT') {
-                    if (zoneSub === 'EXPLOIT') containerId = 'zone-produit-exploit';
-                    if (zoneSub === 'FINANCE') containerId = 'zone-produit-finance';
-                    if (zoneSub === 'EXCEP') containerId = 'zone-produit-excep';
-                }
+                if (!itemContainer) return; // Sécurité
 
-                const items = document.getElementById(containerId).children;
+                const expectedType = zone.dataset.type;
+                const expectedSub = zone.dataset.subtype;
+                
+                const items = itemContainer.children;
 
                 for (let item of items) {
                     total++;
@@ -371,40 +389,62 @@
                     const itemSub = item.dataset.sub;
                     let isCorrect = false;
 
-                    if (zoneType === 'BILAN' && itemType === 'BILAN') isCorrect = true;
-                    else if (zoneType === itemType && zoneSub === itemSub) isCorrect = true;
+                    // Logique de validation
+                    if (expectedType === 'BILAN') {
+                        // Pour le bilan, on vérifie juste que l'item est de type BILAN
+                        if (itemType === 'BILAN') isCorrect = true;
+                    } else {
+                        // Pour le compte de résultat, Type ET Sous-Type doivent matcher
+                        if (expectedType === itemType && expectedSub === itemSub) {
+                            isCorrect = true;
+                        }
+                    }
 
-                    if (isCorrect) item.classList.add('valid-success');
-                    else { item.classList.add('valid-error'); errors++; }
+                    // Application du style
+                    item.classList.remove('valid-success', 'valid-error');
+                    if (isCorrect) {
+                        item.classList.add('valid-success');
+                    } else {
+                        item.classList.add('valid-error');
+                        errors++;
+                    }
                 }
             });
 
+            // Pénalité pour les items restés dans la zone de départ
             const leftOvers = document.getElementById('source-zone').children.length;
             total += leftOvers;
-            errors += leftOvers;
+            // On compte les leftovers comme incomplets, donc impactent le score, mais pas comme erreur rouge.
 
-            const score = total === 0 ? 0 : Math.round(((total - errors) / total) * 100);
+            const score = total === 0 ? 0 : Math.round(((total - (errors + leftOvers)) / total) * 100);
 
+            // Affichage UI
             const resultArea = document.getElementById('result-area');
             const feedback = document.getElementById('feedback-text');
             const scoreDisplay = document.getElementById('score-display');
+            const btn = document.getElementById('validate-btn');
             
-            document.getElementById('validate-btn').classList.add('hidden');
             resultArea.classList.remove('hidden');
             scoreDisplay.innerText = `${score}%`;
             
             if (score === 100) {
-                scoreDisplay.classList.add('text-[#ccff00]', 'bg-gray-900', 'px-2', 'transform', '-rotate-3');
-                feedback.innerText = "Wow. Tu as réussi sans frauder ? Incroyable.";
+                scoreDisplay.className = "text-3xl font-black font-mono-code text-[#ccff00] bg-gray-900 px-2 transform -rotate-3 inline-block";
+                feedback.innerText = "Bilan équilibré. Parfait.";
+                btn.innerText = "Tout Bon !";
             } else if (score >= 70) {
-                scoreDisplay.classList.add('text-gray-900');
-                feedback.innerText = "C'est passable. Le contrôleur fiscal a un doute, mais ça passe.";
+                scoreDisplay.className = "text-3xl font-black font-mono-code text-gray-900";
+                feedback.innerText = "Pas mal. Corrige les rouges et réessaie.";
+                btn.innerText = "Re-vérifier";
             } else {
-                scoreDisplay.classList.add('text-red-600');
-                feedback.innerText = "Prison ferme. Direct.";
+                scoreDisplay.className = "text-3xl font-black font-mono-code text-red-600";
+                feedback.innerText = "Catastrophique. Déplace les cartes rouges.";
+                btn.innerText = "Re-vérifier";
             }
         }
+
+        // Démarrage
         initGame();
+
     </script>
 </body>
 </html>
