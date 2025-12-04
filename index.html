@@ -298,4 +298,173 @@
             closeModal();
 
             const zones = ['source-zone', 'zone-charge-exploit', 'zone-charge-finance', 'zone-charge-excep',
-                'zone-produit-exploit', 'zone-produit-finance', 'zone-produit-excep',
+                'zone-produit-exploit', 'zone-produit-finance', 'zone-produit-excep', 'zone-bilan'];
+            zones.forEach(id => document.getElementById(id).innerHTML = '');
+            
+            document.getElementById('result-area').classList.add('hidden');
+            document.getElementById('validate-btn').innerText = "Vérifier";
+            document.getElementById('validate-btn').classList.remove('bg-[#ccff00]', 'text-gray-900');
+            document.getElementById('validate-btn').classList.add('bg-gray-900', 'text-[#ccff00]');
+
+            const shuffled = [...DATABASE].sort(() => 0.5 - Math.random()).slice(0, 9);
+
+            shuffled.forEach((op, index) => {
+                const amount = Math.floor(Math.random() * 5000) + 50;
+                const id = `op-${index}`;
+                const card = createCard(id, op, amount);
+                document.getElementById('source-zone').appendChild(card);
+            });
+        }
+
+        function createCard(id, op, amount) {
+            const div = document.createElement('div');
+            div.id = id;
+            div.className = "sketchy-card p-3 cursor-grab animate-pop"; 
+            div.draggable = true;
+            div.dataset.type = op.type;
+            div.dataset.sub = op.sub;
+
+            div.innerHTML = `
+                <div class="flex justify-between items-start pointer-events-none">
+                    <span class="font-bold text-sm leading-tight pr-2">${op.label}</span>
+                    <span class="font-mono-code text-xs bg-gray-200 px-1 rounded text-gray-800">${op.code}</span>
+                </div>
+                <div class="mt-2 text-right font-mono-code text-xs text-gray-500 pointer-events-none">
+                    ${amount} €
+                </div>
+            `;
+
+            div.addEventListener('dragstart', (e) => {
+                e.target.classList.remove('valid-success', 'valid-error');
+                e.dataTransfer.setData("text", e.target.id);
+                setTimeout(() => e.target.classList.add('dragging'), 0);
+            });
+            div.addEventListener('dragend', (e) => {
+                e.target.classList.remove('dragging');
+            });
+            return div;
+        }
+
+        function allowDrop(ev) { ev.preventDefault(); }
+
+        function drop(ev) {
+            ev.preventDefault();
+            const data = ev.dataTransfer.getData("text");
+            const draggedElement = document.getElementById(data);
+            if(!draggedElement) return;
+
+            let target = ev.target;
+            while (target && !target.hasAttribute('ondrop')) {
+                target = target.parentNode;
+            }
+            if (!target) return;
+
+            let targetId;
+            const type = target.dataset.type;
+            const sub = target.dataset.subtype;
+
+            if (type === 'TODO') targetId = 'source-zone';
+            else if (type === 'BILAN') targetId = 'zone-bilan';
+            else if (type === 'CHARGE') {
+                if (sub === 'EXPLOIT') targetId = 'zone-charge-exploit';
+                if (sub === 'FINANCE') targetId = 'zone-charge-finance';
+                if (sub === 'EXCEP') targetId = 'zone-charge-excep';
+            }
+            else if (type === 'PRODUIT') {
+                if (sub === 'EXPLOIT') targetId = 'zone-produit-exploit';
+                if (sub === 'FINANCE') targetId = 'zone-produit-finance';
+                if (sub === 'EXCEP') targetId = 'zone-produit-excep';
+            }
+
+            if (targetId) {
+                document.getElementById(targetId).appendChild(draggedElement);
+                draggedElement.style.transform = `rotate(${Math.random() * 2 - 1}deg)`;
+            }
+        }
+
+        function validate() {
+            let total = 0;
+            let errors = 0;
+
+            const dropZones = document.querySelectorAll('.drop-zone, [data-type="BILAN"]');
+
+            dropZones.forEach(zone => {
+                let itemContainer = zone.querySelector('div[id^="zone-"]');
+                if (!itemContainer && zone.id && zone.id.startsWith('zone-bilan')) {
+                    itemContainer = document.getElementById('zone-bilan');
+                }
+                if (!itemContainer && zone.dataset.type === 'BILAN') {
+                     itemContainer = document.getElementById('zone-bilan');
+                }
+                
+                if (!itemContainer) return;
+
+                const expectedType = zone.dataset.type;
+                const expectedSub = zone.dataset.subtype;
+                
+                const items = itemContainer.children;
+
+                for (let item of items) {
+                    total++;
+                    const itemType = item.dataset.type;
+                    const itemSub = item.dataset.sub;
+                    let isCorrect = false;
+
+                    if (expectedType === 'BILAN') {
+                        if (itemType === 'BILAN') isCorrect = true;
+                    } else {
+                        if (expectedType === itemType && expectedSub === itemSub) {
+                            isCorrect = true;
+                        }
+                    }
+
+                    item.classList.remove('valid-success', 'valid-error');
+                    if (isCorrect) {
+                        item.classList.add('valid-success');
+                    } else {
+                        item.classList.add('valid-error');
+                        errors++;
+                    }
+                }
+            });
+
+            const leftOvers = document.getElementById('source-zone').children.length;
+            total += leftOvers;
+            
+            const score = total === 0 ? 0 : Math.round(((total - (errors + leftOvers)) / total) * 100);
+
+            const resultArea = document.getElementById('result-area');
+            const feedback = document.getElementById('feedback-text');
+            const scoreDisplay = document.getElementById('score-display');
+            const btn = document.getElementById('validate-btn');
+            
+            resultArea.classList.remove('hidden');
+            scoreDisplay.innerText = `${score}%`;
+            
+            if (score === 100) {
+                // VICTOIRE ! AFFICHER LE POPUP
+                scoreDisplay.className = "text-3xl font-black font-mono-code text-[#ccff00] bg-gray-900 px-2 transform -rotate-3 inline-block";
+                feedback.innerText = "Bilan équilibré. Parfait.";
+                btn.innerText = "Tout Bon !";
+                document.getElementById('marx-modal').classList.remove('hidden');
+            } else if (score >= 70) {
+                scoreDisplay.className = "text-3xl font-black font-mono-code text-gray-900";
+                feedback.innerText = "Pas mal. Corrige les rouges et réessaie.";
+                btn.innerText = "Re-vérifier";
+            } else {
+                scoreDisplay.className = "text-3xl font-black font-mono-code text-red-600";
+                feedback.innerText = "Catastrophique. Déplace les cartes rouges.";
+                btn.innerText = "Re-vérifier";
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('marx-modal').classList.add('hidden');
+        }
+
+        // Démarrage
+        initGame();
+
+    </script>
+</body>
+</html>
