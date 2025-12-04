@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compta Neuille - ANTIAUDENCIA</title>
+    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsO6X9jLvTvDYfbjZA7RmXbuUgTdzf3g4X5A&s">
+    <title>Compta Neuille - ULTIMATE V8</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,700&family=Roboto+Mono:wght@400;700&family=Inter:wght@400;800&display=swap" rel="stylesheet">
 
@@ -13,55 +14,74 @@
             --dark: #1a1a1a;
             --paper: #ffffff;
             --marx-red: #dc2626;
+            --soft-grid: #e5e7eb;
         }
         
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f3f4f6;
             color: var(--dark);
-            background-image: radial-gradient(#d1d5db 1px, transparent 1px);
+            background-image: linear-gradient(var(--soft-grid) 1px, transparent 1px),
+            linear-gradient(90deg, var(--soft-grid) 1px, transparent 1px);
             background-size: 20px 20px;
         }
 
         .font-serif-header { font-family: 'Playfair Display', serif; }
         .font-mono-code { font-family: 'Roboto Mono', monospace; }
 
-        /* Styles "Sketchy" */
+        /* --- SKETCHY UI --- */
         .sketchy-card {
             background: var(--paper);
             border: 2px solid var(--dark);
             border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
-            box-shadow: 3px 3px 0px 0px rgba(0,0,0,0.8);
+            box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.8);
             transition: all 0.2s ease;
             color: var(--dark);
             position: relative;
         }
         .sketchy-card:hover {
             transform: translateY(-2px) rotate(1deg);
-            box-shadow: 5px 5px 0px 0px var(--neon-yellow);
+            box-shadow: 4px 4px 0px 0px var(--neon-yellow);
             z-index: 50;
         }
 
-        /* Zones de dépôt */
         .drop-zone {
             transition: background-color 0.3s, border-color 0.3s;
             border: 2px dashed #9ca3af;
-            background-color: rgba(255, 255, 255, 0.5);
+            background-color: rgba(255, 255, 255, 0.4);
+            position: relative;
+            display: flex;
+            flex-direction: column;
         }
         .drop-zone:hover {
             border-color: var(--dark);
             background-color: rgba(255, 255, 255, 0.9);
         }
 
-        .zone-group-title {
+        /* Titres des blocs */
+        .block-header {
             background: var(--dark);
-            color: var(--neon-yellow);
-            display: inline-block;
-            padding: 4px 12px;
+            color: #fff;
+            padding: 4px 8px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Totaux dans les zones */
+        .zone-total {
+            margin-top: auto;
+            border-top: 2px dotted var(--dark);
+            padding-top: 4px;
+            text-align: right;
+            font-family: 'Roboto Mono', monospace;
             font-weight: bold;
-            transform: rotate(-1deg);
-            margin-bottom: 8px;
-            box-shadow: 3px 3px 0px 0px rgba(0,0,0,0.2);
+            font-size: 0.8rem;
+            color: var(--dark);
         }
 
         /* Feedback validation */
@@ -70,11 +90,12 @@
 
         .dragging { opacity: 0.4; transform: scale(0.9); }
         
-        .ledger-column {
+        .ledger-container {
             background: #fff;
             border: 3px solid var(--dark);
-            padding: 1rem;
-            border-radius: 2px 20px 3px 20px / 20px 3px 20px 3px; 
+            border-radius: 4px;
+            box-shadow: 5px 5px 0px 0px rgba(0,0,0,0.1);
+            overflow: hidden;
         }
 
         @keyframes pop {
@@ -83,248 +104,300 @@
         }
         .animate-pop { animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 
-        /* STYLES POUR L'IMAGE PIXEL ART */
-        .pixelated-img {
-            image-rendering: pixelated; /* Force le rendu net des pixels */
+        /* DASHBOARD SIG */
+        .sig-panel {
+            background: var(--dark);
+            color: #fff;
+            border-top: 4px solid var(--neon-yellow);
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.2);
         }
+        .sig-value { font-family: 'Roboto Mono', monospace; color: var(--neon-yellow); }
+        
+        .pixelated-img { image-rendering: pixelated; }
     </style>
 </head>
-<body class="selection:bg-[#ccff00] min-h-screen relative">
+<body class="selection:bg-[#ccff00] min-h-screen relative pb-64">
 
     <div id="victory-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden flex items-center justify-center z-[100] backdrop-blur-sm">
         <div class="bg-white border-4 border-gray-900 p-8 relative max-w-md w-full text-center shadow-[10px_10px_0px_0px_#dc2626] animate-pop" style="border-radius: 5px 25px 5px 25px;">
-            
             <button onclick="closeModal()" class="absolute top-2 right-4 text-3xl font-bold text-gray-400 hover:text-gray-900 transition-colors cursor-pointer">&times;</button>
-            
-            <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20">
-                <div class="absolute top-10 left-10 text-2xl animate-bounce">⭐</div>
-                <div class="absolute top-20 right-20 text-2xl animate-bounce" style="animation-delay: 0.2s">🚩</div>
-                <div class="absolute bottom-10 left-1/2 text-2xl animate-bounce" style="animation-delay: 0.5s">☭</div>
-            </div>
-
             <div class="relative z-10">
                 <img src="https://i.redd.it/i-just-started-in-pixel-art-and-i-found-my-place-here-im-v0-rinjy9fqy4p81.png?width=1024&format=png&auto=webp&s=a237871800a73431f0d9b4c745e73b1b49b3c637" 
-                     alt="Pixel Art Victory" 
-                     class="w-40 h-40 mx-auto mb-6 border-4 border-gray-900 rounded-full bg-[#ccff00] pixelated-img object-cover">
-
-                <h2 class="text-4xl font-black font-mono-code uppercase text-[#dc2626] leading-tight mb-2 transform -rotate-2">
-                    Félicitations<br>Camarades !
-                </h2>
-                <p class="font-serif-header italic text-gray-600 text-lg mt-4">
-                    "L'accumulation du savoir comptable est une victoire pour le prolétariat."
-                </p>
+                     alt="Pixel Art Victory" class="w-32 h-32 mx-auto mb-4 border-4 border-gray-900 rounded-full bg-[#ccff00] pixelated-img object-cover">
+                <h2 class="text-4xl font-black font-mono-code uppercase text-[#dc2626] leading-tight mb-2 transform -rotate-2">Félicitations<br>Camarade !</h2>
+                <p class="font-serif-header italic text-gray-600 text-sm mt-4">"Les comptes sont exacts. Le capitalisme tremble."</p>
             </div>
         </div>
     </div>
 
-    <div class="max-w-[1400px] mx-auto p-4 md:p-6 pb-32">
+    <div class="max-w-[1600px] mx-auto p-4 md:p-6">
         
-        <header class="mb-8 flex flex-col md:flex-row justify-between items-end border-b-4 border-gray-900 pb-4 border-double">
+        <header class="mb-6 flex flex-col md:flex-row justify-between items-end border-b-4 border-gray-900 pb-4 border-double">
             <div>
                 <div class="flex items-center gap-3">
                     <h1 class="text-3xl md:text-4xl font-extrabold tracking-tighter uppercase italic transform -rotate-1">
                         Compta<span class="text-[#ccff00] bg-gray-900 px-2">Neuille</span>
                     </h1>
-                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">ANTIAUDENCIA</span>
+                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V8.0 AUDITOR</span>
                 </div>
-                
-                <h2 id="company-name" class="mt-4 text-2xl md:text-3xl font-serif-header font-bold text-gray-800 border-b-2 border-[#ccff00] inline-block pr-6">
-                    Chargement...
-                </h2>
+                <h2 id="company-name" class="mt-2 text-xl font-serif-header font-bold text-gray-800 border-b-2 border-[#ccff00] inline-block">Chargement...</h2>
             </div>
-            
-            <button onclick="initGame()" class="mt-4 md:mt-0 px-6 py-2 bg-white border-2 border-gray-900 shadow-[4px_4px_0px_0px_#ccff00] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all font-bold font-mono-code uppercase text-sm cursor-pointer flex items-center gap-2">
-                <span>⚡</span> Nouvelle Entreprise
+            <button onclick="initGame()" class="px-4 py-2 bg-white border-2 border-gray-900 shadow-[3px_3px_0px_0px_#ccff00] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all font-bold font-mono-code uppercase text-xs cursor-pointer">
+                ⚡ Nouvelle Entreprise
             </button>
         </header>
 
-        <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+        <div class="grid grid-cols-12 gap-6">
             
-            <div class="xl:col-span-2">
-                <div class="bg-gray-800 p-4 border-2 border-gray-900 min-h-[500px] rounded-lg relative shadow-xl">
-                    <h3 class="text-neon-yellow font-bold mb-4 font-mono-code flex items-center gap-2 uppercase text-sm tracking-widest">
-                        flux_entrant
+            <div class="col-span-12 lg:col-span-2">
+                <div class="bg-gray-800 p-3 border-2 border-gray-900 min-h-[500px] rounded-lg relative shadow-xl sticky top-4">
+                    <h3 class="text-neon-yellow font-bold mb-4 font-mono-code uppercase text-xs tracking-widest border-b border-gray-600 pb-2">
+                        Flux_Entrant
                     </h3>
-                    <div id="source-zone" class="space-y-3 min-h-[400px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="TODO">
-                        </div>
+                    <div id="source-zone" class="space-y-2 min-h-[400px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="TODO"></div>
                 </div>
             </div>
 
-            <div class="xl:col-span-10 flex flex-col gap-6">
-                
-                <div class="grid md:grid-cols-2 gap-4">
+            <div class="col-span-12 lg:col-span-5 flex flex-col gap-4">
+                <h3 class="font-black text-xl italic uppercase border-l-4 border-[#ccff00] pl-2">Compte de Résultat</h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="ledger-container">
+                        <div class="bg-gray-200 p-2 font-bold text-center border-b-2 border-gray-900">CHARGES (Cl. 6)</div>
+                        <div class="p-2 space-y-2">
+                            <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="EXPLOIT">
+                                <div class="block-header"><span>Exploitation</span><span class="text-[0.6rem] opacity-70">60-65</span></div>
+                                <div id="zone-charge-exploit" class="min-h-[60px] space-y-1 mt-2"></div>
+                                <div class="zone-total" id="total-charge-exploit">0 €</div>
+                            </div>
+                            <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="FINANCE">
+                                <div class="block-header"><span>Financières</span><span class="text-[0.6rem] opacity-70">66</span></div>
+                                <div id="zone-charge-finance" class="min-h-[40px] space-y-1 mt-2"></div>
+                                <div class="zone-total" id="total-charge-finance">0 €</div>
+                            </div>
+                            <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="EXCEP">
+                                <div class="block-header"><span>Exceptionnelles</span><span class="text-[0.6rem] opacity-70">67</span></div>
+                                <div id="zone-charge-excep" class="min-h-[40px] space-y-1 mt-2"></div>
+                                <div class="zone-total" id="total-charge-excep">0 €</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ledger-container">
+                        <div class="bg-gray-200 p-2 font-bold text-center border-b-2 border-gray-900">PRODUITS (Cl. 7)</div>
+                        <div class="p-2 space-y-2">
+                            <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="EXPLOIT">
+                                <div class="block-header"><span>Exploitation</span><span class="text-[0.6rem] opacity-70">70-75</span></div>
+                                <div id="zone-produit-exploit" class="min-h-[60px] space-y-1 mt-2"></div>
+                                <div class="zone-total" id="total-produit-exploit">0 €</div>
+                            </div>
+                            <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="FINANCE">
+                                <div class="block-header"><span>Financiers</span><span class="text-[0.6rem] opacity-70">76</span></div>
+                                <div id="zone-produit-finance" class="min-h-[40px] space-y-1 mt-2"></div>
+                                <div class="zone-total" id="total-produit-finance">0 €</div>
+                            </div>
+                            <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="EXCEP">
+                                <div class="block-header"><span>Exceptionnels</span><span class="text-[0.6rem] opacity-70">77</span></div>
+                                <div id="zone-produit-excep" class="min-h-[40px] space-y-1 mt-2"></div>
+                                <div class="zone-total" id="total-produit-excep">0 €</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-span-12 lg:col-span-5 flex flex-col gap-4">
+                <h3 class="font-black text-xl italic uppercase border-l-4 border-blue-500 pl-2">Bilan (Patrimoine)</h3>
+                <div class="grid grid-cols-2 gap-2">
                     
-                    <div class="ledger-column relative">
-                        <div class="absolute -top-4 left-4 zone-group-title transform -rotate-2">
-                            CHARGES (Cl. 6)
+                    <div class="ledger-container border-blue-900">
+                        <div class="bg-blue-100 p-2 font-bold text-center border-b-2 border-blue-900 text-blue-900">ACTIF (Emplois)</div>
+                        <div class="p-2 space-y-2">
+                            <div class="drop-zone p-2 rounded min-h-[150px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="ACTIF" data-subtype="IMMO">
+                                <div class="block-header bg-blue-900"><span>Actif Immobilisé</span><span class="text-[0.6rem] opacity-70">Cl. 2</span></div>
+                                <div id="zone-actif-immo" class="min-h-[100px] space-y-1 mt-2"></div>
+                                <div class="zone-total" id="total-actif-immo">0 €</div>
+                            </div>
+                            <div class="drop-zone p-2 rounded min-h-[150px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="ACTIF" data-subtype="CIRC">
+                                <div class="block-header bg-blue-800"><span>Actif Circulant</span><span class="text-[0.6rem] opacity-70">Cl. 3, 4, 5</span></div>
+                                <div id="zone-actif-circ" class="min-h-[100px] space-y-1 mt-2"></div>
+                                <div class="zone-total" id="total-actif-circ">0 €</div>
+                            </div>
                         </div>
-                        <div class="mt-4 space-y-4">
-                            <div class="drop-zone p-3 rounded-lg" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="EXPLOIT">
-                                <p class="text-xs font-bold text-gray-500 uppercase mb-2 font-mono-code">Exploitation (60-65)</p>
-                                <div id="zone-charge-exploit" class="min-h-[60px] space-y-2"></div>
+                        <div class="bg-blue-50 p-2 text-right font-black font-mono-code text-blue-900 border-t-2 border-blue-900">
+                            TOTAL ACTIF: <span id="grand-total-actif">0 €</span>
+                        </div>
+                    </div>
+
+                    <div class="ledger-container border-red-900">
+                        <div class="bg-red-100 p-2 font-bold text-center border-b-2 border-red-900 text-red-900">PASSIF (Ressources)</div>
+                        <div class="p-2 space-y-2">
+                            <div class="drop-zone p-2 rounded min-h-[150px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PASSIF" data-subtype="CAPITAUX">
+                                <div class="block-header bg-red-900"><span>Capitaux Propres</span><span class="text-[0.6rem] opacity-70">Cl. 1 (Haut)</span></div>
+                                <div id="zone-passif-capitaux" class="min-h-[100px] space-y-1 mt-2"></div>
+                                <div class="zone-total" id="total-passif-capitaux">0 €</div>
                             </div>
-                            <div class="drop-zone p-3 rounded-lg" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="FINANCE">
-                                <p class="text-xs font-bold text-gray-500 uppercase mb-2 font-mono-code">Financières (66)</p>
-                                <div id="zone-charge-finance" class="min-h-[60px] space-y-2"></div>
+                            <div class="drop-zone p-2 rounded min-h-[150px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PASSIF" data-subtype="DETTES">
+                                <div class="block-header bg-red-800"><span>Dettes</span><span class="text-[0.6rem] opacity-70">Cl. 16, 40, 42...</span></div>
+                                <div id="zone-passif-dettes" class="min-h-[100px] space-y-1 mt-2"></div>
+                                <div class="zone-total" id="total-passif-dettes">0 €</div>
                             </div>
-                            <div class="drop-zone p-3 rounded-lg" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="EXCEP">
-                                <p class="text-xs font-bold text-gray-500 uppercase mb-2 font-mono-code">Exceptionnelles (67)</p>
-                                <div id="zone-charge-excep" class="min-h-[60px] space-y-2"></div>
-                            </div>
+                        </div>
+                         <div class="bg-red-50 p-2 text-right font-black font-mono-code text-red-900 border-t-2 border-red-900">
+                            TOTAL PASSIF: <span id="grand-total-passif">0 €</span>
                         </div>
                     </div>
 
-                    <div class="ledger-column relative">
-                         <div class="absolute -top-4 right-4 zone-group-title transform rotate-1">
-                            PRODUITS (Cl. 7)
-                        </div>
-                        <div class="mt-4 space-y-4">
-                            <div class="drop-zone p-3 rounded-lg" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="EXPLOIT">
-                                <p class="text-xs font-bold text-gray-500 uppercase mb-2 font-mono-code text-right">Exploitation (70-75)</p>
-                                <div id="zone-produit-exploit" class="min-h-[60px] space-y-2"></div>
-                            </div>
-                            <div class="drop-zone p-3 rounded-lg" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="FINANCE">
-                                <p class="text-xs font-bold text-gray-500 uppercase mb-2 font-mono-code text-right">Financiers (76)</p>
-                                <div id="zone-produit-finance" class="min-h-[60px] space-y-2"></div>
-                            </div>
-                            <div class="drop-zone p-3 rounded-lg" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="EXCEP">
-                                <p class="text-xs font-bold text-gray-500 uppercase mb-2 font-mono-code text-right">Exceptionnels (77)</p>
-                                <div id="zone-produit-excep" class="min-h-[60px] space-y-2"></div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-
-                <div class="bg-gray-200 border-4 border-dashed border-gray-400 p-4 rounded-xl relative"
-                     ondrop="drop(event)" ondragover="allowDrop(event)" data-type="BILAN" data-subtype="BILAN">
-                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gray-400 text-white px-3 py-1 text-xs font-bold rounded-full">
-                        HORS RÉSULTAT (BILAN - CL. 1 à 5)
-                    </div>
-                    <div id="zone-bilan" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 mt-2 min-h-[80px]"></div>
-                </div>
-
             </div>
-        </div>
 
-        <div class="fixed bottom-0 left-0 w-full bg-white border-t-2 border-gray-900 p-4 shadow-[0_-5px_15px_rgba(0,0,0,0.1)] flex justify-between items-center z-50">
-            <div class="text-sm font-mono-code text-gray-500 hidden md:block pl-4">
-                Glisse les opérations. Clique sur vérifier pour corriger.
-            </div>
-            
-            <div class="flex items-center gap-6 mx-auto md:mx-0 pr-4">
-                 <div id="result-area" class="hidden flex items-center gap-4">
-                    <span id="score-display" class="text-3xl font-black font-mono-code"></span>
-                    <span id="feedback-text" class="font-serif-header italic text-sm md:text-base max-w-[300px] leading-tight"></span>
-                </div>
-
-                <button id="validate-btn" onclick="validate()" class="px-8 py-3 bg-gray-900 text-[#ccff00] font-bold uppercase tracking-widest hover:bg-[#ccff00] hover:text-gray-900 border-2 border-gray-900 transition-colors shadow-lg cursor-pointer">
-                    Vérifier
-                </button>
-            </div>
         </div>
     </div>
 
+    <div class="sig-panel fixed bottom-0 left-0 w-full px-4 py-3 z-40 flex flex-col md:flex-row justify-between items-center gap-4 text-sm md:text-base">
+        <div class="flex flex-wrap gap-6 items-center justify-center md:justify-start">
+            <div class="flex flex-col">
+                <span class="text-[0.65rem] uppercase text-gray-400">Résultat Exploitation</span>
+                <span id="sig-res-exploit" class="sig-value font-bold text-lg">0 €</span>
+                <span class="text-[0.6rem] text-gray-500 italic">Prod. Exploit - Ch. Exploit</span>
+            </div>
+            <div class="w-px h-8 bg-gray-700 hidden md:block"></div>
+            <div class="flex flex-col">
+                <span class="text-[0.65rem] uppercase text-gray-400">Résultat Net</span>
+                <span id="sig-res-net" class="sig-value font-bold text-xl text-white">0 €</span>
+                <span class="text-[0.6rem] text-gray-500 italic">Somme des résultats</span>
+            </div>
+            <div class="w-px h-8 bg-gray-700 hidden md:block"></div>
+            <div class="flex flex-col">
+                <span class="text-[0.65rem] uppercase text-gray-400">Équilibre Bilan</span>
+                <span id="bilan-check" class="font-bold text-lg text-red-500">NON</span>
+                <span class="text-[0.6rem] text-gray-500 italic">Actif = Passif</span>
+            </div>
+        </div>
+
+        <button id="validate-btn" onclick="validate()" class="px-8 py-3 bg-[#ccff00] text-gray-900 font-black uppercase tracking-widest hover:bg-white transition-colors shadow-lg cursor-pointer rounded-sm">
+            Vérifier
+        </button>
+    </div>
+
     <script>
-        // --- NOMS D'ENTREPRISES ---
-        const prefixes = [
-            "Pompes Funèbres", "Kebab", "Auto-École", "Clinique Esthétique", "Start-up", 
-            "Boucherie", "Agence Matrimoniale", "Pizzeria", "Crèche", "Pharmacie", 
-            "Salle de Sport", "EHPAD", "Night Club", "Cabinet d'Avocats", "Camping",
-            "Agence de Détectives", "Salle d'Arcade"
-        ];
-        
-        const suffixes = [
-            "'À Bientôt'", "'Viande Mystère'", "'Le Mur'", "'Low Cost'", "'Ponzi Scheme'", 
-            "'Végane (ou pas)'", "'Désespoir'", "'L'Impasse'", "'Le Petit Spartiate'", "'Placebo'",
-            "'No Pain No Gain'", "'Dernier Souffle'", "'L'Amnésie'", "'Divorce Express'", 
-            "'Blanchiment Facile'", "'Chat Perdu'", "'Fisc & Furious'", "'Dépôt de Bilan'"
-        ];
+        // --- NOMS ---
+        const prefixes = ["Boulangerie", "Garage", "Start-up", "Cabinet", "Boucherie", "Agence", "Pizzeria", "Crèche", "Pharmacie", "Salle de Sport", "EHPAD", "Night Club", "Camping", "Pompes Funèbres", "Kebab"];
+        const suffixes = ["'Chez Dédé'", "'Le Gouffre'", "'L'Avenir Incertain'", "'Fraude & Co'", "'L'Optimiste'", "'Dernier Recours'", "'Le Blanchisseur'", "'Au Bonheur des Dames'", "'Le Petit Escroc'"];
+        function generateCompanyName() { return `${prefixes[Math.floor(Math.random() * prefixes.length)]} ${suffixes[Math.floor(Math.random() * suffixes.length)]}`; }
 
-        function generateCompanyName() {
-            const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
-            const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
-            return `${prefix} ${suffix}`;
-        }
+        // --- TYPES DE DONNEES ---
+        const TYPES = { CHARGE: 'CHARGE', PRODUIT: 'PRODUIT', ACTIF: 'ACTIF', PASSIF: 'PASSIF' };
+        const SUBS = { 
+            EXPLOIT: 'EXPLOIT', FINANCE: 'FINANCE', EXCEP: 'EXCEP', // CR
+            IMMO: 'IMMO', CIRC: 'CIRC', // ACTIF
+            CAPITAUX: 'CAPITAUX', DETTES: 'DETTES' // PASSIF
+        };
 
-        // --- DONNEES ---
-        const TYPES = { CHARGE: 'CHARGE', PRODUIT: 'PRODUIT', BILAN: 'BILAN' };
-        const SUBS = { EXPLOIT: 'EXPLOIT', FINANCE: 'FINANCE', EXCEP: 'EXCEP', BILAN: 'BILAN' };
-
+        // --- DATABASE ÉTENDUE (V8) ---
         const DATABASE = [
-            { label: "Achat matières premières", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '601' },
+            // CHARGES EXPLOITATION
+            { label: "Achat Marchandises", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '607' },
             { label: "Location immobilière", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '613' },
             { label: "Primes d'assurances", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '616' },
-            { label: "Rémunération personnel", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '641' },
-            { label: "Publicité & publipostage", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '623' },
-            { label: "Entretien et réparations", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '615' },
-            { label: "Charges d'intérêts", type: TYPES.CHARGE, sub: SUBS.FINANCE, code: '661' },
+            { label: "Salaires Brut", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '641' },
+            { label: "Charges Soc. Patronales", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '645' },
+            { label: "Publicité", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '623' },
+            { label: "Entretien matériel", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '615' },
+            { label: "Honoraires avocat", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '6226' },
+            { label: "Taxe Foncière", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '635' },
+            { label: "Dotation Amortissements", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '681' },
+
+            // CHARGES FINANCIERES / EXCEP
+            { label: "Intérêts Emprunt", type: TYPES.CHARGE, sub: SUBS.FINANCE, code: '661' },
             { label: "Pertes de change", type: TYPES.CHARGE, sub: SUBS.FINANCE, code: '666' },
-            { label: "Pénalités et amendes", type: TYPES.CHARGE, sub: SUBS.EXCEP, code: '671' },
-            { label: "VNC élts d'actif cédés", type: TYPES.CHARGE, sub: SUBS.EXCEP, code: '675' },
-            { label: "Vente de marchandises", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '707' },
-            { label: "Prestations de services", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '706' },
-            { label: "Subvention exploitation", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '740' },
+            { label: "Amendes Pénales", type: TYPES.CHARGE, sub: SUBS.EXCEP, code: '671' },
+            { label: "VNC immobilisation cédée", type: TYPES.CHARGE, sub: SUBS.EXCEP, code: '675' },
+
+            // PRODUITS
+            { label: "Vente Marchandises", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '707' },
+            { label: "Prestations Services", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '706' },
+            { label: "Subvention Exploitation", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '740' },
             { label: "Gains de change", type: TYPES.PRODUIT, sub: SUBS.FINANCE, code: '766' },
-            { label: "Produits participations", type: TYPES.PRODUIT, sub: SUBS.FINANCE, code: '761' },
-            { label: "Produits cession d'actif", type: TYPES.PRODUIT, sub: SUBS.EXCEP, code: '775' },
-            { label: "Dégrèvement d'impôts", type: TYPES.PRODUIT, sub: SUBS.EXCEP, code: '777' },
-            { label: "Matériel de transport", type: TYPES.BILAN, sub: SUBS.BILAN, code: '2182' },
-            { label: "Capital Social", type: TYPES.BILAN, sub: SUBS.BILAN, code: '101' },
-            { label: "Emprunts bancaires", type: TYPES.BILAN, sub: SUBS.BILAN, code: '164' },
-            { label: "Stocks de marchandises", type: TYPES.BILAN, sub: SUBS.BILAN, code: '37' },
-            { label: "TVA à décaisser", type: TYPES.BILAN, sub: SUBS.BILAN, code: '4455' },
-            { label: "Créances clients", type: TYPES.BILAN, sub: SUBS.BILAN, code: '411' },
-            { label: "Dettes fournisseurs", type: TYPES.BILAN, sub: SUBS.BILAN, code: '401' }
+            { label: "Produits financiers", type: TYPES.PRODUIT, sub: SUBS.FINANCE, code: '76' },
+            { label: "Produits cession immo", type: TYPES.PRODUIT, sub: SUBS.EXCEP, code: '775' },
+
+            // ACTIF IMMOBILISÉ
+            { label: "Fonds de Commerce", type: TYPES.ACTIF, sub: SUBS.IMMO, code: '207' },
+            { label: "Logiciels & Brevets", type: TYPES.ACTIF, sub: SUBS.IMMO, code: '205' },
+            { label: "Terrain", type: TYPES.ACTIF, sub: SUBS.IMMO, code: '211' },
+            { label: "Bâtiment", type: TYPES.ACTIF, sub: SUBS.IMMO, code: '213' },
+            { label: "Véhicule de société", type: TYPES.ACTIF, sub: SUBS.IMMO, code: '2182' },
+            { label: "Matériel Informatique", type: TYPES.ACTIF, sub: SUBS.IMMO, code: '2183' },
+            { label: "Mobilier Bureau", type: TYPES.ACTIF, sub: SUBS.IMMO, code: '2184' },
+            { label: "Dépôt de garantie versé", type: TYPES.ACTIF, sub: SUBS.IMMO, code: '275' },
+
+            // ACTIF CIRCULANT
+            { label: "Stock Marchandises", type: TYPES.ACTIF, sub: SUBS.CIRC, code: '37' },
+            { label: "Créances Clients", type: TYPES.ACTIF, sub: SUBS.CIRC, code: '411' },
+            { label: "Acomptes versés fourn.", type: TYPES.ACTIF, sub: SUBS.CIRC, code: '4091' },
+            { label: "État - TVA Déductible", type: TYPES.ACTIF, sub: SUBS.CIRC, code: '4456' },
+            { label: "Banque (Solde +)", type: TYPES.ACTIF, sub: SUBS.CIRC, code: '512' },
+            { label: "Caisse (Espèces)", type: TYPES.ACTIF, sub: SUBS.CIRC, code: '53' },
+
+            // PASSIF CAPITAUX
+            { label: "Capital Social", type: TYPES.PASSIF, sub: SUBS.CAPITAUX, code: '101' },
+            { label: "Réserves Légales", type: TYPES.PASSIF, sub: SUBS.CAPITAUX, code: '1061' },
+            { label: "Report à Nouveau", type: TYPES.PASSIF, sub: SUBS.CAPITAUX, code: '110' },
+            { label: "Résultat de l'exercice", type: TYPES.PASSIF, sub: SUBS.CAPITAUX, code: '120' }, // Simplification pour le jeu
+
+            // PASSIF DETTES
+            { label: "Emprunts Bancaires", type: TYPES.PASSIF, sub: SUBS.DETTES, code: '164' },
+            { label: "Dettes Fournisseurs", type: TYPES.PASSIF, sub: SUBS.DETTES, code: '401' },
+            { label: "Dettes Fiscales & Soc.", type: TYPES.PASSIF, sub: SUBS.DETTES, code: '43/44' },
+            { label: "État - TVA à payer", type: TYPES.PASSIF, sub: SUBS.DETTES, code: '4455' },
+            { label: "Découvert Bancaire", type: TYPES.PASSIF, sub: SUBS.DETTES, code: '512 (Cr)' }
         ];
 
-        // --- MOTEUR DE JEU ---
+        // --- MOTEUR ---
         function initGame() {
             document.getElementById('company-name').innerText = generateCompanyName();
             closeModal();
 
-            const zones = ['source-zone', 'zone-charge-exploit', 'zone-charge-finance', 'zone-charge-excep',
-                'zone-produit-exploit', 'zone-produit-finance', 'zone-produit-excep', 'zone-bilan'];
-            zones.forEach(id => {
-                const el = document.getElementById(id);
-                if(el) el.innerHTML = '';
-            });
+            // Clear zones
+            const dropZones = document.querySelectorAll('.drop-zone div[id^="zone-"]');
+            dropZones.forEach(z => z.innerHTML = '');
+            document.getElementById('source-zone').innerHTML = '';
             
-            const resultArea = document.getElementById('result-area');
-            const validateBtn = document.getElementById('validate-btn');
-            
-            if(resultArea) resultArea.classList.add('hidden');
-            if(validateBtn) {
-                validateBtn.innerText = "Vérifier";
-                validateBtn.classList.remove('bg-[#ccff00]', 'text-gray-900');
-                validateBtn.classList.add('bg-gray-900', 'text-[#ccff00]');
-            }
+            // Reset validation style
+            document.getElementById('validate-btn').innerText = "Vérifier";
+            document.getElementById('validate-btn').classList.remove('bg-white');
+            document.getElementById('validate-btn').classList.add('bg-[#ccff00]');
 
-            const shuffled = [...DATABASE].sort(() => 0.5 - Math.random()).slice(0, 9);
+            // Generate items (12 to 15 items for V8 complexity)
+            const shuffled = [...DATABASE].sort(() => 0.5 - Math.random()).slice(0, 14);
             const sourceZone = document.getElementById('source-zone');
 
             shuffled.forEach((op, index) => {
-                const amount = Math.floor(Math.random() * 5000) + 50;
+                const amount = Math.floor(Math.random() * 5000) + 100;
                 const id = `op-${index}`;
                 const card = createCard(id, op, amount);
                 sourceZone.appendChild(card);
             });
+
+            updateCalculations();
         }
 
         function createCard(id, op, amount) {
             const div = document.createElement('div');
             div.id = id;
-            div.className = "sketchy-card p-3 cursor-grab animate-pop"; 
+            div.className = "sketchy-card p-2 cursor-grab animate-pop mb-2 text-sm"; 
             div.draggable = true;
             div.dataset.type = op.type;
             div.dataset.sub = op.sub;
+            div.dataset.amount = amount;
 
             div.innerHTML = `
                 <div class="flex justify-between items-start pointer-events-none">
-                    <span class="font-bold text-sm leading-tight pr-2">${op.label}</span>
-                    <span class="font-mono-code text-xs bg-gray-200 px-1 rounded text-gray-800">${op.code}</span>
+                    <span class="font-bold leading-tight pr-2">${op.label}</span>
+                    <span class="font-mono-code text-[0.65rem] bg-gray-200 px-1 rounded text-gray-800">${op.code}</span>
                 </div>
-                <div class="mt-2 text-right font-mono-code text-xs text-gray-500 pointer-events-none">
-                    ${amount} €
+                <div class="mt-1 text-right font-mono-code font-bold text-gray-600 pointer-events-none">
+                    ${amount.toLocaleString('fr-FR')} €
                 </div>
             `;
 
@@ -335,6 +408,7 @@
             });
             div.addEventListener('dragend', (e) => {
                 e.target.classList.remove('dragging');
+                updateCalculations(); // Update totals on drag end
             });
             return div;
         }
@@ -348,72 +422,123 @@
             if(!draggedElement) return;
 
             let target = ev.target;
-            // On remonte jusqu'à trouver une zone de drop valide
-            while (target && !target.hasAttribute('ondrop')) {
+            // Find parent drop-zone
+            while (target && !target.classList.contains('drop-zone') && target.id !== 'source-zone') {
                 target = target.parentNode;
             }
-            if (!target) return;
-
-            let targetId;
-            const type = target.dataset.type;
-            const sub = target.dataset.subtype;
-
-            if (type === 'TODO') targetId = 'source-zone';
-            else if (type === 'BILAN') targetId = 'zone-bilan';
-            else if (type === 'CHARGE') {
-                if (sub === 'EXPLOIT') targetId = 'zone-charge-exploit';
-                if (sub === 'FINANCE') targetId = 'zone-charge-finance';
-                if (sub === 'EXCEP') targetId = 'zone-charge-excep';
-            }
-            else if (type === 'PRODUIT') {
-                if (sub === 'EXPLOIT') targetId = 'zone-produit-exploit';
-                if (sub === 'FINANCE') targetId = 'zone-produit-finance';
-                if (sub === 'EXCEP') targetId = 'zone-produit-excep';
+            
+            // If drop inside a drop-zone, find the inner container ID
+            let container = target;
+            if(target.classList.contains('drop-zone')) {
+                container = target.querySelector('div[id^="zone-"]');
+            } else if (target.id === 'source-zone') {
+                // Just use source zone
+            } else {
+                return; // invalid drop
             }
 
-            if (targetId) {
-                const container = document.getElementById(targetId);
-                if(container) {
-                    container.appendChild(draggedElement);
+            if(container) {
+                container.appendChild(draggedElement);
+                if(container.id !== 'source-zone') {
                     draggedElement.style.transform = `rotate(${Math.random() * 2 - 1}deg)`;
+                } else {
+                    draggedElement.style.transform = 'none';
                 }
+            }
+            updateCalculations();
+        }
+
+        // --- CALCULATRICE SIG ---
+        function updateCalculations() {
+            // Helper to sum amounts in a zone ID
+            const sumZone = (id) => {
+                const zone = document.getElementById(id);
+                if(!zone) return 0;
+                let total = 0;
+                for(let child of zone.children) {
+                    total += parseInt(child.dataset.amount || 0);
+                }
+                return total;
+            };
+
+            // 1. Update Subtotals in UI
+            const map = {
+                'zone-charge-exploit': 'total-charge-exploit',
+                'zone-charge-finance': 'total-charge-finance',
+                'zone-charge-excep': 'total-charge-excep',
+                'zone-produit-exploit': 'total-produit-exploit',
+                'zone-produit-finance': 'total-produit-finance',
+                'zone-produit-excep': 'total-produit-excep',
+                'zone-actif-immo': 'total-actif-immo',
+                'zone-actif-circ': 'total-actif-circ',
+                'zone-passif-capitaux': 'total-passif-capitaux',
+                'zone-passif-dettes': 'total-passif-dettes'
+            };
+
+            for(const [zoneId, displayId] of Object.entries(map)) {
+                const s = sumZone(zoneId);
+                document.getElementById(displayId).innerText = s.toLocaleString('fr-FR') + ' €';
+            }
+
+            // 2. Calculate SIG
+            const c_exploit = sumZone('zone-charge-exploit');
+            const p_exploit = sumZone('zone-produit-exploit');
+            const res_exploit = p_exploit - c_exploit;
+
+            const c_fin = sumZone('zone-charge-finance');
+            const p_fin = sumZone('zone-produit-finance');
+            const res_fin = p_fin - c_fin;
+
+            const c_excep = sumZone('zone-charge-excep');
+            const p_excep = sumZone('zone-produit-excep');
+            const res_excep = p_excep - c_excep;
+
+            const res_net = res_exploit + res_fin + res_excep;
+
+            // 3. Calculate Bilan Grand Totals
+            const total_actif = sumZone('zone-actif-immo') + sumZone('zone-actif-circ');
+            const total_passif = sumZone('zone-passif-capitaux') + sumZone('zone-passif-dettes');
+
+            // 4. Update Dashboard UI
+            document.getElementById('sig-res-exploit').innerText = res_exploit.toLocaleString('fr-FR') + ' €';
+            document.getElementById('sig-res-exploit').className = `sig-value font-bold text-lg ${res_exploit >= 0 ? 'text-[#ccff00]' : 'text-red-400'}`;
+            
+            document.getElementById('sig-res-net').innerText = res_net.toLocaleString('fr-FR') + ' €';
+            document.getElementById('sig-res-net').className = `sig-value font-bold text-xl ${res_net >= 0 ? 'text-[#ccff00]' : 'text-red-400'}`;
+
+            document.getElementById('grand-total-actif').innerText = total_actif.toLocaleString('fr-FR') + ' €';
+            document.getElementById('grand-total-passif').innerText = total_passif.toLocaleString('fr-FR') + ' €';
+
+            // Check Bilan Equilibre (Simple check: is Total Actif > 0 ?)
+            const bilanCheck = document.getElementById('bilan-check');
+            // Note: In this game, Bilan won't mathematically balance unless we calculate Result properly and insert it into Equity. 
+            // For game logic, we just check if User filled it.
+            if(total_actif > 0 && total_actif === total_passif) {
+                bilanCheck.innerText = "OUI";
+                bilanCheck.className = "font-bold text-lg text-[#ccff00]";
+            } else {
+                bilanCheck.innerText = "NON";
+                bilanCheck.className = "font-bold text-lg text-red-500";
             }
         }
 
         function validate() {
-            let total = 0;
+            let totalCards = 0;
             let errors = 0;
 
-            const dropZones = document.querySelectorAll('.drop-zone, [data-type="BILAN"]');
+            const dropZones = document.querySelectorAll('.drop-zone');
 
             dropZones.forEach(zone => {
-                let itemContainer = zone.querySelector('div[id^="zone-"]');
-                // Gestion spéciale pour le Bilan qui peut être son propre container
-                if (!itemContainer && zone.id === 'zone-bilan') itemContainer = zone;
-                if (!itemContainer && zone.dataset.type === 'BILAN') {
-                     itemContainer = document.getElementById('zone-bilan');
-                }
-                
-                if (!itemContainer) return;
-
+                const container = zone.querySelector('div[id^="zone-"]');
                 const expectedType = zone.dataset.type;
                 const expectedSub = zone.dataset.subtype;
                 
-                const items = itemContainer.children;
-
-                for (let item of items) {
-                    total++;
+                for(let item of container.children) {
+                    totalCards++;
                     const itemType = item.dataset.type;
                     const itemSub = item.dataset.sub;
-                    let isCorrect = false;
-
-                    if (expectedType === 'BILAN') {
-                        if (itemType === 'BILAN') isCorrect = true;
-                    } else {
-                        if (expectedType === itemType && expectedSub === itemSub) {
-                            isCorrect = true;
-                        }
-                    }
+                    
+                    let isCorrect = (expectedType === itemType && expectedSub === itemSub);
 
                     item.classList.remove('valid-success', 'valid-error');
                     if (isCorrect) {
@@ -425,40 +550,26 @@
                 }
             });
 
+            // Leftovers
             const leftOvers = document.getElementById('source-zone').children.length;
-            total += leftOvers;
-            
-            const score = total === 0 ? 0 : Math.round(((total - (errors + leftOvers)) / total) * 100);
+            totalCards += leftOvers;
 
-            const resultArea = document.getElementById('result-area');
-            const feedback = document.getElementById('feedback-text');
-            const scoreDisplay = document.getElementById('score-display');
+            const score = totalCards === 0 ? 0 : Math.round(((totalCards - (errors + leftOvers)) / totalCards) * 100);
+            
             const btn = document.getElementById('validate-btn');
             
-            resultArea.classList.remove('hidden');
-            scoreDisplay.innerText = `${score}%`;
-            
             if (score === 100) {
-                scoreDisplay.className = "text-3xl font-black font-mono-code text-[#ccff00] bg-gray-900 px-2 transform -rotate-3 inline-block";
-                feedback.innerText = "Bilan équilibré. Parfait.";
-                btn.innerText = "Tout Bon !";
+                btn.innerText = "Parfait !";
+                btn.classList.replace('bg-[#ccff00]', 'bg-white');
                 document.getElementById('victory-modal').classList.remove('hidden');
-            } else if (score >= 70) {
-                scoreDisplay.className = "text-3xl font-black font-mono-code text-gray-900";
-                feedback.innerText = "Pas mal. Corrige les rouges.";
-                btn.innerText = "Re-vérifier";
             } else {
-                scoreDisplay.className = "text-3xl font-black font-mono-code text-red-600";
-                feedback.innerText = "Catastrophique.";
-                btn.innerText = "Re-vérifier";
+                btn.innerText = `Score: ${score}% (Réessayer)`;
+                btn.classList.add('animate-pulse');
             }
         }
 
-        function closeModal() {
-            document.getElementById('victory-modal').classList.add('hidden');
-        }
+        function closeModal() { document.getElementById('victory-modal').classList.add('hidden'); }
 
-        // Démarrage sécurisé
         window.addEventListener('DOMContentLoaded', initGame);
 
     </script>
