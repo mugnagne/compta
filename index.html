@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compta Neuille - V13 THE AUDITOR</title>
+    <title>Compta Neuille - V15 LOGIC</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,700&family=Roboto+Mono:wght@400;700&family=Inter:wght@400;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
@@ -24,6 +24,7 @@
             background-image: linear-gradient(var(--soft-grid) 1px, transparent 1px),
             linear-gradient(90deg, var(--soft-grid) 1px, transparent 1px);
             background-size: 20px 20px;
+            padding-bottom: 140px; /* Espace pour le footer */
         }
 
         .font-serif-header { font-family: 'Playfair Display', serif; }
@@ -127,9 +128,18 @@
         .dragging { opacity: 0.4; transform: scale(0.9); }
         .animate-pop { animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         @keyframes pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+        /* FOOTER FIX */
+        .sig-panel {
+            background: var(--dark);
+            color: #fff;
+            border-top: 4px solid var(--neon-yellow);
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.3);
+            z-index: 50; 
+        }
     </style>
 </head>
-<body class="selection:bg-[#ccff00] min-h-screen relative pb-64">
+<body class="selection:bg-[#ccff00] min-h-screen relative">
 
     <div id="victory-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden flex items-center justify-center z-[100] backdrop-blur-sm">
         <div class="bg-white border-4 border-gray-900 p-8 relative max-w-md w-full text-center shadow-[10px_10px_0px_0px_#dc2626] animate-pop" style="border-radius: 5px 25px 5px 25px;">
@@ -151,7 +161,7 @@
                     <h1 class="text-3xl md:text-4xl font-extrabold tracking-tighter uppercase italic transform -rotate-1">
                         Compta<span class="text-[#ccff00] bg-gray-900 px-2">Neuille</span>
                     </h1>
-                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V13 AUDITOR</span>
+                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V15 LOGIC</span>
                 </div>
                 <h2 id="company-name" class="mt-2 text-xl font-serif-header font-bold text-gray-800 border-b-2 border-[#ccff00] inline-block">Chargement...</h2>
             </div>
@@ -169,6 +179,7 @@
 
                 <div class="flex items-center gap-1 bg-white border-2 border-gray-900 p-1 shadow-[3px_3px_0px_0px_rgba(0,0,0,0.2)]" style="border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;">
                     <button onclick="setDifficulty('EASY')" id="btn-easy" class="diff-btn active px-3 py-1 font-mono-code text-xs font-bold rounded-sm">EASY</button>
+                    <button onclick="setDifficulty('NORMAL')" id="btn-normal" class="diff-btn px-3 py-1 font-mono-code text-xs font-bold rounded-sm hover:bg-gray-100">NORMAL</button>
                     <button onclick="setDifficulty('HARDCORE')" id="btn-hardcore" class="diff-btn px-3 py-1 font-mono-code text-xs font-bold rounded-sm hover:bg-gray-100 text-red-600">HARDCORE 🔥</button>
                 </div>
 
@@ -181,7 +192,6 @@
         <div class="grid grid-cols-12 gap-6">
             
             <div class="col-span-12 lg:col-span-3">
-                
                 <div id="journal-panel" class="hidden mb-6">
                     <div class="journal-paper p-4 border border-gray-300 min-h-[400px] max-h-[600px] overflow-y-auto shadow-xl relative transform -rotate-1">
                         <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-3 py-1 text-sm font-bold font-mono-code rotate-1">
@@ -293,7 +303,7 @@
         </div>
     </div>
 
-    <div class="sig-panel fixed bottom-0 left-0 w-full px-4 py-3 z-40 flex flex-col md:flex-row justify-between items-center gap-4 text-sm md:text-base">
+    <div class="sig-panel fixed bottom-0 left-0 w-full px-4 py-3 flex flex-col md:flex-row justify-between items-center gap-4 text-sm md:text-base">
         <div class="flex flex-wrap gap-6 items-center justify-center md:justify-start">
             <div class="flex flex-col">
                 <span class="text-[0.65rem] uppercase text-gray-400">Résultat Net</span>
@@ -319,9 +329,8 @@
     <script>
         let currentDifficulty = 'EASY'; 
         let currentCompanyName = "";
-        let journalEntries = []; // Pour l'export
+        let journalEntries = [];
 
-        // CONFIG
         const prefixes = ["Boulangerie", "Garage", "Start-up", "Cabinet", "Boucherie", "Agence", "Pizzeria", "Crèche", "Pharmacie", "EHPAD"];
         const suffixes = ["'Chez Dédé'", "'Le Gouffre'", "'L'Optimiste'", "'Dernier Recours'", "'Le Blanchisseur'", "'Au Bonheur'"];
         const suppliers = ["Sologest", "Manuflex", "Trans'Ap", "BuroPlus", "Enerco", "ImmoPro", "TechCorp"];
@@ -380,12 +389,8 @@
             }
         }
 
-        // ========================
-        // EASY MODE (Auto-balance)
-        // ========================
         function initStandardMode() {
             gameItems = [];
-            // Simple logic: pick random items, calc Result & Bank plug
             const selection = [...DATABASE_EASY].sort(() => 0.5 - Math.random()).slice(0, 10);
             
             let tC = 0, tP = 0, tA = 0, tPas = 0;
@@ -412,29 +417,31 @@
         }
 
         // ========================
-        // HARDCORE MODE (Journal)
+        // LOGIC-DRIVEN HARDCORE
         // ========================
         function initHardcoreMode() {
             gameItems = [];
             const journalDiv = document.getElementById('journal-content');
             const ledger = {}; 
-            const durationMul = parseInt(document.getElementById('game-duration').value); // 1, 2, 3
+            const durationMul = parseInt(document.getElementById('game-duration').value);
+
+            // STATE TRACKING FOR LOGIC
+            let currentSupplierDebt = 0;
+            let currentCustomerReceivable = 0;
 
             const impact = (label, type, sub, code, amount, isDebit) => {
                 const key = code; 
                 if(!ledger[key]) ledger[key] = { label, type, sub, code, balance: 0 };
-                // Convention simplifiée pour jeu: Stockage valeur absolue attendue à la fin
-                // Actif/Charge augmentent au débit. Passif/Produit augmentent au crédit.
-                // Ici on calcule le solde comptable
+                
                 if (type === TYPES.ACTIF || type === TYPES.CHARGE) {
                     ledger[key].balance += isDebit ? amount : -amount;
                 } else {
-                    ledger[key].balance += isDebit ? -amount : amount; // Credit increases Passif/Prod
+                    ledger[key].balance += isDebit ? -amount : amount;
                 }
             };
 
             const addEntry = (date, text) => {
-                journalEntries.push(`${date} : ${text}`); // Save for export
+                journalEntries.push(`${date} : ${text}`);
                 const p = document.createElement('p');
                 p.innerHTML = `<strong>${date}</strong> : ${text}`;
                 p.className = "border-b border-blue-200 pb-1";
@@ -447,70 +454,95 @@
                 return currentDate.toLocaleDateString('fr-FR');
             };
 
-            // 1. CREATION
+            // 1. CAPITAL (Always Start)
             const capital = 20000 + (Math.floor(Math.random() * 10) * 1000);
             impact("Capital Social", TYPES.PASSIF, SUBS.CAPITAUX, '101', capital, false);
             impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', capital, true);
             addEntry("01/01/2024", `Apport en capital de ${capital}€.`);
 
-            // BOUCLE D'OPERATIONS SELON SLIDER
+            // LOOPS WITH LOGIC
             const loops = 3 * durationMul; 
-            
             for(let i=0; i<loops; i++) {
                 const rand = Math.random();
                 
-                // ACHAT STOCK
-                if(rand < 0.3) {
-                    const amount = Math.floor(Math.random() * 2000) + 500;
-                    impact("Achat Marchandises", TYPES.CHARGE, SUBS.EXPLOIT, '607', amount, true);
-                    impact("Dettes Fournisseurs", TYPES.PASSIF, SUBS.DETTES, '401', amount, false);
-                    addEntry(nextDate(), `Achat marchandise à crédit (${amount}€).`);
-                }
-                // VENTE
-                else if(rand < 0.6) {
-                    const amount = Math.floor(Math.random() * 3000) + 1000;
-                    impact("Vente Marchandises", TYPES.PRODUIT, SUBS.EXPLOIT, '707', amount, false);
-                    impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', amount, true);
-                    addEntry(nextDate(), `Vente client comptant (${amount}€).`);
-                }
-                // PAIEMENT
-                else if (rand < 0.8) {
-                    const amount = 500;
-                    impact("Dettes Fournisseurs", TYPES.PASSIF, SUBS.DETTES, '401', amount, true);
-                    impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', amount, false);
-                    addEntry(nextDate(), `Paiement fournisseur partiel (${amount}€).`);
-                }
-                // CHARGE DIVERS
+                // DECISION TREE
+                let action = '';
+                
+                // Si on a des dettes, on peut payer (30% chance)
+                if (currentSupplierDebt > 500 && Math.random() > 0.6) action = 'PAY_DEBT';
+                // Si on a des créances, on peut encaisser (30% chance)
+                else if (currentCustomerReceivable > 500 && Math.random() > 0.6) action = 'RECEIVE_PAYMENT';
+                // Sinon opération courante
                 else {
-                    const amount = 200;
-                    impact("Charges Diverses (Pub...)", TYPES.CHARGE, SUBS.EXPLOIT, '623', amount, true);
+                    if(rand < 0.4) action = 'BUY_STOCK';
+                    else if(rand < 0.7) action = 'SELL_GOODS';
+                    else action = 'EXPENSE';
+                }
+
+                if (action === 'PAY_DEBT') {
+                    // Paye entre 50% et 100% de la dette
+                    const amount = Math.floor(currentSupplierDebt * (0.5 + Math.random() * 0.5));
+                    impact("Dettes Fournisseurs", TYPES.PASSIF, SUBS.DETTES, '401', amount, true); // Debit dette
                     impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', amount, false);
-                    addEntry(nextDate(), `Paiement pub Facebook (${amount}€).`);
+                    currentSupplierDebt -= amount;
+                    addEntry(nextDate(), `Paiement partiel fournisseur (${amount}€).`);
+                } 
+                else if (action === 'RECEIVE_PAYMENT') {
+                    const amount = Math.floor(currentCustomerReceivable * (0.5 + Math.random() * 0.5));
+                    impact("Créances Clients", TYPES.ACTIF, SUBS.CIRC, '411', amount, false); // Credit créance
+                    impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', amount, true);
+                    currentCustomerReceivable -= amount;
+                    addEntry(nextDate(), `Encaissement client (${amount}€).`);
+                }
+                else if (action === 'BUY_STOCK') {
+                    const amount = Math.floor(Math.random() * 2000) + 500;
+                    // 70% Credit, 30% Cash
+                    if(Math.random() > 0.3) {
+                        impact("Achat Marchandises", TYPES.CHARGE, SUBS.EXPLOIT, '607', amount, true);
+                        impact("Dettes Fournisseurs", TYPES.PASSIF, SUBS.DETTES, '401', amount, false);
+                        currentSupplierDebt += amount;
+                        addEntry(nextDate(), `Achat marchandise à crédit (${amount}€).`);
+                    } else {
+                        impact("Achat Marchandises", TYPES.CHARGE, SUBS.EXPLOIT, '607', amount, true);
+                        impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', amount, false);
+                        addEntry(nextDate(), `Achat marchandise comptant (${amount}€).`);
+                    }
+                }
+                else if (action === 'SELL_GOODS') {
+                    const amount = Math.floor(Math.random() * 3000) + 1000;
+                    // 60% Credit, 40% Cash
+                    if(Math.random() > 0.4) {
+                        impact("Vente Marchandises", TYPES.PRODUIT, SUBS.EXPLOIT, '707', amount, false);
+                        impact("Créances Clients", TYPES.ACTIF, SUBS.CIRC, '411', amount, true);
+                        currentCustomerReceivable += amount;
+                        addEntry(nextDate(), `Vente marchandise à crédit (${amount}€).`);
+                    } else {
+                        impact("Vente Marchandises", TYPES.PRODUIT, SUBS.EXPLOIT, '707', amount, false);
+                        impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', amount, true);
+                        addEntry(nextDate(), `Vente marchandise comptant (${amount}€).`);
+                    }
+                }
+                else if (action === 'EXPENSE') {
+                    const amount = 200 + Math.floor(Math.random() * 500);
+                    impact("Charges Diverses", TYPES.CHARGE, SUBS.EXPLOIT, '600', amount, true);
+                    impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', amount, false);
+                    addEntry(nextDate(), `Paiement frais divers (${amount}€).`);
                 }
             }
 
-            // IMMO & DAP (Le morceau complexe)
+            // IMMO & DAP
             const immoPrice = 6000;
             const years = 5;
-            // Achat en milieu d'année pour complexifier le calcul prorata ?
-            // On va dire achat le 01/07 pour simplifier le calcul mental (6 mois)
-            const buyDate = "01/07/2024";
             impact("Matériel Industriel", TYPES.ACTIF, SUBS.IMMO, '215', immoPrice, true);
             impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', immoPrice, false);
-            addEntry(buyDate, `Achat Matériel Industriel comptant : ${immoPrice}€. Amortissable linéairement sur ${years} ans.`);
+            addEntry("01/07/2024", `Achat Matériel Industriel comptant : ${immoPrice}€. Amortissable linéairement sur ${years} ans.`);
 
-            // Calcul DAP
-            // Annuité complète = 6000 / 5 = 1200.
-            // Prorata (Juillet à Dec) = 6 mois. -> 1200 * 6/12 = 600.
             const dap = (immoPrice / years) * (6/12);
-            
-            // Ecriture d'inventaire
             impact("Dotation Amortissements", TYPES.CHARGE, SUBS.EXPLOIT, '681', dap, true);
-            impact("Amortissements Cumulés", TYPES.ACTIF, SUBS.IMMO, '281', dap, false); // Credit Actif (soustraction)
+            impact("Amortissements Cumulés", TYPES.ACTIF, SUBS.IMMO, '281', dap, false); 
             addEntry("31/12/2024", `Inventaire : Enregistrement de l'amortissement du matériel.`);
 
-            // GENERATION ITEMS
-            // Calcul Résultat Attendu
+            // RESULTAT
             let tC = 0, tP = 0;
             Object.values(ledger).forEach(acc => {
                 if(acc.type === TYPES.CHARGE) tC += acc.balance;
@@ -523,7 +555,7 @@
                 if (Math.abs(acc.balance) > 0) {
                     gameItems.push({
                         id: `op-${i}`, label: acc.label, type: acc.type, sub: acc.sub, code: acc.code,
-                        amount: acc.balance, // Valeur attendue
+                        amount: acc.balance,
                         isHardcore: true
                     });
                 }
@@ -545,26 +577,26 @@
             div.id = item.id;
             div.className = "sketchy-card p-2 cursor-grab animate-pop mb-2 text-sm"; 
             div.draggable = true;
-            // DATA FOR VALIDATION
             div.dataset.type = item.type;
             div.dataset.sub = item.sub;
             div.dataset.trueAmount = item.amount;
             div.dataset.currentAmount = currentDifficulty === 'HARDCORE' ? 0 : item.amount;
-            div.dataset.label = item.label; // For export
+            div.dataset.label = item.label;
 
             let displayAmount, codeDisplay;
 
             if (currentDifficulty === 'HARDCORE') {
-                // INPUT MODE
                 displayAmount = `<input type="number" class="hardcore-input" placeholder="?" onmousedown="event.stopPropagation()" oninput="updateCardAmount(this)"> €`;
-                // HIDDEN CODE
-                codeDisplay = ``; 
+                codeDisplay = `<span class="font-mono-code text-[0.65rem] bg-gray-200 px-1 rounded text-gray-800 hidden"></span>`; 
             } else {
                 displayAmount = `${item.amount.toLocaleString('fr-FR')} €`;
-                codeDisplay = `<span class="font-mono-code text-[0.65rem] bg-gray-200 px-1 rounded text-gray-800">${item.code}</span>`;
+                if (currentDifficulty === 'NORMAL') {
+                    codeDisplay = ``;
+                } else {
+                    codeDisplay = `<span class="font-mono-code text-[0.65rem] bg-gray-200 px-1 rounded text-gray-800">${item.code}</span>`;
+                }
             }
 
-            // FIX COLOR TEXT
             div.innerHTML = `
                 <div class="flex justify-between items-start pointer-events-none">
                     <span class="font-bold leading-tight pr-2 text-gray-900">${item.label}</span>
@@ -645,8 +677,6 @@
             const prods = sumZone('zone-produit-exploit') + sumZone('zone-produit-finance') + sumZone('zone-produit-excep');
             
             document.getElementById('sig-res-net').innerText = (prods - charges).toLocaleString('fr-FR') + ' €';
-            document.getElementById('grand-total-actif').innerText = tA.toLocaleString('fr-FR') + ' €';
-            document.getElementById('grand-total-passif').innerText = tP.toLocaleString('fr-FR') + ' €';
 
             const check = document.getElementById('bilan-check');
             if(tA > 0 && Math.abs(tA - tP) < 2) {
@@ -668,12 +698,6 @@
                     let posOk = (item.dataset.type === expT && item.dataset.sub === expS);
                     let valOk = true;
                     if(currentDifficulty === 'HARDCORE') {
-                        // En Hardcore, l'amortissement (281) a une valeur négative comptable (Crédit)
-                        // Mais dans l'UI on tape souvent en positif.
-                        // Pour le jeu, on compare la valeur absolue ou la valeur signée si le user est fort.
-                        // SIMPLIFICATION : on compare la valeur saisie (parseInt) avec la trueAmount
-                        // Attention : trueAmount peut être négatif si c'est un crédit stocké.
-                        // On compare Math.abs pour éviter la confusion débit/crédit pour le débutant
                         valOk = Math.abs(parseInt(item.dataset.currentAmount)) === Math.abs(parseInt(item.dataset.trueAmount));
                     }
                     
@@ -696,9 +720,6 @@
             }
         }
 
-        // ========================
-        // EXPORT TO LLM
-        // ========================
         function exportToTXT() {
             let content = `EXERCICE COMPTABILITE - ${currentCompanyName}\n`;
             content += `DIFFICULTE: ${currentDifficulty}\n\n`;
@@ -712,13 +733,11 @@
             
             content += "\n=== ETAT DU JEU (REPONSES UTILISATEUR) ===\n";
             
-            // On parcourt toutes les zones pour voir où sont les cartes
             const zones = document.querySelectorAll('.drop-zone, #source-zone');
             zones.forEach(z => {
                 let zoneName = z.id;
                 if(z.dataset.type) zoneName = `${z.dataset.type} - ${z.dataset.subtype || 'ROOT'}`;
                 
-                // Chercher le container interne s'il existe
                 const container = z.querySelector('div[id^="zone-"]') || z;
                 
                 if(container.children.length > 0) {
@@ -727,16 +746,11 @@
                         const userVal = item.dataset.currentAmount;
                         const trueVal = item.dataset.trueAmount;
                         const label = item.dataset.label;
-                        const correctType = item.dataset.type;
-                        const correctSub = item.dataset.sub;
                         
-                        content += ` - CARTE: "${label}" | Valeur Saisie: ${userVal} | Valeur Attendue: ${trueVal} | Type Attendu: ${correctType}-${correctSub}\n`;
+                        content += ` - CARTE: "${label}" | Valeur Saisie: ${userVal} | Valeur Attendue: ${trueVal}\n`;
                     }
                 }
             });
-
-            content += "\n=== CONSIGNE POUR L'IA ===\n";
-            content += "Analyse ce fichier. Je suis un étudiant en comptabilité. Identifie mes erreurs de placement (mauvaise case) et mes erreurs de calcul (mauvais montant saisi par rapport au journal). Explique-moi pourquoi j'ai faux, notamment sur les amortissements ou la TVA si applicable.";
 
             const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
             const url = URL.createObjectURL(blob);
