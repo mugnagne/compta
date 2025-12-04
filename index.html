@@ -83,18 +83,18 @@
         }
         .animate-pop { animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 
-        /* MARX MODAL STYLES */
+        /* STYLES POUR L'IMAGE PIXEL ART */
         .pixelated-img {
-            image-rendering: pixelated;
+            image-rendering: pixelated; /* Force le rendu net des pixels */
         }
     </style>
 </head>
 <body class="selection:bg-[#ccff00] min-h-screen relative">
 
-    <div id="marx-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden flex items-center justify-center z-[100] backdrop-blur-sm">
+    <div id="victory-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden flex items-center justify-center z-[100] backdrop-blur-sm">
         <div class="bg-white border-4 border-gray-900 p-8 relative max-w-md w-full text-center shadow-[10px_10px_0px_0px_#dc2626] animate-pop" style="border-radius: 5px 25px 5px 25px;">
             
-            <button onclick="closeModal()" class="absolute top-2 right-4 text-3xl font-bold text-gray-400 hover:text-gray-900 transition-colors">&times;</button>
+            <button onclick="closeModal()" class="absolute top-2 right-4 text-3xl font-bold text-gray-400 hover:text-gray-900 transition-colors cursor-pointer">&times;</button>
             
             <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20">
                 <div class="absolute top-10 left-10 text-2xl animate-bounce">⭐</div>
@@ -103,10 +103,10 @@
             </div>
 
             <div class="relative z-10">
-                <img src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Marx&hair=short01,short02,short03,short04,short05&beard=beard03&beardProbability=100&clothing=shirt" 
-                     alt="Pixel Karl" 
-                     class="w-40 h-40 mx-auto mb-6 border-4 border-gray-900 rounded-full bg-[#ccff00] pixelated-img">
-                
+                <img src="https://i.redd.it/i-just-started-in-pixel-art-and-i-found-my-place-here-im-v0-rinjy9fqy4p81.png?width=1024&format=png&auto=webp&s=a237871800a73431f0d9b4c745e73b1b49b3c637" 
+                     alt="Pixel Art Victory" 
+                     class="w-40 h-40 mx-auto mb-6 border-4 border-gray-900 rounded-full bg-[#ccff00] pixelated-img object-cover">
+
                 <h2 class="text-4xl font-black font-mono-code uppercase text-[#dc2626] leading-tight mb-2 transform -rotate-2">
                     Félicitations<br>Camarades !
                 </h2>
@@ -158,7 +158,6 @@
                         <div class="absolute -top-4 left-4 zone-group-title transform -rotate-2">
                             CHARGES (Cl. 6)
                         </div>
-                        
                         <div class="mt-4 space-y-4">
                             <div class="drop-zone p-3 rounded-lg" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="EXPLOIT">
                                 <p class="text-xs font-bold text-gray-500 uppercase mb-2 font-mono-code">Exploitation (60-65)</p>
@@ -179,7 +178,6 @@
                          <div class="absolute -top-4 right-4 zone-group-title transform rotate-1">
                             PRODUITS (Cl. 7)
                         </div>
-
                         <div class="mt-4 space-y-4">
                             <div class="drop-zone p-3 rounded-lg" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="EXPLOIT">
                                 <p class="text-xs font-bold text-gray-500 uppercase mb-2 font-mono-code text-right">Exploitation (70-75)</p>
@@ -224,11 +222,10 @@
                 </button>
             </div>
         </div>
-
     </div>
 
     <script>
-        // --- NOMS D'ENTREPRISES (CLEAN & DARK HUMOR) ---
+        // --- NOMS D'ENTREPRISES ---
         const prefixes = [
             "Pompes Funèbres", "Kebab", "Auto-École", "Clinique Esthétique", "Start-up", 
             "Boucherie", "Agence Matrimoniale", "Pizzeria", "Crèche", "Pharmacie", 
@@ -249,70 +246,67 @@
             return `${prefix} ${suffix}`;
         }
 
-        // --- DATA & LOGIQUE (SERIEUX PCG) ---
+        // --- DONNEES ---
         const TYPES = { CHARGE: 'CHARGE', PRODUIT: 'PRODUIT', BILAN: 'BILAN' };
         const SUBS = { EXPLOIT: 'EXPLOIT', FINANCE: 'FINANCE', EXCEP: 'EXCEP', BILAN: 'BILAN' };
 
         const DATABASE = [
-            // EXPLOITATION (Charges)
             { label: "Achat matières premières", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '601' },
             { label: "Location immobilière", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '613' },
             { label: "Primes d'assurances", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '616' },
             { label: "Rémunération personnel", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '641' },
             { label: "Publicité & publipostage", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '623' },
             { label: "Entretien et réparations", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '615' },
-
-            // FINANCIER (Charges)
             { label: "Charges d'intérêts", type: TYPES.CHARGE, sub: SUBS.FINANCE, code: '661' },
             { label: "Pertes de change", type: TYPES.CHARGE, sub: SUBS.FINANCE, code: '666' },
-
-            // EXCEPTIONNEL (Charges)
             { label: "Pénalités et amendes", type: TYPES.CHARGE, sub: SUBS.EXCEP, code: '671' },
             { label: "VNC élts d'actif cédés", type: TYPES.CHARGE, sub: SUBS.EXCEP, code: '675' },
-
-            // EXPLOITATION (Produits)
             { label: "Vente de marchandises", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '707' },
             { label: "Prestations de services", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '706' },
             { label: "Subvention exploitation", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '740' },
-            
-            // FINANCIER (Produits)
             { label: "Gains de change", type: TYPES.PRODUIT, sub: SUBS.FINANCE, code: '766' },
             { label: "Produits participations", type: TYPES.PRODUIT, sub: SUBS.FINANCE, code: '761' },
-            
-            // EXCEPTIONNEL (Produits)
             { label: "Produits cession d'actif", type: TYPES.PRODUIT, sub: SUBS.EXCEP, code: '775' },
             { label: "Dégrèvement d'impôts", type: TYPES.PRODUIT, sub: SUBS.EXCEP, code: '777' },
-            
-            // BILAN (Mélange Actif/Passif)
             { label: "Matériel de transport", type: TYPES.BILAN, sub: SUBS.BILAN, code: '2182' },
             { label: "Capital Social", type: TYPES.BILAN, sub: SUBS.BILAN, code: '101' },
             { label: "Emprunts bancaires", type: TYPES.BILAN, sub: SUBS.BILAN, code: '164' },
             { label: "Stocks de marchandises", type: TYPES.BILAN, sub: SUBS.BILAN, code: '37' },
             { label: "TVA à décaisser", type: TYPES.BILAN, sub: SUBS.BILAN, code: '4455' },
             { label: "Créances clients", type: TYPES.BILAN, sub: SUBS.BILAN, code: '411' },
-            { label: "Dettes fournisseurs", type: TYPES.BILAN, sub: SUBS.BILAN, code: '401' },
+            { label: "Dettes fournisseurs", type: TYPES.BILAN, sub: SUBS.BILAN, code: '401' }
         ];
 
+        // --- MOTEUR DE JEU ---
         function initGame() {
             document.getElementById('company-name').innerText = generateCompanyName();
             closeModal();
 
             const zones = ['source-zone', 'zone-charge-exploit', 'zone-charge-finance', 'zone-charge-excep',
                 'zone-produit-exploit', 'zone-produit-finance', 'zone-produit-excep', 'zone-bilan'];
-            zones.forEach(id => document.getElementById(id).innerHTML = '');
+            zones.forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.innerHTML = '';
+            });
             
-            document.getElementById('result-area').classList.add('hidden');
-            document.getElementById('validate-btn').innerText = "Vérifier";
-            document.getElementById('validate-btn').classList.remove('bg-[#ccff00]', 'text-gray-900');
-            document.getElementById('validate-btn').classList.add('bg-gray-900', 'text-[#ccff00]');
+            const resultArea = document.getElementById('result-area');
+            const validateBtn = document.getElementById('validate-btn');
+            
+            if(resultArea) resultArea.classList.add('hidden');
+            if(validateBtn) {
+                validateBtn.innerText = "Vérifier";
+                validateBtn.classList.remove('bg-[#ccff00]', 'text-gray-900');
+                validateBtn.classList.add('bg-gray-900', 'text-[#ccff00]');
+            }
 
             const shuffled = [...DATABASE].sort(() => 0.5 - Math.random()).slice(0, 9);
+            const sourceZone = document.getElementById('source-zone');
 
             shuffled.forEach((op, index) => {
                 const amount = Math.floor(Math.random() * 5000) + 50;
                 const id = `op-${index}`;
                 const card = createCard(id, op, amount);
-                document.getElementById('source-zone').appendChild(card);
+                sourceZone.appendChild(card);
             });
         }
 
@@ -354,6 +348,7 @@
             if(!draggedElement) return;
 
             let target = ev.target;
+            // On remonte jusqu'à trouver une zone de drop valide
             while (target && !target.hasAttribute('ondrop')) {
                 target = target.parentNode;
             }
@@ -377,8 +372,11 @@
             }
 
             if (targetId) {
-                document.getElementById(targetId).appendChild(draggedElement);
-                draggedElement.style.transform = `rotate(${Math.random() * 2 - 1}deg)`;
+                const container = document.getElementById(targetId);
+                if(container) {
+                    container.appendChild(draggedElement);
+                    draggedElement.style.transform = `rotate(${Math.random() * 2 - 1}deg)`;
+                }
             }
         }
 
@@ -390,9 +388,8 @@
 
             dropZones.forEach(zone => {
                 let itemContainer = zone.querySelector('div[id^="zone-"]');
-                if (!itemContainer && zone.id && zone.id.startsWith('zone-bilan')) {
-                    itemContainer = document.getElementById('zone-bilan');
-                }
+                // Gestion spéciale pour le Bilan qui peut être son propre container
+                if (!itemContainer && zone.id === 'zone-bilan') itemContainer = zone;
                 if (!itemContainer && zone.dataset.type === 'BILAN') {
                      itemContainer = document.getElementById('zone-bilan');
                 }
@@ -442,28 +439,27 @@
             scoreDisplay.innerText = `${score}%`;
             
             if (score === 100) {
-                // VICTOIRE ! AFFICHER LE POPUP
                 scoreDisplay.className = "text-3xl font-black font-mono-code text-[#ccff00] bg-gray-900 px-2 transform -rotate-3 inline-block";
                 feedback.innerText = "Bilan équilibré. Parfait.";
                 btn.innerText = "Tout Bon !";
-                document.getElementById('marx-modal').classList.remove('hidden');
+                document.getElementById('victory-modal').classList.remove('hidden');
             } else if (score >= 70) {
                 scoreDisplay.className = "text-3xl font-black font-mono-code text-gray-900";
-                feedback.innerText = "Pas mal. Corrige les rouges et réessaie.";
+                feedback.innerText = "Pas mal. Corrige les rouges.";
                 btn.innerText = "Re-vérifier";
             } else {
                 scoreDisplay.className = "text-3xl font-black font-mono-code text-red-600";
-                feedback.innerText = "Catastrophique. Déplace les cartes rouges.";
+                feedback.innerText = "Catastrophique.";
                 btn.innerText = "Re-vérifier";
             }
         }
 
         function closeModal() {
-            document.getElementById('marx-modal').classList.add('hidden');
+            document.getElementById('victory-modal').classList.add('hidden');
         }
 
-        // Démarrage
-        initGame();
+        // Démarrage sécurisé
+        window.addEventListener('DOMContentLoaded', initGame);
 
     </script>
 </body>
