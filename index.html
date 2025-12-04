@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compta Neuille - V16 LAYOUT</title>
+    <title>Compta Neuille - V17 TUTORIAL</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,700&family=Roboto+Mono:wght@400;700&family=Inter:wght@400;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
@@ -116,12 +116,10 @@
             box-shadow: inset 2px 2px 0px rgba(0,0,0,0.1);
         }
 
-        input[type=range] {
-            accent-color: var(--neon-yellow);
-        }
-
+        input[type=range] { accent-color: var(--neon-yellow); }
         .pixelated-img { image-rendering: pixelated; }
 
+        /* VALIDATION */
         .valid-success { background-color: #d9f99d !important; border-color: #365314; }
         .valid-error { background-color: #fca5a5 !important; border-color: #7f1d1d; }
         .dragging { opacity: 0.4; transform: scale(0.9); }
@@ -136,9 +134,91 @@
             box-shadow: 0 -10px 30px rgba(0,0,0,0.3);
             z-index: 50; 
         }
+
+        /* TUTO MODAL STYLE */
+        .tuto-section {
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--neon-yellow);
+            padding-left: 1rem;
+        }
+        .tuto-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: bold;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        .tuto-text {
+            font-size: 0.95rem;
+            color: #4b5563;
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body class="selection:bg-[#ccff00] min-h-screen relative">
+
+    <div id="tuto-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden flex items-center justify-center z-[70] backdrop-blur-sm p-4">
+        <div class="bg-white border-4 border-gray-900 p-6 md:p-8 relative max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-[15px_15px_0px_0px_rgba(255,255,255,0.2)]" style="border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;">
+            
+            <button onclick="closeTuto()" class="absolute top-4 right-6 text-4xl font-bold text-gray-400 hover:text-red-500 transition-colors cursor-pointer">&times;</button>
+            
+            <h2 class="text-3xl md:text-4xl font-black font-mono-code uppercase mb-8 border-b-4 border-[#ccff00] inline-block transform -rotate-1">
+                Le Petit Guide du Comptable
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <div class="tuto-section">
+                        <h3 class="tuto-title">1. CDR vs BILAN : Le Duel</h3>
+                        <p class="tuto-text">
+                            <strong>Le Compte de Résultat (Haut) :</strong> C'est le film de l'année.<br>
+                            - <span class="bg-red-100 px-1 font-bold">Charges :</span> Ce qui appauvrit l'entreprise (Loyer, Salaires, Achats consommés).<br>
+                            - <span class="bg-green-100 px-1 font-bold">Produits :</span> Ce qui enrichit l'entreprise (Ventes).<br>
+                            👉 <em>La différence donne le Résultat Net.</em>
+                        </p>
+                    </div>
+
+                    <div class="tuto-section">
+                        <h3 class="tuto-title">2. Le Bilan (Bas) : La Photo</h3>
+                        <p class="tuto-text">
+                            C'est le patrimoine à un instant T.<br>
+                            - <span class="bg-blue-100 px-1 font-bold">Actif (Gauche) :</span> Ce que l'entreprise possède (Immeuble, Stock, Argent en banque).<br>
+                            - <span class="bg-red-100 px-1 font-bold">Passif (Droite) :</span> D'où vient l'argent (Capital des actionnaires, Dettes fournisseurs, Emprunts).
+                        </p>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="tuto-section">
+                        <h3 class="tuto-title">3. La Règle d'Or</h3>
+                        <p class="tuto-text font-mono-code bg-gray-100 p-2 rounded border border-gray-300 text-center text-sm md:text-base">
+                            ACTIF = PASSIF
+                        </p>
+                        <p class="tuto-text mt-2">
+                            L'argent ne disparaît jamais. Si j'emprunte 10 000€ (Passif +), j'ai 10 000€ en banque (Actif +). L'équilibre doit être parfait. Le <strong>Résultat Net</strong> (bénéfice ou perte) fait le lien entre les deux tableaux.
+                        </p>
+                    </div>
+
+                    <div class="tuto-section">
+                        <h3 class="tuto-title text-red-600">4. Mode Hardcore 🔥</h3>
+                        <p class="tuto-text">
+                            Ici, pas de montants pré-calculés !<br>
+                            1. Lis le <strong>Journal des Opérations</strong> à gauche.<br>
+                            2. Fais le calcul des soldes (Total Débit - Total Crédit) pour chaque compte.<br>
+                            3. Saisis le montant dans la case blanche.<br>
+                            ⚠️ <em>Attention aux amortissements : il faut calculer l'usure des machines au prorata (temps d'utilisation sur l'année).</em>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 text-center">
+                <button onclick="closeTuto()" class="px-8 py-3 bg-gray-900 text-[#ccff00] font-bold uppercase tracking-widest hover:bg-[#ccff00] hover:text-gray-900 border-2 border-gray-900 transition-colors shadow-lg cursor-pointer rounded-sm">
+                    J'ai compris, au boulot !
+                </button>
+            </div>
+        </div>
+    </div>
 
     <div id="victory-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden flex items-center justify-center z-[100] backdrop-blur-sm">
         <div class="bg-white border-4 border-gray-900 p-8 relative max-w-md w-full text-center shadow-[10px_10px_0px_0px_#dc2626] animate-pop" style="border-radius: 5px 25px 5px 25px;">
@@ -160,7 +240,7 @@
                     <h1 class="text-3xl md:text-4xl font-extrabold tracking-tighter uppercase italic transform -rotate-1">
                         Compta<span class="text-[#ccff00] bg-gray-900 px-2">Neuille</span>
                     </h1>
-                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V16 NEW LAYOUT</span>
+                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V17 TUTORIAL</span>
                 </div>
                 <h2 id="company-name" class="mt-2 text-xl font-serif-header font-bold text-gray-800 border-b-2 border-[#ccff00] inline-block">Chargement...</h2>
             </div>
@@ -176,20 +256,25 @@
                     </div>
                 </div>
 
-                <div class="flex items-center gap-1 bg-white border-2 border-gray-900 p-1 shadow-[3px_3px_0px_0px_rgba(0,0,0,0.2)]" style="border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;">
-                    <button onclick="setDifficulty('EASY')" id="btn-easy" class="diff-btn active px-3 py-1 font-mono-code text-xs font-bold rounded-sm">EASY</button>
-                    <button onclick="setDifficulty('NORMAL')" id="btn-normal" class="diff-btn px-3 py-1 font-mono-code text-xs font-bold rounded-sm hover:bg-gray-100">NORMAL</button>
-                    <button onclick="setDifficulty('HARDCORE')" id="btn-hardcore" class="diff-btn px-3 py-1 font-mono-code text-xs font-bold rounded-sm hover:bg-gray-100 text-red-600">HARDCORE 🔥</button>
-                </div>
+                <div class="flex items-center gap-4">
+                    <button onclick="openTuto()" class="px-4 py-2 bg-[#ccff00] border-2 border-gray-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[1px] hover:translate-y-[1px] transition-all font-bold font-mono-code uppercase text-xs cursor-pointer flex items-center gap-2">
+                        ❓ Tuto
+                    </button>
 
-                <button onclick="initGame()" class="px-4 py-2 bg-white border-2 border-gray-900 shadow-[3px_3px_0px_0px_#ccff00] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all font-bold font-mono-code uppercase text-xs cursor-pointer">
-                    ⚡ Nouvelle Entreprise
-                </button>
+                    <div class="flex items-center gap-1 bg-white border-2 border-gray-900 p-1 shadow-[3px_3px_0px_0px_rgba(0,0,0,0.2)]" style="border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;">
+                        <button onclick="setDifficulty('EASY')" id="btn-easy" class="diff-btn active px-3 py-1 font-mono-code text-xs font-bold rounded-sm">EASY</button>
+                        <button onclick="setDifficulty('NORMAL')" id="btn-normal" class="diff-btn px-3 py-1 font-mono-code text-xs font-bold rounded-sm hover:bg-gray-100">NORMAL</button>
+                        <button onclick="setDifficulty('HARDCORE')" id="btn-hardcore" class="diff-btn px-3 py-1 font-mono-code text-xs font-bold rounded-sm hover:bg-gray-100 text-red-600">HARDCORE 🔥</button>
+                    </div>
+
+                    <button onclick="initGame()" class="px-4 py-2 bg-white border-2 border-gray-900 shadow-[3px_3px_0px_0px_#ccff00] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all font-bold font-mono-code uppercase text-xs cursor-pointer">
+                        ⚡ Nouvelle Entreprise
+                    </button>
+                </div>
             </div>
         </header>
 
         <div class="grid grid-cols-12 gap-6">
-            
             <div class="col-span-12 lg:col-span-3 flex flex-col gap-6">
                 <div id="journal-panel" class="hidden">
                     <div class="journal-paper p-4 border border-gray-300 min-h-[400px] max-h-[600px] overflow-y-auto shadow-xl relative transform -rotate-1">
@@ -199,7 +284,6 @@
                         <div id="journal-content" class="font-hand text-gray-800 text-sm pt-4 space-y-4"></div>
                     </div>
                 </div>
-
                 <div class="bg-gray-800 p-3 border-2 border-gray-900 rounded-lg relative shadow-xl">
                     <h3 class="text-neon-yellow font-bold mb-4 font-mono-code uppercase text-xs tracking-widest border-b border-gray-600 pb-2">
                         Comptes à classer
@@ -209,15 +293,12 @@
             </div>
 
             <div class="col-span-12 lg:col-span-9 flex flex-col gap-10">
-                
                 <div>
                     <h3 class="font-black text-2xl italic uppercase border-l-8 border-[#ccff00] pl-3 mb-4">I. Compte de Résultat</h3>
-                    
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="ledger-container">
                             <div class="bg-gray-200 p-2 font-bold text-center border-b-2 border-gray-900 flex justify-between items-center">
-                                <span>CHARGES (Débit)</span>
-                                <span class="text-xs bg-gray-900 text-white px-2 rounded">Cl. 6</span>
+                                <span>CHARGES (Débit)</span><span class="text-xs bg-gray-900 text-white px-2 rounded">Cl. 6</span>
                             </div>
                             <div class="p-3 space-y-3">
                                 <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="EXPLOIT">
@@ -237,11 +318,9 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="ledger-container">
                             <div class="bg-gray-200 p-2 font-bold text-center border-b-2 border-gray-900 flex justify-between items-center">
-                                <span>PRODUITS (Crédit)</span>
-                                <span class="text-xs bg-gray-900 text-white px-2 rounded">Cl. 7</span>
+                                <span>PRODUITS (Crédit)</span><span class="text-xs bg-gray-900 text-white px-2 rounded">Cl. 7</span>
                             </div>
                             <div class="p-3 space-y-3">
                                 <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="EXPLOIT">
@@ -266,7 +345,6 @@
 
                 <div>
                     <h3 class="font-black text-2xl italic uppercase border-l-8 border-blue-500 pl-3 mb-4">II. Bilan (Patrimoine)</h3>
-                    
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="ledger-container border-blue-900">
                             <div class="bg-blue-100 p-2 font-bold text-center border-b-2 border-blue-900 text-blue-900">ACTIF (Emplois)</div>
@@ -286,7 +364,6 @@
                                 TOTAL ACTIF: <span id="grand-total-actif">0 €</span>
                             </div>
                         </div>
-
                         <div class="ledger-container border-red-900">
                             <div class="bg-red-100 p-2 font-bold text-center border-b-2 border-red-900 text-red-900">PASSIF (Ressources)</div>
                             <div class="p-3 space-y-3">
@@ -307,7 +384,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -358,6 +434,14 @@
         ];
 
         let gameItems = [];
+
+        // --- TUTO FUNCTIONS ---
+        function openTuto() {
+            document.getElementById('tuto-modal').classList.remove('hidden');
+        }
+        function closeTuto() {
+            document.getElementById('tuto-modal').classList.add('hidden');
+        }
 
         function setDifficulty(mode) {
             currentDifficulty = mode;
@@ -437,7 +521,6 @@
             const impact = (label, type, sub, code, amount, isDebit) => {
                 const key = code; 
                 if(!ledger[key]) ledger[key] = { label, type, sub, code, balance: 0 };
-                
                 if (type === TYPES.ACTIF || type === TYPES.CHARGE) {
                     ledger[key].balance += isDebit ? amount : -amount;
                 } else {
@@ -754,7 +837,15 @@
         }
 
         function closeModal() { document.getElementById('victory-modal').classList.add('hidden'); }
-        window.addEventListener('DOMContentLoaded', initGame);
+        
+        // Show Tuto on First Load only
+        window.addEventListener('DOMContentLoaded', () => {
+            if(!localStorage.getItem('tutoSeen')) {
+                openTuto();
+                localStorage.setItem('tutoSeen', 'true');
+            }
+            initGame();
+        });
 
     </script>
 </body>
