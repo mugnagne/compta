@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compta Neuille - V15 LOGIC</title>
+    <title>Compta Neuille - V16 LAYOUT</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,700&family=Roboto+Mono:wght@400;700&family=Inter:wght@400;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
@@ -24,7 +24,7 @@
             background-image: linear-gradient(var(--soft-grid) 1px, transparent 1px),
             linear-gradient(90deg, var(--soft-grid) 1px, transparent 1px);
             background-size: 20px 20px;
-            padding-bottom: 140px; /* Espace pour le footer */
+            padding-bottom: 140px; 
         }
 
         .font-serif-header { font-family: 'Playfair Display', serif; }
@@ -122,7 +122,6 @@
 
         .pixelated-img { image-rendering: pixelated; }
 
-        /* VALIDATION */
         .valid-success { background-color: #d9f99d !important; border-color: #365314; }
         .valid-error { background-color: #fca5a5 !important; border-color: #7f1d1d; }
         .dragging { opacity: 0.4; transform: scale(0.9); }
@@ -161,7 +160,7 @@
                     <h1 class="text-3xl md:text-4xl font-extrabold tracking-tighter uppercase italic transform -rotate-1">
                         Compta<span class="text-[#ccff00] bg-gray-900 px-2">Neuille</span>
                     </h1>
-                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V15 LOGIC</span>
+                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V16 NEW LAYOUT</span>
                 </div>
                 <h2 id="company-name" class="mt-2 text-xl font-serif-header font-bold text-gray-800 border-b-2 border-[#ccff00] inline-block">Chargement...</h2>
             </div>
@@ -191,8 +190,8 @@
 
         <div class="grid grid-cols-12 gap-6">
             
-            <div class="col-span-12 lg:col-span-3">
-                <div id="journal-panel" class="hidden mb-6">
+            <div class="col-span-12 lg:col-span-3 flex flex-col gap-6">
+                <div id="journal-panel" class="hidden">
                     <div class="journal-paper p-4 border border-gray-300 min-h-[400px] max-h-[600px] overflow-y-auto shadow-xl relative transform -rotate-1">
                         <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-3 py-1 text-sm font-bold font-mono-code rotate-1">
                             JOURNAL DES OPÉRATIONS
@@ -209,97 +208,107 @@
                 </div>
             </div>
 
-            <div class="col-span-12 lg:col-span-9 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="col-span-12 lg:col-span-9 flex flex-col gap-10">
                 
-                <div class="flex flex-col gap-4">
-                    <h3 class="font-black text-xl italic uppercase border-l-4 border-[#ccff00] pl-2">Compte de Résultat</h3>
+                <div>
+                    <h3 class="font-black text-2xl italic uppercase border-l-8 border-[#ccff00] pl-3 mb-4">I. Compte de Résultat</h3>
                     
-                    <div class="ledger-container">
-                        <div class="bg-gray-200 p-2 font-bold text-center border-b-2 border-gray-900">CHARGES (Cl. 6)</div>
-                        <div class="p-2 space-y-2">
-                            <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="EXPLOIT">
-                                <div class="block-header"><span>Exploitation</span><span class="text-[0.6rem] opacity-70">60-65+68</span></div>
-                                <div id="zone-charge-exploit" class="min-h-[40px] space-y-1 mt-2"></div>
-                                <div class="zone-total" id="total-charge-exploit">0 €</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="ledger-container">
+                            <div class="bg-gray-200 p-2 font-bold text-center border-b-2 border-gray-900 flex justify-between items-center">
+                                <span>CHARGES (Débit)</span>
+                                <span class="text-xs bg-gray-900 text-white px-2 rounded">Cl. 6</span>
                             </div>
-                            <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="FINANCE">
-                                <div class="block-header"><span>Financières</span><span class="text-[0.6rem] opacity-70">66</span></div>
-                                <div id="zone-charge-finance" class="min-h-[40px] space-y-1 mt-2"></div>
-                                <div class="zone-total" id="total-charge-finance">0 €</div>
-                            </div>
-                            <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="EXCEP">
-                                <div class="block-header"><span>Exceptionnelles</span><span class="text-[0.6rem] opacity-70">67</span></div>
-                                <div id="zone-charge-excep" class="min-h-[40px] space-y-1 mt-2"></div>
-                                <div class="zone-total" id="total-charge-excep">0 €</div>
+                            <div class="p-3 space-y-3">
+                                <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="EXPLOIT">
+                                    <div class="block-header"><span>Exploitation</span><span class="text-[0.6rem] opacity-70">60-65+68</span></div>
+                                    <div id="zone-charge-exploit" class="min-h-[40px] space-y-1 mt-2"></div>
+                                    <div class="zone-total" id="total-charge-exploit">0 €</div>
+                                </div>
+                                <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="FINANCE">
+                                    <div class="block-header"><span>Financières</span><span class="text-[0.6rem] opacity-70">66</span></div>
+                                    <div id="zone-charge-finance" class="min-h-[40px] space-y-1 mt-2"></div>
+                                    <div class="zone-total" id="total-charge-finance">0 €</div>
+                                </div>
+                                <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="EXCEP">
+                                    <div class="block-header"><span>Exceptionnelles</span><span class="text-[0.6rem] opacity-70">67</span></div>
+                                    <div id="zone-charge-excep" class="min-h-[40px] space-y-1 mt-2"></div>
+                                    <div class="zone-total" id="total-charge-excep">0 €</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="ledger-container">
-                        <div class="bg-gray-200 p-2 font-bold text-center border-b-2 border-gray-900">PRODUITS (Cl. 7)</div>
-                        <div class="p-2 space-y-2">
-                            <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="EXPLOIT">
-                                <div class="block-header"><span>Exploitation</span><span class="text-[0.6rem] opacity-70">70-75</span></div>
-                                <div id="zone-produit-exploit" class="min-h-[40px] space-y-1 mt-2"></div>
-                                <div class="zone-total" id="total-produit-exploit">0 €</div>
+                        <div class="ledger-container">
+                            <div class="bg-gray-200 p-2 font-bold text-center border-b-2 border-gray-900 flex justify-between items-center">
+                                <span>PRODUITS (Crédit)</span>
+                                <span class="text-xs bg-gray-900 text-white px-2 rounded">Cl. 7</span>
                             </div>
-                            <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="FINANCE">
-                                <div class="block-header"><span>Financiers</span><span class="text-[0.6rem] opacity-70">76</span></div>
-                                <div id="zone-produit-finance" class="min-h-[40px] space-y-1 mt-2"></div>
-                                <div class="zone-total" id="total-produit-finance">0 €</div>
-                            </div>
-                            <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="EXCEP">
-                                <div class="block-header"><span>Exceptionnels</span><span class="text-[0.6rem] opacity-70">77</span></div>
-                                <div id="zone-produit-excep" class="min-h-[40px] space-y-1 mt-2"></div>
-                                <div class="zone-total" id="total-produit-excep">0 €</div>
+                            <div class="p-3 space-y-3">
+                                <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="EXPLOIT">
+                                    <div class="block-header"><span>Exploitation</span><span class="text-[0.6rem] opacity-70">70-75</span></div>
+                                    <div id="zone-produit-exploit" class="min-h-[40px] space-y-1 mt-2"></div>
+                                    <div class="zone-total" id="total-produit-exploit">0 €</div>
+                                </div>
+                                <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="FINANCE">
+                                    <div class="block-header"><span>Financiers</span><span class="text-[0.6rem] opacity-70">76</span></div>
+                                    <div id="zone-produit-finance" class="min-h-[40px] space-y-1 mt-2"></div>
+                                    <div class="zone-total" id="total-produit-finance">0 €</div>
+                                </div>
+                                <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="EXCEP">
+                                    <div class="block-header"><span>Exceptionnels</span><span class="text-[0.6rem] opacity-70">77</span></div>
+                                    <div id="zone-produit-excep" class="min-h-[40px] space-y-1 mt-2"></div>
+                                    <div class="zone-total" id="total-produit-excep">0 €</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="flex flex-col gap-4">
-                    <h3 class="font-black text-xl italic uppercase border-l-4 border-blue-500 pl-2">Bilan (Patrimoine)</h3>
+                <div>
+                    <h3 class="font-black text-2xl italic uppercase border-l-8 border-blue-500 pl-3 mb-4">II. Bilan (Patrimoine)</h3>
                     
-                    <div class="ledger-container border-blue-900">
-                        <div class="bg-blue-100 p-2 font-bold text-center border-b-2 border-blue-900 text-blue-900">ACTIF (Emplois)</div>
-                        <div class="p-2 space-y-2">
-                            <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="ACTIF" data-subtype="IMMO">
-                                <div class="block-header bg-blue-900"><span>Actif Immobilisé</span><span class="text-[0.6rem] opacity-70">Cl. 2 (Brut + Amort)</span></div>
-                                <div id="zone-actif-immo" class="min-h-[60px] space-y-1 mt-2"></div>
-                                <div class="zone-total" id="total-actif-immo">0 €</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="ledger-container border-blue-900">
+                            <div class="bg-blue-100 p-2 font-bold text-center border-b-2 border-blue-900 text-blue-900">ACTIF (Emplois)</div>
+                            <div class="p-3 space-y-3">
+                                <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="ACTIF" data-subtype="IMMO">
+                                    <div class="block-header bg-blue-900"><span>Actif Immobilisé</span><span class="text-[0.6rem] opacity-70">Cl. 2</span></div>
+                                    <div id="zone-actif-immo" class="min-h-[60px] space-y-1 mt-2"></div>
+                                    <div class="zone-total" id="total-actif-immo">0 €</div>
+                                </div>
+                                <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="ACTIF" data-subtype="CIRC">
+                                    <div class="block-header bg-blue-800"><span>Actif Circulant</span><span class="text-[0.6rem] opacity-70">Cl. 3, 4, 5</span></div>
+                                    <div id="zone-actif-circ" class="min-h-[60px] space-y-1 mt-2"></div>
+                                    <div class="zone-total" id="total-actif-circ">0 €</div>
+                                </div>
                             </div>
-                            <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="ACTIF" data-subtype="CIRC">
-                                <div class="block-header bg-blue-800"><span>Actif Circulant</span><span class="text-[0.6rem] opacity-70">Cl. 3, 4, 5</span></div>
-                                <div id="zone-actif-circ" class="min-h-[60px] space-y-1 mt-2"></div>
-                                <div class="zone-total" id="total-actif-circ">0 €</div>
+                            <div class="bg-blue-50 p-2 text-right font-black font-mono-code text-blue-900 border-t-2 border-blue-900">
+                                TOTAL ACTIF: <span id="grand-total-actif">0 €</span>
                             </div>
                         </div>
-                        <div class="bg-blue-50 p-2 text-right font-black font-mono-code text-blue-900 border-t-2 border-blue-900">
-                            TOTAL ACTIF: <span id="grand-total-actif">0 €</span>
-                        </div>
-                    </div>
 
-                    <div class="ledger-container border-red-900">
-                        <div class="bg-red-100 p-2 font-bold text-center border-b-2 border-red-900 text-red-900">PASSIF (Ressources)</div>
-                        <div class="p-2 space-y-2">
-                            <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PASSIF" data-subtype="CAPITAUX">
-                                <div class="block-header bg-red-900"><span>Capitaux Propres</span><span class="text-[0.6rem] opacity-70">Cl. 1 (Haut)</span></div>
-                                <div id="zone-passif-capitaux" class="min-h-[60px] space-y-1 mt-2"></div>
-                                <div class="zone-total" id="total-passif-capitaux">0 €</div>
+                        <div class="ledger-container border-red-900">
+                            <div class="bg-red-100 p-2 font-bold text-center border-b-2 border-red-900 text-red-900">PASSIF (Ressources)</div>
+                            <div class="p-3 space-y-3">
+                                <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PASSIF" data-subtype="CAPITAUX">
+                                    <div class="block-header bg-red-900"><span>Capitaux Propres</span><span class="text-[0.6rem] opacity-70">Cl. 1 (Haut)</span></div>
+                                    <div id="zone-passif-capitaux" class="min-h-[60px] space-y-1 mt-2"></div>
+                                    <div class="zone-total" id="total-passif-capitaux">0 €</div>
+                                </div>
+                                <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PASSIF" data-subtype="DETTES">
+                                    <div class="block-header bg-red-800"><span>Dettes</span><span class="text-[0.6rem] opacity-70">Cl. 16, 40, 42...</span></div>
+                                    <div id="zone-passif-dettes" class="min-h-[60px] space-y-1 mt-2"></div>
+                                    <div class="zone-total" id="total-passif-dettes">0 €</div>
+                                </div>
                             </div>
-                            <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PASSIF" data-subtype="DETTES">
-                                <div class="block-header bg-red-800"><span>Dettes</span><span class="text-[0.6rem] opacity-70">Cl. 16, 40, 42...</span></div>
-                                <div id="zone-passif-dettes" class="min-h-[60px] space-y-1 mt-2"></div>
-                                <div class="zone-total" id="total-passif-dettes">0 €</div>
+                             <div class="bg-red-50 p-2 text-right font-black font-mono-code text-red-900 border-t-2 border-red-900">
+                                TOTAL PASSIF: <span id="grand-total-passif">0 €</span>
                             </div>
-                        </div>
-                         <div class="bg-red-50 p-2 text-right font-black font-mono-code text-red-900 border-t-2 border-red-900">
-                            TOTAL PASSIF: <span id="grand-total-passif">0 €</span>
                         </div>
                     </div>
                 </div>
+
             </div>
-
         </div>
     </div>
 
@@ -416,16 +425,12 @@
             updateCalculations();
         }
 
-        // ========================
-        // LOGIC-DRIVEN HARDCORE
-        // ========================
         function initHardcoreMode() {
             gameItems = [];
             const journalDiv = document.getElementById('journal-content');
             const ledger = {}; 
             const durationMul = parseInt(document.getElementById('game-duration').value);
 
-            // STATE TRACKING FOR LOGIC
             let currentSupplierDebt = 0;
             let currentCustomerReceivable = 0;
 
@@ -454,25 +459,18 @@
                 return currentDate.toLocaleDateString('fr-FR');
             };
 
-            // 1. CAPITAL (Always Start)
             const capital = 20000 + (Math.floor(Math.random() * 10) * 1000);
             impact("Capital Social", TYPES.PASSIF, SUBS.CAPITAUX, '101', capital, false);
             impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', capital, true);
             addEntry("01/01/2024", `Apport en capital de ${capital}€.`);
 
-            // LOOPS WITH LOGIC
             const loops = 3 * durationMul; 
             for(let i=0; i<loops; i++) {
                 const rand = Math.random();
-                
-                // DECISION TREE
                 let action = '';
                 
-                // Si on a des dettes, on peut payer (30% chance)
                 if (currentSupplierDebt > 500 && Math.random() > 0.6) action = 'PAY_DEBT';
-                // Si on a des créances, on peut encaisser (30% chance)
                 else if (currentCustomerReceivable > 500 && Math.random() > 0.6) action = 'RECEIVE_PAYMENT';
-                // Sinon opération courante
                 else {
                     if(rand < 0.4) action = 'BUY_STOCK';
                     else if(rand < 0.7) action = 'SELL_GOODS';
@@ -480,23 +478,21 @@
                 }
 
                 if (action === 'PAY_DEBT') {
-                    // Paye entre 50% et 100% de la dette
                     const amount = Math.floor(currentSupplierDebt * (0.5 + Math.random() * 0.5));
-                    impact("Dettes Fournisseurs", TYPES.PASSIF, SUBS.DETTES, '401', amount, true); // Debit dette
+                    impact("Dettes Fournisseurs", TYPES.PASSIF, SUBS.DETTES, '401', amount, true); 
                     impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', amount, false);
                     currentSupplierDebt -= amount;
                     addEntry(nextDate(), `Paiement partiel fournisseur (${amount}€).`);
                 } 
                 else if (action === 'RECEIVE_PAYMENT') {
                     const amount = Math.floor(currentCustomerReceivable * (0.5 + Math.random() * 0.5));
-                    impact("Créances Clients", TYPES.ACTIF, SUBS.CIRC, '411', amount, false); // Credit créance
+                    impact("Créances Clients", TYPES.ACTIF, SUBS.CIRC, '411', amount, false); 
                     impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', amount, true);
                     currentCustomerReceivable -= amount;
                     addEntry(nextDate(), `Encaissement client (${amount}€).`);
                 }
                 else if (action === 'BUY_STOCK') {
                     const amount = Math.floor(Math.random() * 2000) + 500;
-                    // 70% Credit, 30% Cash
                     if(Math.random() > 0.3) {
                         impact("Achat Marchandises", TYPES.CHARGE, SUBS.EXPLOIT, '607', amount, true);
                         impact("Dettes Fournisseurs", TYPES.PASSIF, SUBS.DETTES, '401', amount, false);
@@ -510,7 +506,6 @@
                 }
                 else if (action === 'SELL_GOODS') {
                     const amount = Math.floor(Math.random() * 3000) + 1000;
-                    // 60% Credit, 40% Cash
                     if(Math.random() > 0.4) {
                         impact("Vente Marchandises", TYPES.PRODUIT, SUBS.EXPLOIT, '707', amount, false);
                         impact("Créances Clients", TYPES.ACTIF, SUBS.CIRC, '411', amount, true);
@@ -530,7 +525,6 @@
                 }
             }
 
-            // IMMO & DAP
             const immoPrice = 6000;
             const years = 5;
             impact("Matériel Industriel", TYPES.ACTIF, SUBS.IMMO, '215', immoPrice, true);
@@ -542,7 +536,6 @@
             impact("Amortissements Cumulés", TYPES.ACTIF, SUBS.IMMO, '281', dap, false); 
             addEntry("31/12/2024", `Inventaire : Enregistrement de l'amortissement du matériel.`);
 
-            // RESULTAT
             let tC = 0, tP = 0;
             Object.values(ledger).forEach(acc => {
                 if(acc.type === TYPES.CHARGE) tC += acc.balance;
