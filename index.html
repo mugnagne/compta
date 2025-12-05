@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compta Neuille - V17 TUTORIAL</title>
+    <title>Compta Neuille - V18 TUTO & VIP</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,700&family=Roboto+Mono:wght@400;700&family=Inter:wght@400;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
@@ -153,81 +153,138 @@
             color: #4b5563;
             line-height: 1.5;
         }
+        
+        .tuto-slide { display: none; }
+        .tuto-slide.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="selection:bg-[#ccff00] min-h-screen relative">
 
+    <!-- TUTO MODAL -->
     <div id="tuto-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden flex items-center justify-center z-[70] backdrop-blur-sm p-4">
-        <div class="bg-white border-4 border-gray-900 p-6 md:p-8 relative max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-[15px_15px_0px_0px_rgba(255,255,255,0.2)]" style="border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;">
+        <div class="bg-white border-4 border-gray-900 p-6 md:p-8 relative max-w-3xl w-full shadow-[15px_15px_0px_0px_rgba(255,255,255,0.2)] flex flex-col" style="border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; min-height: 500px;">
             
-            <button onclick="closeTuto()" class="absolute top-4 right-6 text-4xl font-bold text-gray-400 hover:text-red-500 transition-colors cursor-pointer">&times;</button>
+            <button onclick="closeTuto()" class="absolute top-4 right-6 text-4xl font-bold text-gray-400 hover:text-red-500 transition-colors cursor-pointer z-50">&times;</button>
             
-            <h2 class="text-3xl md:text-4xl font-black font-mono-code uppercase mb-8 border-b-4 border-[#ccff00] inline-block transform -rotate-1">
-                Le Petit Guide du Comptable
-            </h2>
-
-            <div class="grid md:grid-cols-2 gap-8">
-                <div>
-                    <div class="tuto-section">
-                        <h3 class="tuto-title">1. CDR vs BILAN : Le Duel</h3>
-                        <p class="tuto-text">
-                            <strong>Le Compte de Résultat (Haut) :</strong> C'est le film de l'année.<br>
-                            - <span class="bg-red-100 px-1 font-bold">Charges :</span> Ce qui appauvrit l'entreprise (Loyer, Salaires, Achats consommés).<br>
-                            - <span class="bg-green-100 px-1 font-bold">Produits :</span> Ce qui enrichit l'entreprise (Ventes).<br>
-                            👉 <em>La différence donne le Résultat Net.</em>
-                        </p>
-                    </div>
-
-                    <div class="tuto-section">
-                        <h3 class="tuto-title">2. Le Bilan (Bas) : La Photo</h3>
-                        <p class="tuto-text">
-                            C'est le patrimoine à un instant T.<br>
-                            - <span class="bg-blue-100 px-1 font-bold">Actif (Gauche) :</span> Ce que l'entreprise possède (Immeuble, Stock, Argent en banque).<br>
-                            - <span class="bg-red-100 px-1 font-bold">Passif (Droite) :</span> D'où vient l'argent (Capital des actionnaires, Dettes fournisseurs, Emprunts).
-                        </p>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="tuto-section">
-                        <h3 class="tuto-title">3. La Règle d'Or</h3>
-                        <p class="tuto-text font-mono-code bg-gray-100 p-2 rounded border border-gray-300 text-center text-sm md:text-base">
-                            ACTIF = PASSIF
-                        </p>
-                        <p class="tuto-text mt-2">
-                            L'argent ne disparaît jamais. Si j'emprunte 10 000€ (Passif +), j'ai 10 000€ en banque (Actif +). L'équilibre doit être parfait. Le <strong>Résultat Net</strong> (bénéfice ou perte) fait le lien entre les deux tableaux.
-                        </p>
-                    </div>
-
-                    <div class="tuto-section">
-                        <h3 class="tuto-title text-red-600">4. Mode Hardcore 🔥</h3>
-                        <p class="tuto-text">
-                            Ici, pas de montants pré-calculés !<br>
-                            1. Lis le <strong>Journal des Opérations</strong> à gauche.<br>
-                            2. Fais le calcul des soldes (Total Débit - Total Crédit) pour chaque compte.<br>
-                            3. Saisis le montant dans la case blanche.<br>
-                            ⚠️ <em>Attention aux amortissements : il faut calculer l'usure des machines au prorata (temps d'utilisation sur l'année).</em>
-                        </p>
-                    </div>
+            <!-- HEADER -->
+            <div class="mb-6 border-b-2 border-gray-100 pb-4">
+                <h2 class="text-3xl font-black font-mono-code uppercase border-b-4 border-[#ccff00] inline-block transform -rotate-1">
+                    Guide du Comptable
+                </h2>
+                <div class="flex gap-2 mt-2" id="tuto-dots">
+                    <div class="w-3 h-3 rounded-full bg-gray-300"></div>
+                    <div class="w-3 h-3 rounded-full bg-gray-300"></div>
+                    <div class="w-3 h-3 rounded-full bg-gray-300"></div>
                 </div>
             </div>
 
-            <div class="mt-8 text-center">
-                <button onclick="closeTuto()" class="px-8 py-3 bg-gray-900 text-[#ccff00] font-bold uppercase tracking-widest hover:bg-[#ccff00] hover:text-gray-900 border-2 border-gray-900 transition-colors shadow-lg cursor-pointer rounded-sm">
-                    J'ai compris, au boulot !
+            <!-- SLIDES -->
+            <div class="flex-grow">
+                
+                <!-- SLIDE 1 : LA THEORIE -->
+                <div id="tuto-slide-1" class="tuto-slide active">
+                    <div class="tuto-section">
+                        <h3 class="tuto-title">1. Les Bases de la Compta</h3>
+                        <p class="tuto-text mb-4">
+                            Bienvenue, jeune auditeur. La comptabilité repose sur deux tableaux fondamentaux :
+                        </p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                                <h4 class="font-bold text-gray-900">⚡ CDR (Compte de Résultat)</h4>
+                                <p class="text-xs mt-1 text-gray-500">C'est le <strong>FILM</strong> de l'année.</p>
+                                <ul class="text-sm mt-2 list-disc pl-4 text-gray-700">
+                                    <li><strong>Charges :</strong> Ce qu'on consomme (Loyer, Salaire).</li>
+                                    <li><strong>Produits :</strong> Ce qu'on gagne (Ventes).</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                                <h4 class="font-bold text-gray-900">🏛️ BILAN (Patrimoine)</h4>
+                                <p class="text-xs mt-1 text-gray-500">C'est la <strong>PHOTO</strong> à la fin.</p>
+                                <ul class="text-sm mt-2 list-disc pl-4 text-gray-700">
+                                    <li><strong>Actif :</strong> Ce qu'on possède (Stock, Ordi).</li>
+                                    <li><strong>Passif :</strong> D'où vient l'argent (Dettes, Capital).</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 2 : LE GAMEPLAY -->
+                <div id="tuto-slide-2" class="tuto-slide">
+                    <div class="tuto-section">
+                        <h3 class="tuto-title">2. Comment jouer ?</h3>
+                        <p class="tuto-text mb-4">
+                            L'objectif est simple : <strong>Classer les opérations</strong> pour que le Bilan soit équilibré (Actif = Passif).
+                        </p>
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-3">
+                                <span class="text-2xl">👉</span>
+                                <div>
+                                    <strong>Drag & Drop :</strong> Prends les cartes dans la zone "Flux Entrant" à gauche et glisse-les dans la bonne case à droite.
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="text-2xl">✅</span>
+                                <div>
+                                    <strong>Vérifier :</strong> Clique sur le bouton en bas pour voir tes erreurs.
+                                    <br><span class="text-xs text-gray-500">Vert = OK, Rouge = Mauvaise case.</span>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="text-2xl">⚖️</span>
+                                <div>
+                                    <strong>Équilibre :</strong> Surveille l'indicateur en bas. Tant que l'Actif n'est pas égal au Passif, tu ne peux pas gagner !
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 3 : LES BONUS -->
+                <div id="tuto-slide-3" class="tuto-slide">
+                    <div class="tuto-section">
+                        <h3 class="tuto-title">3. Fonctionnalités Avancées</h3>
+                        <p class="tuto-text mb-4">
+                            Pour les vrais experts qui n'ont pas peur du fisc.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="p-2 bg-yellow-50 border-l-4 border-yellow-400">
+                                <strong>🔥 Mode Hardcore :</strong> Les montants disparaissent ! Tu dois lire le <em>Journal des Opérations</em> et calculer toi-même les sommes à saisir. Attention aux amortissements !
+                            </li>
+                            <li class="p-2 bg-blue-50 border-l-4 border-blue-400">
+                                <strong>🤖 Export IA :</strong> Tu es bloqué ? Clique sur "Exporter pour IA". Ça génère un fichier texte que tu peux envoyer à ChatGPT pour qu'il corrige ton exercice comme un prof.
+                            </li>
+                            <li class="p-2 bg-gray-50 border-l-4 border-gray-400">
+                                <strong>🎚️ Durée :</strong> Utilise le slider en haut pour générer un exercice plus long avec plus de pièges.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- FOOTER NAV -->
+            <div class="mt-6 flex justify-between items-center pt-4 border-t-2 border-gray-100">
+                <button onclick="changeSlide(-1)" id="prev-btn" class="px-4 py-2 text-gray-500 font-bold hover:text-gray-900 disabled:opacity-30 disabled:cursor-not-allowed">
+                    ← Précédent
+                </button>
+                <button onclick="changeSlide(1)" id="next-btn" class="px-6 py-3 bg-gray-900 text-[#ccff00] font-bold uppercase tracking-widest hover:bg-[#ccff00] hover:text-gray-900 border-2 border-gray-900 transition-colors shadow-lg cursor-pointer rounded-sm">
+                    Suivant
+                </button>
+                <button onclick="closeTuto()" id="finish-btn" class="hidden px-6 py-3 bg-[#ccff00] text-gray-900 font-bold uppercase tracking-widest hover:bg-white border-2 border-gray-900 transition-colors shadow-lg cursor-pointer rounded-sm">
+                    C'est parti !
                 </button>
             </div>
         </div>
     </div>
 
+    <!-- VICTORY MODAL -->
     <div id="victory-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden flex items-center justify-center z-[100] backdrop-blur-sm">
         <div class="bg-white border-4 border-gray-900 p-8 relative max-w-md w-full text-center shadow-[10px_10px_0px_0px_#dc2626] animate-pop" style="border-radius: 5px 25px 5px 25px;">
             <button onclick="closeModal()" class="absolute top-2 right-4 text-3xl font-bold text-gray-400 hover:text-gray-900 transition-colors cursor-pointer">&times;</button>
-            <div class="relative z-10">
-                <img src="https://i.redd.it/i-just-started-in-pixel-art-and-i-found-my-place-here-im-v0-rinjy9fqy4p81.png?width=1024&format=png&auto=webp&s=a237871800a73431f0d9b4c745e73b1b49b3c637" 
-                     alt="Pixel Art Victory" class="w-32 h-32 mx-auto mb-4 border-4 border-gray-900 rounded-full bg-[#ccff00] pixelated-img object-cover">
-                <h2 class="text-4xl font-black font-mono-code uppercase text-[#dc2626] leading-tight mb-2 transform -rotate-2">Félicitations<br>Camarade !</h2>
-                <p id="victory-msg" class="font-serif-header italic text-gray-600 text-sm mt-4">"Les comptes sont exacts."</p>
+            <div class="relative z-10" id="victory-content">
+                <!-- Content injected via JS -->
             </div>
         </div>
     </div>
@@ -240,7 +297,7 @@
                     <h1 class="text-3xl md:text-4xl font-extrabold tracking-tighter uppercase italic transform -rotate-1">
                         Compta<span class="text-[#ccff00] bg-gray-900 px-2">Neuille</span>
                     </h1>
-                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V17 TUTORIAL</span>
+                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V18 TUTO & VIP</span>
                 </div>
                 <h2 id="company-name" class="mt-2 text-xl font-serif-header font-bold text-gray-800 border-b-2 border-[#ccff00] inline-block">Chargement...</h2>
             </div>
@@ -416,9 +473,33 @@
         let currentCompanyName = "";
         let journalEntries = [];
 
+        // --- VICTOIRE : LES VIPs ---
+        const winners = [
+            { 
+                name: "Napoléon", 
+                img: "https://preview.redd.it/v1dgm9hm3sp91.png?auto=webp&s=d7a42b8398951654be0ae5c87f6fecf478c86044", 
+                quote: "Impossible n'est pas comptable.<br>Une victoire stratégique éclatante !"
+            },
+            { 
+                name: "Ichiban Kasuga", 
+                img: "https://gamejolt.com/p/portrait-of-ichiban-kasuga-wearing-yellow-headphones-for-an-art-com-f4dyrphy", 
+                quote: "Critique Hit sur le Bilan !<br>Tu as passé le niveau, Kyodai !"
+            },
+            { 
+                name: "Neymar JR", 
+                img: "https://www.pixelart.name/wp-content/uploads/2024/01/pixelart_name_footballer_neymar_difficult.png", 
+                quote: "GOOOOOAL !<br>Un équilibre technique tout simplement parfait."
+            },
+            { 
+                name: "Michel Houellebecq", 
+                img: "https://image.noelshack.com/fichiers/2025/49/5/1764928236-houellbcq.png", 
+                quote: "Dans un monde froid et vide,<br>ce bilan équilibré est la seule vérité tangible."
+            }
+        ];
+
+        // CONFIG
         const prefixes = ["Boulangerie", "Garage", "Start-up", "Cabinet", "Boucherie", "Agence", "Pizzeria", "Crèche", "Pharmacie", "EHPAD"];
         const suffixes = ["'Chez Dédé'", "'Le Gouffre'", "'L'Optimiste'", "'Dernier Recours'", "'Le Blanchisseur'", "'Au Bonheur'"];
-        const suppliers = ["Sologest", "Manuflex", "Trans'Ap", "BuroPlus", "Enerco", "ImmoPro", "TechCorp"];
         
         const TYPES = { CHARGE: 'CHARGE', PRODUIT: 'PRODUIT', ACTIF: 'ACTIF', PASSIF: 'PASSIF' };
         const SUBS = { EXPLOIT: 'EXPLOIT', FINANCE: 'FINANCE', EXCEP: 'EXCEP', IMMO: 'IMMO', CIRC: 'CIRC', CAPITAUX: 'CAPITAUX', DETTES: 'DETTES' };
@@ -435,13 +516,50 @@
 
         let gameItems = [];
 
-        // --- TUTO FUNCTIONS ---
+        // --- TUTO ENGINE ---
+        let currentSlide = 1;
+        const totalSlides = 3;
+
         function openTuto() {
             document.getElementById('tuto-modal').classList.remove('hidden');
+            showSlide(1);
         }
         function closeTuto() {
             document.getElementById('tuto-modal').classList.add('hidden');
         }
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+        function showSlide(n) {
+            if (n < 1 || n > totalSlides) return;
+            currentSlide = n;
+            
+            // Hide all
+            for(let i=1; i<=totalSlides; i++) {
+                document.getElementById(`tuto-slide-${i}`).classList.remove('active');
+            }
+            // Show current
+            document.getElementById(`tuto-slide-${currentSlide}`).classList.add('active');
+
+            // Dots update
+            const dots = document.getElementById('tuto-dots').children;
+            for(let i=0; i<dots.length; i++) {
+                dots[i].className = (i+1 === currentSlide) ? "w-3 h-3 rounded-full bg-[#ccff00] border border-gray-900" : "w-3 h-3 rounded-full bg-gray-300";
+            }
+
+            // Buttons state
+            document.getElementById('prev-btn').disabled = (currentSlide === 1);
+            
+            if(currentSlide === totalSlides) {
+                document.getElementById('next-btn').classList.add('hidden');
+                document.getElementById('finish-btn').classList.remove('hidden');
+            } else {
+                document.getElementById('next-btn').classList.remove('hidden');
+                document.getElementById('finish-btn').classList.add('hidden');
+            }
+        }
+
+        // --- GAME LOGIC ---
 
         function setDifficulty(mode) {
             currentDifficulty = mode;
@@ -485,7 +603,6 @@
         function initStandardMode() {
             gameItems = [];
             const selection = [...DATABASE_EASY].sort(() => 0.5 - Math.random()).slice(0, 10);
-            
             let tC = 0, tP = 0, tA = 0, tPas = 0;
 
             selection.forEach((op, i) => {
@@ -789,6 +906,16 @@
 
             if(errors === 0 && left === 0 && bal) {
                 btn.innerText = "Parfait !";
+                
+                // RANDOM WINNER GENERATOR
+                const winner = winners[Math.floor(Math.random() * winners.length)];
+                const victoryContent = `
+                    <img src="${winner.img}" alt="${winner.name}" class="w-32 h-32 mx-auto mb-4 border-4 border-gray-900 rounded-full bg-[#ccff00] pixelated-img object-cover">
+                    <h2 class="text-4xl font-black font-mono-code uppercase text-[#dc2626] leading-tight mb-2 transform -rotate-2">${winner.name}</h2>
+                    <p class="font-serif-header italic text-gray-600 text-sm mt-4">"${winner.quote}"</p>
+                `;
+                
+                document.getElementById('victory-content').innerHTML = victoryContent;
                 document.getElementById('victory-modal').classList.remove('hidden');
             } else {
                 btn.innerText = `${errors} Erreurs / ${left} Restants`;
@@ -840,9 +967,9 @@
         
         // Show Tuto on First Load only
         window.addEventListener('DOMContentLoaded', () => {
-            if(!localStorage.getItem('tutoSeen')) {
+            if(!localStorage.getItem('tutoSeenV18')) {
                 openTuto();
-                localStorage.setItem('tutoSeen', 'true');
+                localStorage.setItem('tutoSeenV18', 'true');
             }
             initGame();
         });
