@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compta Neuille - V20 SIG UPDATE</title>
+    <title>Compta Boostée - V21 SIG ULTIMATE</title>
+    
+    <link rel="icon" href="https://iili.io/fuLcJvs.png" type="image/png">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,700&family=Roboto+Mono:wght@400;700&family=Inter:wght@400;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
@@ -53,37 +56,57 @@
             border: 3px solid var(--dark);
             padding: 1rem;
             text-align: center;
-            font-weight: bold;
-            border-radius: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-family: 'Roboto Mono', monospace;
+            border-radius: 4px;
             position: relative;
             transition: all 0.2s;
-            cursor: default;
+            cursor: pointer;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1);
         }
-        .sig-box.has-info { cursor: pointer; }
-        .sig-box.has-info:hover {
+        .sig-box:hover {
             background-color: var(--neon-yellow);
-            box-shadow: 4px 4px 0px 0px var(--dark);
-            transform: scale(1.02);
+            box-shadow: 5px 5px 0px 0px var(--dark);
+            transform: translate(-2px, -2px);
         }
-        .sig-comment {
+        
+        .sig-bubble {
             display: none;
+            position: absolute;
+            left: 105%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 250px;
             border: 2px dashed var(--dark);
             background: #fffbeb;
             padding: 10px;
             font-size: 0.85rem;
-            margin-top: 10px;
             text-align: left;
             font-weight: normal;
-            border-radius: 5px;
+            border-radius: 10px;
+            font-family: 'Gloria Hallelujah', cursive;
+            z-index: 20;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
         }
+        
+        /* Flèche de liaison */
         .arrow-down {
-            width: 2px;
-            height: 20px;
+            width: 0; 
+            height: 0; 
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 15px solid var(--dark);
+            margin: 10px auto;
+        }
+        .line-down {
+            width: 4px;
+            height: 25px;
             background: var(--dark);
             margin: 0 auto;
         }
 
-        /* INPUTS & ZONES */
+        /* GENERAL UI */
         .drop-zone {
             transition: background-color 0.3s, border-color 0.3s;
             border: 2px dashed #9ca3af;
@@ -94,8 +117,19 @@
         .block-header { background: var(--dark); color: #fff; padding: 4px 8px; font-family: 'Roboto Mono', monospace; font-size: 0.75rem; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
         .zone-total { margin-top: auto; border-top: 2px dotted var(--dark); padding-top: 4px; text-align: right; font-family: 'Roboto Mono', monospace; font-weight: bold; font-size: 0.8rem; color: var(--dark); }
         .journal-paper { background-color: #fefce8; background-image: repeating-linear-gradient(var(--ledger-line) 0 1px, transparent 1px 100%); background-size: 100% 2rem; line-height: 2rem; box-shadow: 5px 5px 15px rgba(0,0,0,0.1); border-left: 4px double #ef4444; }
-        .hardcore-input { border: none; border-bottom: 2px solid var(--dark); background: #f3f4f6; text-align: right; font-family: 'Roboto Mono', monospace; width: 80px; font-weight: bold; color: #2563eb; }
-        .hardcore-input:focus { outline: none; background: #e0f2fe; border-color: #2563eb; }
+        
+        .hardcore-input { 
+            border: none; 
+            border-bottom: 3px solid var(--dark); 
+            background: rgba(0,0,0,0.05); 
+            text-align: right; 
+            font-family: 'Roboto Mono', monospace; 
+            width: 100px; 
+            font-weight: bold; 
+            color: var(--dark); 
+            padding-right: 5px;
+        }
+        .hardcore-input:focus { outline: none; background: #ccff00; }
         
         .diff-btn { transition: all 0.2s; }
         .diff-btn.active { background-color: var(--neon-yellow); color: var(--dark); font-weight: 800; box-shadow: inset 2px 2px 0px rgba(0,0,0,0.1); }
@@ -109,6 +143,24 @@
         .nav-tab { cursor: pointer; padding: 10px 20px; font-weight: bold; font-family: 'Roboto Mono'; border-top-left-radius: 8px; border-top-right-radius: 8px; border: 2px solid transparent; border-bottom: none; opacity: 0.6; }
         .nav-tab.active { background: #f3f4f6; border-color: var(--dark); border-bottom: 2px solid #f3f4f6; opacity: 1; color: var(--dark); transform: translateY(2px); }
         .nav-tab:hover:not(.active) { opacity: 1; background: rgba(255,255,255,0.5); }
+
+        /* BUTTON STYLE (Reused) */
+        .action-btn {
+            padding: 0.5rem 1rem;
+            background-color: white;
+            border: 2px solid var(--dark);
+            box-shadow: 3px 3px 0px 0px var(--neon-yellow);
+            font-weight: bold;
+            font-family: 'Roboto Mono', monospace;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+        .action-btn:hover {
+            box-shadow: none;
+            transform: translate(2px, 2px);
+        }
     </style>
 </head>
 <body class="selection:bg-[#ccff00] min-h-screen relative">
@@ -125,16 +177,16 @@
         <header class="mb-2 flex flex-col xl:flex-row justify-between items-end border-b-4 border-gray-900 pb-4 border-double gap-4">
             <div>
                 <div class="flex items-center gap-3">
-                    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tighter uppercase italic transform -rotate-1">
-                        Compta<span class="text-[#ccff00] bg-gray-900 px-2">Neuille</span>
+                    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tighter uppercase italic transform -rotate-1">
+                        COMPTA<span class="text-[#ccff00] bg-gray-900 px-2 transform skew-x-12 inline-block">BOOSTÉE</span>
                     </h1>
-                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V20 SIG</span>
+                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V21 ULTIMATE</span>
                 </div>
                 <h2 id="company-name" class="mt-2 text-xl font-serif-header font-bold text-gray-800 border-b-2 border-[#ccff00] inline-block">Chargement...</h2>
             </div>
         </header>
 
-        <div class="flex border-b-2 border-gray-900 mb-6">
+        <div class="flex border-b-4 border-gray-900 mb-8">
             <div id="tab-1" onclick="switchChapter(1)" class="nav-tab active">CHAP 1 : BILAN & CDR</div>
             <div id="tab-2" onclick="switchChapter(2)" class="nav-tab">CHAP 2 : LES S.I.G</div>
         </div>
@@ -152,7 +204,7 @@
                     <button onclick="setDifficulty('NORMAL')" id="btn-normal" class="diff-btn px-3 py-1 font-mono-code text-xs font-bold rounded-sm hover:bg-gray-100">NORMAL</button>
                     <button onclick="setDifficulty('HARDCORE')" id="btn-hardcore" class="diff-btn px-3 py-1 font-mono-code text-xs font-bold rounded-sm hover:bg-gray-100 text-red-600">HARDCORE 🔥</button>
                 </div>
-                <button onclick="initGame()" class="px-4 py-2 bg-white border-2 border-gray-900 shadow-[3px_3px_0px_0px_#ccff00] hover:shadow-none font-bold font-mono-code uppercase text-xs cursor-pointer">⚡ Reset</button>
+                <button onclick="initGame()" class="action-btn">⚡ Reset</button>
             </div>
 
             <div class="grid grid-cols-12 gap-6">
@@ -176,29 +228,17 @@
                             <div class="ledger-container">
                                 <div class="bg-gray-200 p-2 font-bold text-center border-b-2 border-gray-900 flex justify-between items-center"><span>CHARGES (Débit)</span><span class="text-xs bg-gray-900 text-white px-2 rounded">Cl. 6</span></div>
                                 <div class="p-3 space-y-3">
-                                    <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="EXPLOIT">
-                                        <div class="block-header"><span>Exploitation</span><span class="text-[0.6rem] opacity-70">60-65+68</span></div><div id="zone-charge-exploit" class="min-h-[40px] space-y-1 mt-2"></div><div class="zone-total" id="total-charge-exploit">0 €</div>
-                                    </div>
-                                    <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="FINANCE">
-                                        <div class="block-header"><span>Financières</span><span class="text-[0.6rem] opacity-70">66</span></div><div id="zone-charge-finance" class="min-h-[40px] space-y-1 mt-2"></div><div class="zone-total" id="total-charge-finance">0 €</div>
-                                    </div>
-                                    <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="EXCEP">
-                                        <div class="block-header"><span>Exceptionnelles</span><span class="text-[0.6rem] opacity-70">67</span></div><div id="zone-charge-excep" class="min-h-[40px] space-y-1 mt-2"></div><div class="zone-total" id="total-charge-excep">0 €</div>
-                                    </div>
+                                    <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="EXPLOIT"><div class="block-header"><span>Exploitation</span><span class="text-[0.6rem] opacity-70">60-65+68</span></div><div id="zone-charge-exploit" class="min-h-[40px] space-y-1 mt-2"></div><div class="zone-total" id="total-charge-exploit">0 €</div></div>
+                                    <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="FINANCE"><div class="block-header"><span>Financières</span><span class="text-[0.6rem] opacity-70">66</span></div><div id="zone-charge-finance" class="min-h-[40px] space-y-1 mt-2"></div><div class="zone-total" id="total-charge-finance">0 €</div></div>
+                                    <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="EXCEP"><div class="block-header"><span>Exceptionnelles</span><span class="text-[0.6rem] opacity-70">67</span></div><div id="zone-charge-excep" class="min-h-[40px] space-y-1 mt-2"></div><div class="zone-total" id="total-charge-excep">0 €</div></div>
                                 </div>
                             </div>
                             <div class="ledger-container">
                                 <div class="bg-gray-200 p-2 font-bold text-center border-b-2 border-gray-900 flex justify-between items-center"><span>PRODUITS (Crédit)</span><span class="text-xs bg-gray-900 text-white px-2 rounded">Cl. 7</span></div>
                                 <div class="p-3 space-y-3">
-                                    <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="EXPLOIT">
-                                        <div class="block-header"><span>Exploitation</span><span class="text-[0.6rem] opacity-70">70-75</span></div><div id="zone-produit-exploit" class="min-h-[40px] space-y-1 mt-2"></div><div class="zone-total" id="total-produit-exploit">0 €</div>
-                                    </div>
-                                    <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="FINANCE">
-                                        <div class="block-header"><span>Financiers</span><span class="text-[0.6rem] opacity-70">76</span></div><div id="zone-produit-finance" class="min-h-[40px] space-y-1 mt-2"></div><div class="zone-total" id="total-produit-finance">0 €</div>
-                                    </div>
-                                    <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="EXCEP">
-                                        <div class="block-header"><span>Exceptionnels</span><span class="text-[0.6rem] opacity-70">77</span></div><div id="zone-produit-excep" class="min-h-[40px] space-y-1 mt-2"></div><div class="zone-total" id="total-produit-excep">0 €</div>
-                                    </div>
+                                    <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="EXPLOIT"><div class="block-header"><span>Exploitation</span><span class="text-[0.6rem] opacity-70">70-75</span></div><div id="zone-produit-exploit" class="min-h-[40px] space-y-1 mt-2"></div><div class="zone-total" id="total-produit-exploit">0 €</div></div>
+                                    <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="FINANCE"><div class="block-header"><span>Financiers</span><span class="text-[0.6rem] opacity-70">76</span></div><div id="zone-produit-finance" class="min-h-[40px] space-y-1 mt-2"></div><div class="zone-total" id="total-produit-finance">0 €</div></div>
+                                    <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="EXCEP"><div class="block-header"><span>Exceptionnels</span><span class="text-[0.6rem] opacity-70">77</span></div><div id="zone-produit-excep" class="min-h-[40px] space-y-1 mt-2"></div><div class="zone-total" id="total-produit-excep">0 €</div></div>
                                 </div>
                             </div>
                         </div>
@@ -209,24 +249,16 @@
                             <div class="ledger-container border-blue-900">
                                 <div class="bg-blue-100 p-2 font-bold text-center border-b-2 border-blue-900 text-blue-900">ACTIF (Emplois)</div>
                                 <div class="p-3 space-y-3">
-                                    <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="ACTIF" data-subtype="IMMO">
-                                        <div class="block-header bg-blue-900"><span>Actif Immobilisé</span><span class="text-[0.6rem] opacity-70">Cl. 2</span></div><div id="zone-actif-immo" class="min-h-[60px] space-y-1 mt-2"></div><div class="zone-total" id="total-actif-immo">0 €</div>
-                                    </div>
-                                    <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="ACTIF" data-subtype="CIRC">
-                                        <div class="block-header bg-blue-800"><span>Actif Circulant</span><span class="text-[0.6rem] opacity-70">Cl. 3, 4, 5</span></div><div id="zone-actif-circ" class="min-h-[60px] space-y-1 mt-2"></div><div class="zone-total" id="total-actif-circ">0 €</div>
-                                    </div>
+                                    <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="ACTIF" data-subtype="IMMO"><div class="block-header bg-blue-900"><span>Actif Immobilisé</span><span class="text-[0.6rem] opacity-70">Cl. 2</span></div><div id="zone-actif-immo" class="min-h-[60px] space-y-1 mt-2"></div><div class="zone-total" id="total-actif-immo">0 €</div></div>
+                                    <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="ACTIF" data-subtype="CIRC"><div class="block-header bg-blue-800"><span>Actif Circulant</span><span class="text-[0.6rem] opacity-70">Cl. 3, 4, 5</span></div><div id="zone-actif-circ" class="min-h-[60px] space-y-1 mt-2"></div><div class="zone-total" id="total-actif-circ">0 €</div></div>
                                 </div>
                                 <div class="bg-blue-50 p-2 text-right font-black font-mono-code text-blue-900 border-t-2 border-blue-900">TOTAL ACTIF: <span id="grand-total-actif">0 €</span></div>
                             </div>
                             <div class="ledger-container border-red-900">
                                 <div class="bg-red-100 p-2 font-bold text-center border-b-2 border-red-900 text-red-900">PASSIF (Ressources)</div>
                                 <div class="p-3 space-y-3">
-                                    <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PASSIF" data-subtype="CAPITAUX">
-                                        <div class="block-header bg-red-900"><span>Capitaux Propres</span><span class="text-[0.6rem] opacity-70">Cl. 1 (Haut)</span></div><div id="zone-passif-capitaux" class="min-h-[60px] space-y-1 mt-2"></div><div class="zone-total" id="total-passif-capitaux">0 €</div>
-                                    </div>
-                                    <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PASSIF" data-subtype="DETTES">
-                                        <div class="block-header bg-red-800"><span>Dettes</span><span class="text-[0.6rem] opacity-70">Cl. 16, 40, 42...</span></div><div id="zone-passif-dettes" class="min-h-[60px] space-y-1 mt-2"></div><div class="zone-total" id="total-passif-dettes">0 €</div>
-                                    </div>
+                                    <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PASSIF" data-subtype="CAPITAUX"><div class="block-header bg-red-900"><span>Capitaux Propres</span><span class="text-[0.6rem] opacity-70">Cl. 1 (Haut)</span></div><div id="zone-passif-capitaux" class="min-h-[60px] space-y-1 mt-2"></div><div class="zone-total" id="total-passif-capitaux">0 €</div></div>
+                                    <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PASSIF" data-subtype="DETTES"><div class="block-header bg-red-800"><span>Dettes</span><span class="text-[0.6rem] opacity-70">Cl. 16, 40, 42...</span></div><div id="zone-passif-dettes" class="min-h-[60px] space-y-1 mt-2"></div><div class="zone-total" id="total-passif-dettes">0 €</div></div>
                                 </div>
                                 <div class="bg-red-50 p-2 text-right font-black font-mono-code text-red-900 border-t-2 border-red-900">TOTAL PASSIF: <span id="grand-total-passif">0 €</span></div>
                             </div>
@@ -237,70 +269,93 @@
         </div>
 
         <div id="chapter-2" class="hidden">
-            <h2 class="text-2xl font-black font-serif-header mb-6">1. Comprendre la cascade des SIG</h2>
+            <h2 class="text-3xl font-black font-serif-header mb-8 text-center">L'Organigramme des SIG</h2>
             
-            <div class="max-w-4xl mx-auto mb-16">
-                <div class="grid grid-cols-2 gap-8 mb-4">
-                    <div class="sig-box has-info" onclick="toggleSigInfo(this)">
-                        <div class="text-green-700 uppercase">Marge Commerciale</div>
-                        <div class="sig-comment"> Ventes de marchandises <br>- Achats de marchandises <br>-/+ Variation de stock march.</div>
+            <div class="max-w-3xl mx-auto mb-16 relative">
+                
+                <div class="grid grid-cols-2 gap-10 mb-2">
+                    <div class="sig-box" onclick="toggleSigInfo(this)">
+                        MARGE COMMERCIALE
+                        <div class="sig-bubble">
+                            On comptabilise la différence entre les ventes et le coût d'achat des marchandises vendues.<br>
+                            ⚠️ <strong>Attention :</strong> Ne pas oublier la variation de stock !
+                        </div>
                     </div>
-                    <div class="sig-box has-info" onclick="toggleSigInfo(this)">
-                        <div class="text-green-700 uppercase">Production de l'exercice</div>
-                        <div class="sig-comment">Production vendue <br>+ Prod. stockée <br>+ Prod. immobilisée</div>
+                    <div class="sig-box" onclick="toggleSigInfo(this)">
+                        PRODUCTION DE L'EXERCICE
+                        <div class="sig-bubble" style="left: auto; right: 105%;">
+                            Production Vendue + Stockée + Immobilisée.<br>
+                            <em>Ne prend pas en compte le coût des matières premières ici.</em>
+                        </div>
                     </div>
                 </div>
 
+                <div class="line-down"></div>
                 <div class="arrow-down"></div>
 
-                <div class="sig-box has-info mt-4 mx-auto w-3/4" onclick="toggleSigInfo(this)">
-                    <div class="text-green-700 uppercase">Valeur Ajoutée (VA)</div>
-                    <div class="sig-comment">Marge Commerciale + Production <br>- Conso en provenance des tiers (Achats MP, Var Stock MP, Services extérieurs...)</div>
+                <div class="sig-box w-2/3 mx-auto" onclick="toggleSigInfo(this)">
+                    VALEUR AJOUTÉE (VA)
+                    <div class="sig-bubble">
+                        Marge + Production <br>- Conso en provenance des tiers (Achats MP, Services extérieurs...).
+                    </div>
                 </div>
 
+                <div class="line-down"></div>
                 <div class="arrow-down"></div>
 
-                <div class="sig-box has-info mt-4 mx-auto w-3/4" onclick="toggleSigInfo(this)">
-                    <div class="text-green-700 uppercase">EBE (Excédent Brut d'Exploitation)</div>
-                    <div class="sig-comment">VA + Subventions d'exploitation <br>- Impôts et taxes <br>- Charges de personnel</div>
+                <div class="sig-box w-2/3 mx-auto" onclick="toggleSigInfo(this)">
+                    EBE (Excédent Brut d'Exploitation)
+                    <div class="sig-bubble">
+                        VA + Subventions d'exploitation <br>- Impôts et taxes <br>- Charges de personnel.
+                    </div>
                 </div>
 
+                <div class="line-down"></div>
                 <div class="arrow-down"></div>
 
-                <div class="sig-box has-info mt-4 mx-auto w-3/4" onclick="toggleSigInfo(this)">
-                    <div class="text-green-700 uppercase">REX (Résultat d'Exploitation)</div>
-                    <div class="sig-comment">EBE + Autres produits <br>- Autres charges <br>+ Reprises sur amort/prov (RAP) <br>- Dotations aux amort/prov (DAP)</div>
+                <div class="sig-box w-2/3 mx-auto" onclick="toggleSigInfo(this)">
+                    REX (Résultat d'Exploitation)
+                    <div class="sig-bubble">
+                        EBE + Autres produits <br>- Autres charges <br>+ Reprises (RAP) <br>- Dotations (DAP).
+                        <br><em>On intègre ici l'usure du matériel.</em>
+                    </div>
                 </div>
 
+                <div class="line-down"></div>
                 <div class="arrow-down"></div>
 
-                <div class="sig-box has-info mt-4 mx-auto w-3/4" onclick="toggleSigInfo(this)">
-                    <div class="text-green-700 uppercase">RCAI (Résultat Courant)</div>
-                    <div class="sig-comment">REX + Produits Financiers <br>- Charges Financières</div>
+                <div class="sig-box w-2/3 mx-auto bg-green-50 border-green-700 text-green-900" onclick="toggleSigInfo(this)">
+                    RCAI (Résultat Courant)
+                    <div class="sig-bubble">
+                        REX + Produits Financiers <br>- Charges Financières.
+                    </div>
                 </div>
 
+                <div class="line-down"></div>
                 <div class="arrow-down"></div>
 
-                <div class="sig-box mt-4 mx-auto w-1/2 bg-green-100 border-green-500">
-                    <div class="text-green-900 font-black uppercase text-xl">Résultat Net</div>
-                    <div class="text-xs text-gray-500 mt-1">RCAI + Résultat Exceptionnel - IS - Participation</div>
+                <div class="sig-box w-2/3 mx-auto bg-[#ccff00] border-gray-900" style="transform: scale(1.1);">
+                    RÉSULTAT NET COMPTABLE
+                    <div class="text-xs normal-case mt-1 font-mono-code">RCAI + Résultat Exceptionnel - IS</div>
                 </div>
             </div>
 
-            <h2 class="text-2xl font-black font-serif-header mb-6 border-t-4 border-gray-200 pt-8">2. Exercice Pratique</h2>
+            <h2 class="text-2xl font-black font-serif-header mb-6 border-t-4 border-gray-200 pt-8">Exercice Pratique</h2>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="bg-gray-100 p-6 border-2 border-gray-400 rounded">
-                    <h3 class="font-bold mb-4 font-mono-code">DONNÉES COMPTABLES (Extrait)</h3>
-                    <div id="sig-source-data" class="space-y-2 text-sm font-mono-code bg-white p-4 border border-gray-300 shadow-inner">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold font-mono-code">DONNÉES (Extrait CDR)</h3>
+                        <button onclick="initSIGGame()" class="action-btn text-xs">↻ Nouveau</button>
+                    </div>
+                    <div id="sig-source-data" class="space-y-2 text-sm font-mono-code bg-white p-4 border-2 border-gray-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]">
                         </div>
-                    <button onclick="initSIGGame()" class="mt-4 text-xs underline text-gray-500 hover:text-black">Générer nouvelles données</button>
                 </div>
 
                 <div class="bg-white p-6 border-4 border-gray-900 shadow-[8px_8px_0px_0px_#ccff00]">
-                    <h3 class="font-bold mb-6 font-mono-code uppercase">Calculer les soldes</h3>
+                    <h3 class="font-bold mb-6 font-mono-code uppercase border-b-2 border-gray-200 pb-2">Calculer les soldes</h3>
                     
-                    <div class="space-y-4">
+                    <div class="space-y-3 font-mono-code text-sm">
                         <div class="flex justify-between items-center">
                             <label>1. Marge Commerciale</label>
                             <div class="flex items-center gap-2"><input type="number" id="inp-marge" class="hardcore-input" placeholder="?">€</div>
@@ -318,23 +373,23 @@
                             <div class="flex items-center gap-2"><input type="number" id="inp-ebe" class="hardcore-input" placeholder="?">€</div>
                         </div>
                         <div class="flex justify-between items-center">
-                            <label>5. Résultat Exploitation (REX)</label>
+                            <label>5. Résultat Exploitation</label>
                             <div class="flex items-center gap-2"><input type="number" id="inp-rex" class="hardcore-input" placeholder="?">€</div>
                         </div>
                         <div class="flex justify-between items-center">
                             <label>6. RCAI</label>
                             <div class="flex items-center gap-2"><input type="number" id="inp-rcai" class="hardcore-input" placeholder="?">€</div>
                         </div>
-                        <div class="flex justify-between items-center bg-green-50 p-2 -mx-2 border border-green-200">
-                            <label class="font-black text-green-700">7. RÉSULTAT NET</label>
-                            <div class="flex items-center gap-2"><input type="number" id="inp-rn" class="hardcore-input bg-white" placeholder="?">€</div>
+                        <div class="flex justify-between items-center bg-gray-100 p-2 -mx-2 border-t-2 border-gray-900 mt-2">
+                            <label class="font-black">7. RÉSULTAT NET</label>
+                            <div class="flex items-center gap-2"><input type="number" id="inp-rn" class="hardcore-input bg-white border-b-4 border-gray-900" placeholder="?">€</div>
                         </div>
                     </div>
 
-                    <button onclick="validateSIG()" class="w-full mt-6 py-3 bg-gray-900 text-[#ccff00] font-bold uppercase hover:bg-white hover:text-gray-900 border-2 border-gray-900 transition-colors">
+                    <button onclick="validateSIG()" class="w-full mt-6 py-3 bg-gray-900 text-[#ccff00] font-bold uppercase hover:bg-white hover:text-gray-900 border-2 border-gray-900 transition-colors shadow-lg">
                         Vérifier mes calculs
                     </button>
-                    <div id="sig-feedback" class="mt-4 text-center font-bold hidden"></div>
+                    <div id="sig-feedback" class="mt-4 text-center font-bold hidden font-mono-code"></div>
                 </div>
             </div>
         </div>
@@ -354,13 +409,12 @@
     </div>
 
     <script>
-        // GLOBAL STATE
         let currentChapter = 1;
         let currentDifficulty = 'EASY'; 
         let currentCompanyName = "";
         let journalEntries = [];
         let gameItems = [];
-        let sigSolution = {}; // Stores correct SIG values
+        let sigSolution = {}; 
 
         // VIPs
         const winners = [
@@ -370,7 +424,6 @@
             { name: "Michel Houellebecq", img: "https://image.noelshack.com/fichiers/2025/49/5/1764928236-houellbcq.png", quote: "Dans un monde froid et vide,<br>ce bilan équilibré est la seule vérité tangible." }
         ];
 
-        // CONFIG & DATA
         const prefixes = ["Boulangerie", "Garage", "Start-up", "Cabinet", "Boucherie", "Agence", "Pizzeria", "Crèche", "Pharmacie", "EHPAD"];
         const suffixes = ["'Chez Dédé'", "'Le Gouffre'", "'L'Optimiste'", "'Dernier Recours'", "'Le Blanchisseur'", "'Au Bonheur'"];
         const TYPES = { CHARGE: 'CHARGE', PRODUIT: 'PRODUIT', ACTIF: 'ACTIF', PASSIF: 'PASSIF' };
@@ -405,11 +458,9 @@
         // --- CHAPTER NAVIGATION ---
         function switchChapter(chapId) {
             currentChapter = chapId;
-            // Tabs
             document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
             document.getElementById(`tab-${chapId}`).classList.add('active');
             
-            // Content
             if(chapId === 1) {
                 document.getElementById('chapter-1').classList.remove('hidden');
                 document.getElementById('chapter-2').classList.add('hidden');
@@ -418,71 +469,32 @@
                 document.getElementById('chapter-1').classList.add('hidden');
                 document.getElementById('chapter-2').classList.remove('hidden');
                 document.getElementById('footer-chap1').classList.add('hidden');
-                initSIGGame(); // Load SIG game
+                initSIGGame(); 
             }
         }
 
-        // --- SIG DIAGRAM INTERACTION ---
+        // --- SIG DIAGRAM ---
         function toggleSigInfo(element) {
-            const comment = element.querySelector('.sig-comment');
-            if (comment.style.display === 'block') {
-                comment.style.display = 'none';
-            } else {
-                comment.style.display = 'block';
-            }
+            const comment = element.querySelector('.sig-bubble');
+            if (comment.style.display === 'block') comment.style.display = 'none';
+            else comment.style.display = 'block';
         }
 
-        // --- SIG EXERCISE LOGIC ---
+        // --- SIG LOGIC ---
         function initSIGGame() {
-            // Generates random data for a full CDR to analyze
-            const d = {};
-            const r = (min, max) => Math.floor(Math.random() * (max - min) + min);
+            const d = {}; const r = (min, max) => Math.floor(Math.random() * (max - min) + min);
+            
+            // Gen Data
+            d.ventes = r(20000, 50000); d.achatsMarch = r(8000, 15000); d.varStockMarch = r(-2000, 2000);
+            d.prodVendue = r(5000, 15000); d.prodStockee = r(-1000, 3000); d.prodImmo = r(0, 2000);
+            d.achatsMP = r(2000, 5000); d.varStockMP = r(-500, 500); d.servicesExt = r(3000, 8000);
+            d.subventions = r(0, 2000); d.impots = r(500, 1500); d.personnel = r(5000, 12000);
+            d.autresProdExploit = r(0, 500); d.autresChargesExploit = r(0, 500); d.rap = r(0, 1000); d.dap = r(1000, 4000);
+            d.prodFi = r(0, 500); d.chargesFi = r(200, 1000); d.prodExcep = r(0, 2000); d.chargesExcep = r(0, 2000);
+            d.participation = 0; d.is = 0;
 
-            // 1. Data Generation
-            d.ventes = r(20000, 50000);
-            d.achatsMarch = r(8000, 15000);
-            d.varStockMarch = r(-2000, 2000); // Negative = destockage (charge), Positive = stockage (reduction charge) -> In PCG formula: Cost = Achats - Var (+ if Stock decrease, - if increase). 
-            // SIMPLIFICATION for SIG: Marge = Ventes - (Achats - VarStock)
-            
-            d.prodVendue = r(5000, 15000);
-            d.prodStockee = r(-1000, 3000);
-            d.prodImmo = r(0, 2000); // often 0
-            
-            d.achatsMP = r(2000, 5000);
-            d.varStockMP = r(-500, 500);
-            d.servicesExt = r(3000, 8000); // 61/62
-            
-            d.subventions = r(0, 2000);
-            d.impots = r(500, 1500); // 63
-            d.personnel = r(5000, 12000); // 64
-            
-            d.autresProdExploit = r(0, 500);
-            d.autresChargesExploit = r(0, 500);
-            d.rap = r(0, 1000);
-            d.dap = r(1000, 4000);
-            
-            d.prodFi = r(0, 500);
-            d.chargesFi = r(200, 1000);
-            
-            d.prodExcep = r(0, 2000);
-            d.chargesExcep = r(0, 2000);
-            
-            d.participation = 0; // Simplify
-            d.is = 0; // Simplify or estimate
-
-            // 2. Calculate Correct SIG
-            const consoTiers = d.achatsMP - d.varStockMP + d.servicesExt; // Note on signs: VarStock Crediteur (prod) or Debiteur (Charge). Let's assume standard values.
-            // Let's stick to the visual formula provided in the diagram:
-            // Marge Co = Ventes - Achats Marchandises - (-VarStockMarch if creditor, + if debitor). 
-            // Standard convention here: "Achats consommés" = Achats - Variation (if Var = SF - SI). 
-            // Let's assume the values provided are the accounting balances.
-            // If Var Stock > 0 (Stock Increase, SF>SI), it's a CREDIT (Product-like).
-            // If Var Stock < 0 (Stock Decrease), it's a DEBIT (Charge).
-            
-            // To make it unambiguous for the player, we will display "Coût d'achat des marchandises vendues" directly or detailed lines.
-            // Let's display lines.
-            
-            const margeCo = d.ventes - d.achatsMarch + d.varStockMarch; // Assuming varStock is signed (Pos = Stockage/Profit, Neg = Destockage/Loss)
+            // Solutions
+            const margeCo = d.ventes - d.achatsMarch + d.varStockMarch; 
             const production = d.prodVendue + d.prodStockee + d.prodImmo;
             const va = margeCo + production - (d.achatsMP - d.varStockMP + d.servicesExt);
             const ebe = va + d.subventions - d.impots - d.personnel;
@@ -492,33 +504,32 @@
 
             sigSolution = { margeCo, production, va, ebe, rex, rcai, rn };
 
-            // 3. Render Source Data
             const html = `
-                <div class="flex justify-between"><span>Ventes Marchandises (707)</span><span>${d.ventes} €</span></div>
-                <div class="flex justify-between"><span>Achats Marchandises (607)</span><span>${d.achatsMarch} €</span></div>
-                <div class="flex justify-between"><span>Var. Stocks March. (6037)</span><span>${d.varStockMarch} €</span></div>
-                <div class="border-t border-gray-300 my-1"></div>
-                <div class="flex justify-between"><span>Prod. Vendue (Biens/Services)</span><span>${d.prodVendue} €</span></div>
-                <div class="flex justify-between"><span>Prod. Stockée/Immo</span><span>${d.prodStockee + d.prodImmo} €</span></div>
-                <div class="flex justify-between"><span>Achats MP & Autres Appro (601/602)</span><span>${d.achatsMP} €</span></div>
-                <div class="flex justify-between"><span>Var. Stock MP (6031)</span><span>${d.varStockMP} €</span></div>
-                <div class="flex justify-between"><span>Services Extérieurs (61/62)</span><span>${d.servicesExt} €</span></div>
-                <div class="border-t border-gray-300 my-1"></div>
-                <div class="flex justify-between"><span>Subventions d'exploit. (74)</span><span>${d.subventions} €</span></div>
-                <div class="flex justify-between"><span>Impôts & Taxes (63)</span><span>${d.impots} €</span></div>
-                <div class="flex justify-between"><span>Charges Personnel (64)</span><span>${d.personnel} €</span></div>
-                <div class="border-t border-gray-300 my-1"></div>
-                <div class="flex justify-between"><span>Autres Prod / Charges Exploit.</span><span>${d.autresProdExploit - d.autresChargesExploit} €</span></div>
-                <div class="flex justify-between"><span>Reprises (RAP) (78)</span><span>${d.rap} €</span></div>
-                <div class="flex justify-between"><span>Dotations (DAP) (68)</span><span>${d.dap} €</span></div>
-                <div class="border-t border-gray-300 my-1"></div>
-                <div class="flex justify-between"><span>Produits Financiers</span><span>${d.prodFi} €</span></div>
-                <div class="flex justify-between"><span>Charges Financières</span><span>${d.chargesFi} €</span></div>
-                <div class="flex justify-between text-gray-500 text-xs"><span>Résultat Exceptionnel</span><span>${d.prodExcep - d.chargesExcep} €</span></div>
+                <div class="flex justify-between border-b border-gray-200"><span>Ventes Marchandises</span><span>${d.ventes} €</span></div>
+                <div class="flex justify-between border-b border-gray-200"><span>Achats Marchandises</span><span>${d.achatsMarch} €</span></div>
+                <div class="flex justify-between border-b-2 border-black pb-1 mb-1"><span>Var. Stocks March. (+/-)</span><span>${d.varStockMarch} €</span></div>
+                
+                <div class="flex justify-between border-b border-gray-200"><span>Prod. Vendue</span><span>${d.prodVendue} €</span></div>
+                <div class="flex justify-between border-b border-gray-200"><span>Prod. Stockée/Immo</span><span>${d.prodStockee + d.prodImmo} €</span></div>
+                
+                <div class="flex justify-between border-b border-gray-200 mt-2"><span>Achats MP + Var Stock</span><span>${d.achatsMP - d.varStockMP} €</span></div>
+                <div class="flex justify-between border-b-2 border-black pb-1 mb-1"><span>Services Extérieurs</span><span>${d.servicesExt} €</span></div>
+                
+                <div class="flex justify-between border-b border-gray-200"><span>Subventions d'exploit.</span><span>${d.subventions} €</span></div>
+                <div class="flex justify-between border-b border-gray-200"><span>Impôts & Taxes</span><span>${d.impots} €</span></div>
+                <div class="flex justify-between border-b-2 border-black pb-1 mb-1"><span>Charges Personnel</span><span>${d.personnel} €</span></div>
+                
+                <div class="flex justify-between border-b border-gray-200"><span>Autres Prod - Charges</span><span>${d.autresProdExploit - d.autresChargesExploit} €</span></div>
+                <div class="flex justify-between border-b border-gray-200"><span>Reprises (RAP)</span><span>${d.rap} €</span></div>
+                <div class="flex justify-between border-b-2 border-black pb-1 mb-1"><span>Dotations (DAP)</span><span>${d.dap} €</span></div>
+                
+                <div class="flex justify-between border-b border-gray-200"><span>Produits Financiers</span><span>${d.prodFi} €</span></div>
+                <div class="flex justify-between border-b-2 border-black pb-1 mb-1"><span>Charges Financières</span><span>${d.chargesFi} €</span></div>
+                
+                <div class="flex justify-between text-gray-500 text-xs mt-2"><span>Résultat Exceptionnel</span><span>${d.prodExcep - d.chargesExcep} €</span></div>
             `;
             document.getElementById('sig-source-data').innerHTML = html;
             
-            // Clear inputs
             document.querySelectorAll('#chapter-2 input').forEach(i => { i.value = ''; i.classList.remove('bg-red-100', 'bg-green-100'); });
             document.getElementById('sig-feedback').classList.add('hidden');
         }
@@ -537,43 +548,30 @@
             let errors = 0;
             const check = (key, id) => {
                 const el = document.getElementById(id);
-                // Allow small margin of error? No, exact calculation.
                 if (inputs[key] === sigSolution[key]) {
-                    el.classList.add('bg-green-100');
-                    el.classList.remove('bg-red-100');
+                    el.classList.add('bg-green-100'); el.classList.remove('bg-red-100');
                 } else {
-                    el.classList.add('bg-red-100');
-                    el.classList.remove('bg-green-100');
+                    el.classList.add('bg-red-100'); el.classList.remove('bg-green-100');
                     errors++;
                 }
             };
 
-            check('margeCo', 'inp-marge');
-            check('production', 'inp-prod');
-            check('va', 'inp-va');
-            check('ebe', 'inp-ebe');
-            check('rex', 'inp-rex');
-            check('rcai', 'inp-rcai');
-            check('rn', 'inp-rn');
+            check('margeCo', 'inp-marge'); check('production', 'inp-prod'); check('va', 'inp-va'); check('ebe', 'inp-ebe');
+            check('rex', 'inp-rex'); check('rcai', 'inp-rcai'); check('rn', 'inp-rn');
 
             const fb = document.getElementById('sig-feedback');
             fb.classList.remove('hidden');
             if (errors === 0) {
-                fb.innerText = "Tout est correct ! Excellent analyste.";
-                fb.className = "mt-4 text-center font-bold text-green-600";
-                // Show Victory Modal for SIG
-                document.getElementById('victory-content').innerHTML = `
-                    <h2 class="text-4xl font-black font-mono-code uppercase text-[#dc2626] transform -rotate-2">Analyste Confirmé !</h2>
-                    <p class="font-serif-header italic text-gray-600 mt-4">Les SIG n'ont plus de secrets pour toi.</p>
-                `;
+                fb.innerText = "PARFAIT ! LE DG EST FIER DE TOI."; fb.className = "mt-4 text-center font-bold text-green-600 border-2 border-green-600 p-2";
+                const winner = winners[Math.floor(Math.random() * winners.length)];
+                document.getElementById('victory-content').innerHTML = `<img src="${winner.img}" alt="${winner.name}" class="w-32 h-32 mx-auto mb-4 border-4 border-gray-900 rounded-full bg-[#ccff00] pixelated-img object-cover"><h2 class="text-4xl font-black font-mono-code uppercase text-[#dc2626] leading-tight mb-2 transform -rotate-2">${winner.name}</h2><p class="font-serif-header italic text-gray-600 text-sm mt-4">"Les SIG sont maîtrisés."</p>`;
                 document.getElementById('victory-modal').classList.remove('hidden');
             } else {
-                fb.innerText = `Il y a ${errors} erreurs. Vérifie tes formules.`;
-                fb.className = "mt-4 text-center font-bold text-red-600";
+                fb.innerText = `${errors} ERREURS. RECOMMENCE.`; fb.className = "mt-4 text-center font-bold text-red-600 border-2 border-red-600 p-2";
             }
         }
 
-        // --- CHAPTER 1 JS LOGIC (Existing) ---
+        // --- CHAPTER 1 JS (Legacy) ---
         function initStandardMode() {
             gameItems = [];
             const selection = [...DATABASE_FULL].sort(() => 0.5 - Math.random()).slice(0, 12);
@@ -601,7 +599,6 @@
             };
             const addEntry = (date, text) => { journalEntries.push(`${date} : ${text}`); const p=document.createElement('p'); p.innerHTML=`<strong>${date}</strong> : ${text}`; p.className="border-b border-blue-200 pb-1"; journalDiv.appendChild(p); };
             let currentDate=new Date(2024,0,1); const nextDate=()=>{currentDate.setDate(currentDate.getDate()+Math.floor(Math.random()*5)+2); return currentDate.toLocaleDateString('fr-FR');};
-            
             const capital=30000; impact("Capital Social", TYPES.PASSIF, SUBS.CAPITAUX, '101', capital, false); impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', capital, true); addEntry("01/01/2024", `Capital social : ${capital}€.`);
             const loops=4*durationMul; 
             for(let i=0; i<loops; i++) {
@@ -610,9 +607,8 @@
                 else if(rand<0.25){ const s=1000; impact("Subventions d'exploitation", TYPES.PRODUIT, SUBS.EXPLOIT, '74', s, false); impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', s, true); addEntry(nextDate(), `Subvention reçue : ${s}€.`); }
                 else if(rand<0.7){ const a=1000+Math.floor(Math.random()*2000); if(Math.random()>0.5){ impact("Achats de marchandises", TYPES.CHARGE, SUBS.EXPLOIT, '607', a, true); impact("Dettes Fournisseurs", TYPES.PASSIF, SUBS.DETTES, '401', a, false); currentSupplierDebt+=a; addEntry(nextDate(), `Achat marchandise crédit : ${a}€.`); } else { impact("Ventes de marchandises", TYPES.PRODUIT, SUBS.EXPLOIT, '707', a, false); impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', a, true); addEntry(nextDate(), `Vente comptant : ${a}€.`); } }
             }
-            impact("Salaires", TYPES.CHARGE, SUBS.EXPLOIT, '641', 3000, true); impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', 3000, false); addEntry(nextDate(), "Salaires : 3000€.");
-            const stock=5000; impact("Stock Final Marchandises", TYPES.ACTIF, SUBS.CIRC, '37', stock, true); impact("Variation de stocks", TYPES.CHARGE, SUBS.EXPLOIT, '603', stock, false); addEntry("31/12/2024", `Stock final : ${stock}€.`);
-            
+            impact("Salaires et traitements", TYPES.CHARGE, SUBS.EXPLOIT, '641', 3000, true); impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', 3000, false); addEntry(nextDate(), "Salaires : 3000€.");
+            const stock=5000; impact("Stock Final Marchandises", TYPES.ACTIF, SUBS.CIRC, '37', stock, true); impact("Variation de stocks (stockage)", TYPES.CHARGE, SUBS.EXPLOIT, '603', stock, false); addEntry("31/12/2024", `Stock final : ${stock}€.`);
             let tC=0, tP=0; Object.values(ledger).forEach(acc=>{if(acc.type===TYPES.CHARGE)tC+=acc.balance;if(acc.type===TYPES.PRODUIT)tP+=acc.balance;});
             ledger['120']={label:"Résultat (à calculer !)", type:TYPES.PASSIF, sub:SUBS.CAPITAUX, code:'120', balance:tP-tC};
             Object.values(ledger).forEach((acc, i)=>{if(Math.abs(acc.balance)>0) gameItems.push({id:`op-${i}`, label:acc.label, type:acc.type, sub:acc.sub, code:acc.code, amount:acc.balance, isHardcore:true});});
@@ -695,7 +691,7 @@
             const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([c], { type: "text/plain" })); a.download = `compta_export.txt`; a.click();
         }
         function closeModal() { document.getElementById('victory-modal').classList.add('hidden'); }
-        window.addEventListener('DOMContentLoaded', initGame);
+        window.addEventListener('DOMContentLoaded', () => { initGame(); });
     </script>
 </body>
 </html>
