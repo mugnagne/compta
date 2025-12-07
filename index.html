@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compta Neuille - V18 TUTO & VIP</title>
+    <title>Compta Neuille - V20 SIG UPDATE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,700&family=Roboto+Mono:wght@400;700&family=Inter:wght@400;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
@@ -47,933 +47,655 @@
             z-index: 50;
         }
 
+        /* SIG DIAGRAM STYLES */
+        .sig-box {
+            background: white;
+            border: 3px solid var(--dark);
+            padding: 1rem;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 10px;
+            position: relative;
+            transition: all 0.2s;
+            cursor: default;
+        }
+        .sig-box.has-info { cursor: pointer; }
+        .sig-box.has-info:hover {
+            background-color: var(--neon-yellow);
+            box-shadow: 4px 4px 0px 0px var(--dark);
+            transform: scale(1.02);
+        }
+        .sig-comment {
+            display: none;
+            border: 2px dashed var(--dark);
+            background: #fffbeb;
+            padding: 10px;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            text-align: left;
+            font-weight: normal;
+            border-radius: 5px;
+        }
+        .arrow-down {
+            width: 2px;
+            height: 20px;
+            background: var(--dark);
+            margin: 0 auto;
+        }
+
+        /* INPUTS & ZONES */
         .drop-zone {
             transition: background-color 0.3s, border-color 0.3s;
             border: 2px dashed #9ca3af;
             background-color: rgba(255, 255, 255, 0.4);
-            position: relative;
-            display: flex;
-            flex-direction: column;
+            position: relative; display: flex; flex-direction: column;
         }
-        .drop-zone:hover {
-            border-color: var(--dark);
-            background-color: rgba(255, 255, 255, 0.9);
-        }
-
-        .block-header {
-            background: var(--dark);
-            color: #fff;
-            padding: 4px 8px;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .zone-total {
-            margin-top: auto;
-            border-top: 2px dotted var(--dark);
-            padding-top: 4px;
-            text-align: right;
-            font-family: 'Roboto Mono', monospace;
-            font-weight: bold;
-            font-size: 0.8rem;
-            color: var(--dark);
-        }
-
-        /* JOURNAL STYLE */
-        .journal-paper {
-            background-color: #fefce8;
-            background-image: repeating-linear-gradient(var(--ledger-line) 0 1px, transparent 1px 100%);
-            background-size: 100% 2rem;
-            line-height: 2rem;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
-            border-left: 4px double #ef4444; 
-        }
-
-        /* INPUTS */
-        .hardcore-input {
-            border: none;
-            border-bottom: 2px solid var(--dark);
-            background: #f3f4f6;
-            text-align: right;
-            font-family: 'Roboto Mono', monospace;
-            width: 80px;
-            font-weight: bold;
-            color: #2563eb;
-        }
+        .drop-zone:hover { border-color: var(--dark); background-color: rgba(255, 255, 255, 0.9); }
+        .block-header { background: var(--dark); color: #fff; padding: 4px 8px; font-family: 'Roboto Mono', monospace; font-size: 0.75rem; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
+        .zone-total { margin-top: auto; border-top: 2px dotted var(--dark); padding-top: 4px; text-align: right; font-family: 'Roboto Mono', monospace; font-weight: bold; font-size: 0.8rem; color: var(--dark); }
+        .journal-paper { background-color: #fefce8; background-image: repeating-linear-gradient(var(--ledger-line) 0 1px, transparent 1px 100%); background-size: 100% 2rem; line-height: 2rem; box-shadow: 5px 5px 15px rgba(0,0,0,0.1); border-left: 4px double #ef4444; }
+        .hardcore-input { border: none; border-bottom: 2px solid var(--dark); background: #f3f4f6; text-align: right; font-family: 'Roboto Mono', monospace; width: 80px; font-weight: bold; color: #2563eb; }
         .hardcore-input:focus { outline: none; background: #e0f2fe; border-color: #2563eb; }
-
-        /* ACTIONS & SLIDER */
+        
         .diff-btn { transition: all 0.2s; }
-        .diff-btn.active {
-            background-color: var(--neon-yellow);
-            color: var(--dark);
-            font-weight: 800;
-            box-shadow: inset 2px 2px 0px rgba(0,0,0,0.1);
-        }
-
-        input[type=range] { accent-color: var(--neon-yellow); }
+        .diff-btn.active { background-color: var(--neon-yellow); color: var(--dark); font-weight: 800; box-shadow: inset 2px 2px 0px rgba(0,0,0,0.1); }
         .pixelated-img { image-rendering: pixelated; }
-
-        /* VALIDATION */
         .valid-success { background-color: #d9f99d !important; border-color: #365314; }
         .valid-error { background-color: #fca5a5 !important; border-color: #7f1d1d; }
         .dragging { opacity: 0.4; transform: scale(0.9); }
         .animate-pop { animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         @keyframes pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-
-        /* FOOTER FIX */
-        .sig-panel {
-            background: var(--dark);
-            color: #fff;
-            border-top: 4px solid var(--neon-yellow);
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.3);
-            z-index: 50; 
-        }
-
-        /* TUTO MODAL STYLE */
-        .tuto-section {
-            margin-bottom: 1.5rem;
-            border-left: 4px solid var(--neon-yellow);
-            padding-left: 1rem;
-        }
-        .tuto-title {
-            font-family: 'Playfair Display', serif;
-            font-weight: bold;
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-            color: var(--dark);
-        }
-        .tuto-text {
-            font-size: 0.95rem;
-            color: #4b5563;
-            line-height: 1.5;
-        }
-        
-        .tuto-slide { display: none; }
-        .tuto-slide.active { display: block; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .sig-panel { background: var(--dark); color: #fff; border-top: 4px solid var(--neon-yellow); box-shadow: 0 -10px 30px rgba(0,0,0,0.3); z-index: 50; }
+        .nav-tab { cursor: pointer; padding: 10px 20px; font-weight: bold; font-family: 'Roboto Mono'; border-top-left-radius: 8px; border-top-right-radius: 8px; border: 2px solid transparent; border-bottom: none; opacity: 0.6; }
+        .nav-tab.active { background: #f3f4f6; border-color: var(--dark); border-bottom: 2px solid #f3f4f6; opacity: 1; color: var(--dark); transform: translateY(2px); }
+        .nav-tab:hover:not(.active) { opacity: 1; background: rgba(255,255,255,0.5); }
     </style>
 </head>
 <body class="selection:bg-[#ccff00] min-h-screen relative">
 
-    <!-- TUTO MODAL -->
-    <div id="tuto-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden flex items-center justify-center z-[70] backdrop-blur-sm p-4">
-        <div class="bg-white border-4 border-gray-900 p-6 md:p-8 relative max-w-3xl w-full shadow-[15px_15px_0px_0px_rgba(255,255,255,0.2)] flex flex-col" style="border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; min-height: 500px;">
-            
-            <button onclick="closeTuto()" class="absolute top-4 right-6 text-4xl font-bold text-gray-400 hover:text-red-500 transition-colors cursor-pointer z-50">&times;</button>
-            
-            <!-- HEADER -->
-            <div class="mb-6 border-b-2 border-gray-100 pb-4">
-                <h2 class="text-3xl font-black font-mono-code uppercase border-b-4 border-[#ccff00] inline-block transform -rotate-1">
-                    Guide du Comptable
-                </h2>
-                <div class="flex gap-2 mt-2" id="tuto-dots">
-                    <div class="w-3 h-3 rounded-full bg-gray-300"></div>
-                    <div class="w-3 h-3 rounded-full bg-gray-300"></div>
-                    <div class="w-3 h-3 rounded-full bg-gray-300"></div>
-                </div>
-            </div>
-
-            <!-- SLIDES -->
-            <div class="flex-grow">
-                
-                <!-- SLIDE 1 : LA THEORIE -->
-                <div id="tuto-slide-1" class="tuto-slide active">
-                    <div class="tuto-section">
-                        <h3 class="tuto-title">1. Les Bases de la Compta</h3>
-                        <p class="tuto-text mb-4">
-                            Bienvenue, jeune auditeur. La comptabilité repose sur deux tableaux fondamentaux :
-                        </p>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                                <h4 class="font-bold text-gray-900">⚡ CDR (Compte de Résultat)</h4>
-                                <p class="text-xs mt-1 text-gray-500">C'est le <strong>FILM</strong> de l'année.</p>
-                                <ul class="text-sm mt-2 list-disc pl-4 text-gray-700">
-                                    <li><strong>Charges :</strong> Ce qu'on consomme (Loyer, Salaire).</li>
-                                    <li><strong>Produits :</strong> Ce qu'on gagne (Ventes).</li>
-                                </ul>
-                            </div>
-                            <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                                <h4 class="font-bold text-gray-900">🏛️ BILAN (Patrimoine)</h4>
-                                <p class="text-xs mt-1 text-gray-500">C'est la <strong>PHOTO</strong> à la fin.</p>
-                                <ul class="text-sm mt-2 list-disc pl-4 text-gray-700">
-                                    <li><strong>Actif :</strong> Ce qu'on possède (Stock, Ordi).</li>
-                                    <li><strong>Passif :</strong> D'où vient l'argent (Dettes, Capital).</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SLIDE 2 : LE GAMEPLAY -->
-                <div id="tuto-slide-2" class="tuto-slide">
-                    <div class="tuto-section">
-                        <h3 class="tuto-title">2. Comment jouer ?</h3>
-                        <p class="tuto-text mb-4">
-                            L'objectif est simple : <strong>Classer les opérations</strong> pour que le Bilan soit équilibré (Actif = Passif).
-                        </p>
-                        <div class="space-y-4">
-                            <div class="flex items-start gap-3">
-                                <span class="text-2xl">👉</span>
-                                <div>
-                                    <strong>Drag & Drop :</strong> Prends les cartes dans la zone "Flux Entrant" à gauche et glisse-les dans la bonne case à droite.
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <span class="text-2xl">✅</span>
-                                <div>
-                                    <strong>Vérifier :</strong> Clique sur le bouton en bas pour voir tes erreurs.
-                                    <br><span class="text-xs text-gray-500">Vert = OK, Rouge = Mauvaise case.</span>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <span class="text-2xl">⚖️</span>
-                                <div>
-                                    <strong>Équilibre :</strong> Surveille l'indicateur en bas. Tant que l'Actif n'est pas égal au Passif, tu ne peux pas gagner !
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SLIDE 3 : LES BONUS -->
-                <div id="tuto-slide-3" class="tuto-slide">
-                    <div class="tuto-section">
-                        <h3 class="tuto-title">3. Fonctionnalités Avancées</h3>
-                        <p class="tuto-text mb-4">
-                            Pour les vrais experts qui n'ont pas peur du fisc.
-                        </p>
-                        <ul class="space-y-3">
-                            <li class="p-2 bg-yellow-50 border-l-4 border-yellow-400">
-                                <strong>🔥 Mode Hardcore :</strong> Les montants disparaissent ! Tu dois lire le <em>Journal des Opérations</em> et calculer toi-même les sommes à saisir. Attention aux amortissements !
-                            </li>
-                            <li class="p-2 bg-blue-50 border-l-4 border-blue-400">
-                                <strong>🤖 Export IA :</strong> Tu es bloqué ? Clique sur "Exporter pour IA". Ça génère un fichier texte que tu peux envoyer à ChatGPT pour qu'il corrige ton exercice comme un prof.
-                            </li>
-                            <li class="p-2 bg-gray-50 border-l-4 border-gray-400">
-                                <strong>🎚️ Durée :</strong> Utilise le slider en haut pour générer un exercice plus long avec plus de pièges.
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- FOOTER NAV -->
-            <div class="mt-6 flex justify-between items-center pt-4 border-t-2 border-gray-100">
-                <button onclick="changeSlide(-1)" id="prev-btn" class="px-4 py-2 text-gray-500 font-bold hover:text-gray-900 disabled:opacity-30 disabled:cursor-not-allowed">
-                    ← Précédent
-                </button>
-                <button onclick="changeSlide(1)" id="next-btn" class="px-6 py-3 bg-gray-900 text-[#ccff00] font-bold uppercase tracking-widest hover:bg-[#ccff00] hover:text-gray-900 border-2 border-gray-900 transition-colors shadow-lg cursor-pointer rounded-sm">
-                    Suivant
-                </button>
-                <button onclick="closeTuto()" id="finish-btn" class="hidden px-6 py-3 bg-[#ccff00] text-gray-900 font-bold uppercase tracking-widest hover:bg-white border-2 border-gray-900 transition-colors shadow-lg cursor-pointer rounded-sm">
-                    C'est parti !
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- VICTORY MODAL -->
     <div id="victory-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden flex items-center justify-center z-[100] backdrop-blur-sm">
         <div class="bg-white border-4 border-gray-900 p-8 relative max-w-md w-full text-center shadow-[10px_10px_0px_0px_#dc2626] animate-pop" style="border-radius: 5px 25px 5px 25px;">
             <button onclick="closeModal()" class="absolute top-2 right-4 text-3xl font-bold text-gray-400 hover:text-gray-900 transition-colors cursor-pointer">&times;</button>
-            <div class="relative z-10" id="victory-content">
-                <!-- Content injected via JS -->
-            </div>
+            <div class="relative z-10" id="victory-content"></div>
         </div>
     </div>
 
     <div class="max-w-[1800px] mx-auto p-4 md:p-6">
         
-        <header class="mb-6 flex flex-col xl:flex-row justify-between items-end border-b-4 border-gray-900 pb-4 border-double gap-4">
+        <header class="mb-2 flex flex-col xl:flex-row justify-between items-end border-b-4 border-gray-900 pb-4 border-double gap-4">
             <div>
                 <div class="flex items-center gap-3">
                     <h1 class="text-3xl md:text-4xl font-extrabold tracking-tighter uppercase italic transform -rotate-1">
                         Compta<span class="text-[#ccff00] bg-gray-900 px-2">Neuille</span>
                     </h1>
-                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V18 TUTO & VIP</span>
+                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V20 SIG</span>
                 </div>
                 <h2 id="company-name" class="mt-2 text-xl font-serif-header font-bold text-gray-800 border-b-2 border-[#ccff00] inline-block">Chargement...</h2>
             </div>
-
-            <div class="flex flex-col md:flex-row gap-6 items-end">
-                
-                <div id="duration-control" class="flex flex-col items-end gap-1 hidden">
-                    <label class="text-xs font-bold font-mono-code uppercase text-gray-500">Durée Exercice</label>
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs">Court</span>
-                        <input type="range" id="game-duration" min="1" max="3" step="1" value="1" class="w-24 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer border border-gray-900">
-                        <span class="text-xs">Long</span>
-                    </div>
-                </div>
-
-                <div class="flex items-center gap-4">
-                    <button onclick="openTuto()" class="px-4 py-2 bg-[#ccff00] border-2 border-gray-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[1px] hover:translate-y-[1px] transition-all font-bold font-mono-code uppercase text-xs cursor-pointer flex items-center gap-2">
-                        ❓ Tuto
-                    </button>
-
-                    <div class="flex items-center gap-1 bg-white border-2 border-gray-900 p-1 shadow-[3px_3px_0px_0px_rgba(0,0,0,0.2)]" style="border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;">
-                        <button onclick="setDifficulty('EASY')" id="btn-easy" class="diff-btn active px-3 py-1 font-mono-code text-xs font-bold rounded-sm">EASY</button>
-                        <button onclick="setDifficulty('NORMAL')" id="btn-normal" class="diff-btn px-3 py-1 font-mono-code text-xs font-bold rounded-sm hover:bg-gray-100">NORMAL</button>
-                        <button onclick="setDifficulty('HARDCORE')" id="btn-hardcore" class="diff-btn px-3 py-1 font-mono-code text-xs font-bold rounded-sm hover:bg-gray-100 text-red-600">HARDCORE 🔥</button>
-                    </div>
-
-                    <button onclick="initGame()" class="px-4 py-2 bg-white border-2 border-gray-900 shadow-[3px_3px_0px_0px_#ccff00] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all font-bold font-mono-code uppercase text-xs cursor-pointer">
-                        ⚡ Nouvelle Entreprise
-                    </button>
-                </div>
-            </div>
         </header>
 
-        <div class="grid grid-cols-12 gap-6">
-            <div class="col-span-12 lg:col-span-3 flex flex-col gap-6">
-                <div id="journal-panel" class="hidden">
-                    <div class="journal-paper p-4 border border-gray-300 min-h-[400px] max-h-[600px] overflow-y-auto shadow-xl relative transform -rotate-1">
-                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-3 py-1 text-sm font-bold font-mono-code rotate-1">
-                            JOURNAL DES OPÉRATIONS
-                        </div>
-                        <div id="journal-content" class="font-hand text-gray-800 text-sm pt-4 space-y-4"></div>
+        <div class="flex border-b-2 border-gray-900 mb-6">
+            <div id="tab-1" onclick="switchChapter(1)" class="nav-tab active">CHAP 1 : BILAN & CDR</div>
+            <div id="tab-2" onclick="switchChapter(2)" class="nav-tab">CHAP 2 : LES S.I.G</div>
+        </div>
+
+        <div id="chapter-1" class="block">
+            <div class="flex flex-wrap gap-6 mb-6 items-center">
+                <div id="duration-control" class="flex flex-col items-start gap-1 hidden">
+                    <label class="text-xs font-bold font-mono-code uppercase text-gray-500">Durée</label>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs">Court</span><input type="range" id="game-duration" min="1" max="3" step="1" value="1" class="w-24 h-2 bg-gray-200 rounded-lg cursor-pointer border border-gray-900"><span class="text-xs">Long</span>
                     </div>
                 </div>
-                <div class="bg-gray-800 p-3 border-2 border-gray-900 rounded-lg relative shadow-xl">
-                    <h3 class="text-neon-yellow font-bold mb-4 font-mono-code uppercase text-xs tracking-widest border-b border-gray-600 pb-2">
-                        Comptes à classer
-                    </h3>
-                    <div id="source-zone" class="space-y-2 min-h-[200px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="TODO"></div>
+                <div class="flex items-center gap-1 bg-white border-2 border-gray-900 p-1 shadow-sm rounded-full">
+                    <button onclick="setDifficulty('EASY')" id="btn-easy" class="diff-btn active px-3 py-1 font-mono-code text-xs font-bold rounded-sm">EASY</button>
+                    <button onclick="setDifficulty('NORMAL')" id="btn-normal" class="diff-btn px-3 py-1 font-mono-code text-xs font-bold rounded-sm hover:bg-gray-100">NORMAL</button>
+                    <button onclick="setDifficulty('HARDCORE')" id="btn-hardcore" class="diff-btn px-3 py-1 font-mono-code text-xs font-bold rounded-sm hover:bg-gray-100 text-red-600">HARDCORE 🔥</button>
                 </div>
+                <button onclick="initGame()" class="px-4 py-2 bg-white border-2 border-gray-900 shadow-[3px_3px_0px_0px_#ccff00] hover:shadow-none font-bold font-mono-code uppercase text-xs cursor-pointer">⚡ Reset</button>
             </div>
 
-            <div class="col-span-12 lg:col-span-9 flex flex-col gap-10">
-                <div>
-                    <h3 class="font-black text-2xl italic uppercase border-l-8 border-[#ccff00] pl-3 mb-4">I. Compte de Résultat</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="ledger-container">
-                            <div class="bg-gray-200 p-2 font-bold text-center border-b-2 border-gray-900 flex justify-between items-center">
-                                <span>CHARGES (Débit)</span><span class="text-xs bg-gray-900 text-white px-2 rounded">Cl. 6</span>
-                            </div>
-                            <div class="p-3 space-y-3">
-                                <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="EXPLOIT">
-                                    <div class="block-header"><span>Exploitation</span><span class="text-[0.6rem] opacity-70">60-65+68</span></div>
-                                    <div id="zone-charge-exploit" class="min-h-[40px] space-y-1 mt-2"></div>
-                                    <div class="zone-total" id="total-charge-exploit">0 €</div>
-                                </div>
-                                <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="FINANCE">
-                                    <div class="block-header"><span>Financières</span><span class="text-[0.6rem] opacity-70">66</span></div>
-                                    <div id="zone-charge-finance" class="min-h-[40px] space-y-1 mt-2"></div>
-                                    <div class="zone-total" id="total-charge-finance">0 €</div>
-                                </div>
-                                <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="EXCEP">
-                                    <div class="block-header"><span>Exceptionnelles</span><span class="text-[0.6rem] opacity-70">67</span></div>
-                                    <div id="zone-charge-excep" class="min-h-[40px] space-y-1 mt-2"></div>
-                                    <div class="zone-total" id="total-charge-excep">0 €</div>
-                                </div>
-                            </div>
+            <div class="grid grid-cols-12 gap-6">
+                <div class="col-span-12 lg:col-span-3 flex flex-col gap-6">
+                    <div id="journal-panel" class="hidden">
+                        <div class="journal-paper p-4 border border-gray-300 min-h-[400px] max-h-[600px] overflow-y-auto shadow-xl relative transform -rotate-1">
+                            <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-3 py-1 text-sm font-bold font-mono-code rotate-1">JOURNAL DES OPÉRATIONS</div>
+                            <div id="journal-content" class="font-hand text-gray-800 text-sm pt-4 space-y-4"></div>
                         </div>
-                        <div class="ledger-container">
-                            <div class="bg-gray-200 p-2 font-bold text-center border-b-2 border-gray-900 flex justify-between items-center">
-                                <span>PRODUITS (Crédit)</span><span class="text-xs bg-gray-900 text-white px-2 rounded">Cl. 7</span>
+                    </div>
+                    <div class="bg-gray-800 p-3 border-2 border-gray-900 rounded-lg relative shadow-xl">
+                        <h3 class="text-neon-yellow font-bold mb-4 font-mono-code uppercase text-xs tracking-widest border-b border-gray-600 pb-2">Comptes à classer</h3>
+                        <div id="source-zone" class="space-y-2 min-h-[200px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="TODO"></div>
+                    </div>
+                </div>
+
+                <div class="col-span-12 lg:col-span-9 flex flex-col gap-10">
+                    <div>
+                        <h3 class="font-black text-2xl italic uppercase border-l-8 border-[#ccff00] pl-3 mb-4">I. Compte de Résultat</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="ledger-container">
+                                <div class="bg-gray-200 p-2 font-bold text-center border-b-2 border-gray-900 flex justify-between items-center"><span>CHARGES (Débit)</span><span class="text-xs bg-gray-900 text-white px-2 rounded">Cl. 6</span></div>
+                                <div class="p-3 space-y-3">
+                                    <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="EXPLOIT">
+                                        <div class="block-header"><span>Exploitation</span><span class="text-[0.6rem] opacity-70">60-65+68</span></div><div id="zone-charge-exploit" class="min-h-[40px] space-y-1 mt-2"></div><div class="zone-total" id="total-charge-exploit">0 €</div>
+                                    </div>
+                                    <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="FINANCE">
+                                        <div class="block-header"><span>Financières</span><span class="text-[0.6rem] opacity-70">66</span></div><div id="zone-charge-finance" class="min-h-[40px] space-y-1 mt-2"></div><div class="zone-total" id="total-charge-finance">0 €</div>
+                                    </div>
+                                    <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="CHARGE" data-subtype="EXCEP">
+                                        <div class="block-header"><span>Exceptionnelles</span><span class="text-[0.6rem] opacity-70">67</span></div><div id="zone-charge-excep" class="min-h-[40px] space-y-1 mt-2"></div><div class="zone-total" id="total-charge-excep">0 €</div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="p-3 space-y-3">
-                                <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="EXPLOIT">
-                                    <div class="block-header"><span>Exploitation</span><span class="text-[0.6rem] opacity-70">70-75</span></div>
-                                    <div id="zone-produit-exploit" class="min-h-[40px] space-y-1 mt-2"></div>
-                                    <div class="zone-total" id="total-produit-exploit">0 €</div>
-                                </div>
-                                <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="FINANCE">
-                                    <div class="block-header"><span>Financiers</span><span class="text-[0.6rem] opacity-70">76</span></div>
-                                    <div id="zone-produit-finance" class="min-h-[40px] space-y-1 mt-2"></div>
-                                    <div class="zone-total" id="total-produit-finance">0 €</div>
-                                </div>
-                                <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="EXCEP">
-                                    <div class="block-header"><span>Exceptionnels</span><span class="text-[0.6rem] opacity-70">77</span></div>
-                                    <div id="zone-produit-excep" class="min-h-[40px] space-y-1 mt-2"></div>
-                                    <div class="zone-total" id="total-produit-excep">0 €</div>
+                            <div class="ledger-container">
+                                <div class="bg-gray-200 p-2 font-bold text-center border-b-2 border-gray-900 flex justify-between items-center"><span>PRODUITS (Crédit)</span><span class="text-xs bg-gray-900 text-white px-2 rounded">Cl. 7</span></div>
+                                <div class="p-3 space-y-3">
+                                    <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="EXPLOIT">
+                                        <div class="block-header"><span>Exploitation</span><span class="text-[0.6rem] opacity-70">70-75</span></div><div id="zone-produit-exploit" class="min-h-[40px] space-y-1 mt-2"></div><div class="zone-total" id="total-produit-exploit">0 €</div>
+                                    </div>
+                                    <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="FINANCE">
+                                        <div class="block-header"><span>Financiers</span><span class="text-[0.6rem] opacity-70">76</span></div><div id="zone-produit-finance" class="min-h-[40px] space-y-1 mt-2"></div><div class="zone-total" id="total-produit-finance">0 €</div>
+                                    </div>
+                                    <div class="drop-zone p-2 rounded min-h-[80px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PRODUIT" data-subtype="EXCEP">
+                                        <div class="block-header"><span>Exceptionnels</span><span class="text-[0.6rem] opacity-70">77</span></div><div id="zone-produit-excep" class="min-h-[40px] space-y-1 mt-2"></div><div class="zone-total" id="total-produit-excep">0 €</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div>
-                    <h3 class="font-black text-2xl italic uppercase border-l-8 border-blue-500 pl-3 mb-4">II. Bilan (Patrimoine)</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="ledger-container border-blue-900">
-                            <div class="bg-blue-100 p-2 font-bold text-center border-b-2 border-blue-900 text-blue-900">ACTIF (Emplois)</div>
-                            <div class="p-3 space-y-3">
-                                <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="ACTIF" data-subtype="IMMO">
-                                    <div class="block-header bg-blue-900"><span>Actif Immobilisé</span><span class="text-[0.6rem] opacity-70">Cl. 2</span></div>
-                                    <div id="zone-actif-immo" class="min-h-[60px] space-y-1 mt-2"></div>
-                                    <div class="zone-total" id="total-actif-immo">0 €</div>
+                    <div>
+                        <h3 class="font-black text-2xl italic uppercase border-l-8 border-blue-500 pl-3 mb-4">II. Bilan (Patrimoine)</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="ledger-container border-blue-900">
+                                <div class="bg-blue-100 p-2 font-bold text-center border-b-2 border-blue-900 text-blue-900">ACTIF (Emplois)</div>
+                                <div class="p-3 space-y-3">
+                                    <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="ACTIF" data-subtype="IMMO">
+                                        <div class="block-header bg-blue-900"><span>Actif Immobilisé</span><span class="text-[0.6rem] opacity-70">Cl. 2</span></div><div id="zone-actif-immo" class="min-h-[60px] space-y-1 mt-2"></div><div class="zone-total" id="total-actif-immo">0 €</div>
+                                    </div>
+                                    <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="ACTIF" data-subtype="CIRC">
+                                        <div class="block-header bg-blue-800"><span>Actif Circulant</span><span class="text-[0.6rem] opacity-70">Cl. 3, 4, 5</span></div><div id="zone-actif-circ" class="min-h-[60px] space-y-1 mt-2"></div><div class="zone-total" id="total-actif-circ">0 €</div>
+                                    </div>
                                 </div>
-                                <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="ACTIF" data-subtype="CIRC">
-                                    <div class="block-header bg-blue-800"><span>Actif Circulant</span><span class="text-[0.6rem] opacity-70">Cl. 3, 4, 5</span></div>
-                                    <div id="zone-actif-circ" class="min-h-[60px] space-y-1 mt-2"></div>
-                                    <div class="zone-total" id="total-actif-circ">0 €</div>
-                                </div>
+                                <div class="bg-blue-50 p-2 text-right font-black font-mono-code text-blue-900 border-t-2 border-blue-900">TOTAL ACTIF: <span id="grand-total-actif">0 €</span></div>
                             </div>
-                            <div class="bg-blue-50 p-2 text-right font-black font-mono-code text-blue-900 border-t-2 border-blue-900">
-                                TOTAL ACTIF: <span id="grand-total-actif">0 €</span>
-                            </div>
-                        </div>
-                        <div class="ledger-container border-red-900">
-                            <div class="bg-red-100 p-2 font-bold text-center border-b-2 border-red-900 text-red-900">PASSIF (Ressources)</div>
-                            <div class="p-3 space-y-3">
-                                <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PASSIF" data-subtype="CAPITAUX">
-                                    <div class="block-header bg-red-900"><span>Capitaux Propres</span><span class="text-[0.6rem] opacity-70">Cl. 1 (Haut)</span></div>
-                                    <div id="zone-passif-capitaux" class="min-h-[60px] space-y-1 mt-2"></div>
-                                    <div class="zone-total" id="total-passif-capitaux">0 €</div>
+                            <div class="ledger-container border-red-900">
+                                <div class="bg-red-100 p-2 font-bold text-center border-b-2 border-red-900 text-red-900">PASSIF (Ressources)</div>
+                                <div class="p-3 space-y-3">
+                                    <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PASSIF" data-subtype="CAPITAUX">
+                                        <div class="block-header bg-red-900"><span>Capitaux Propres</span><span class="text-[0.6rem] opacity-70">Cl. 1 (Haut)</span></div><div id="zone-passif-capitaux" class="min-h-[60px] space-y-1 mt-2"></div><div class="zone-total" id="total-passif-capitaux">0 €</div>
+                                    </div>
+                                    <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PASSIF" data-subtype="DETTES">
+                                        <div class="block-header bg-red-800"><span>Dettes</span><span class="text-[0.6rem] opacity-70">Cl. 16, 40, 42...</span></div><div id="zone-passif-dettes" class="min-h-[60px] space-y-1 mt-2"></div><div class="zone-total" id="total-passif-dettes">0 €</div>
+                                    </div>
                                 </div>
-                                <div class="drop-zone p-2 rounded min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)" data-type="PASSIF" data-subtype="DETTES">
-                                    <div class="block-header bg-red-800"><span>Dettes</span><span class="text-[0.6rem] opacity-70">Cl. 16, 40, 42...</span></div>
-                                    <div id="zone-passif-dettes" class="min-h-[60px] space-y-1 mt-2"></div>
-                                    <div class="zone-total" id="total-passif-dettes">0 €</div>
-                                </div>
-                            </div>
-                             <div class="bg-red-50 p-2 text-right font-black font-mono-code text-red-900 border-t-2 border-red-900">
-                                TOTAL PASSIF: <span id="grand-total-passif">0 €</span>
+                                <div class="bg-red-50 p-2 text-right font-black font-mono-code text-red-900 border-t-2 border-red-900">TOTAL PASSIF: <span id="grand-total-passif">0 €</span></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div id="chapter-2" class="hidden">
+            <h2 class="text-2xl font-black font-serif-header mb-6">1. Comprendre la cascade des SIG</h2>
+            
+            <div class="max-w-4xl mx-auto mb-16">
+                <div class="grid grid-cols-2 gap-8 mb-4">
+                    <div class="sig-box has-info" onclick="toggleSigInfo(this)">
+                        <div class="text-green-700 uppercase">Marge Commerciale</div>
+                        <div class="sig-comment"> Ventes de marchandises <br>- Achats de marchandises <br>-/+ Variation de stock march.</div>
+                    </div>
+                    <div class="sig-box has-info" onclick="toggleSigInfo(this)">
+                        <div class="text-green-700 uppercase">Production de l'exercice</div>
+                        <div class="sig-comment">Production vendue <br>+ Prod. stockée <br>+ Prod. immobilisée</div>
+                    </div>
+                </div>
+
+                <div class="arrow-down"></div>
+
+                <div class="sig-box has-info mt-4 mx-auto w-3/4" onclick="toggleSigInfo(this)">
+                    <div class="text-green-700 uppercase">Valeur Ajoutée (VA)</div>
+                    <div class="sig-comment">Marge Commerciale + Production <br>- Conso en provenance des tiers (Achats MP, Var Stock MP, Services extérieurs...)</div>
+                </div>
+
+                <div class="arrow-down"></div>
+
+                <div class="sig-box has-info mt-4 mx-auto w-3/4" onclick="toggleSigInfo(this)">
+                    <div class="text-green-700 uppercase">EBE (Excédent Brut d'Exploitation)</div>
+                    <div class="sig-comment">VA + Subventions d'exploitation <br>- Impôts et taxes <br>- Charges de personnel</div>
+                </div>
+
+                <div class="arrow-down"></div>
+
+                <div class="sig-box has-info mt-4 mx-auto w-3/4" onclick="toggleSigInfo(this)">
+                    <div class="text-green-700 uppercase">REX (Résultat d'Exploitation)</div>
+                    <div class="sig-comment">EBE + Autres produits <br>- Autres charges <br>+ Reprises sur amort/prov (RAP) <br>- Dotations aux amort/prov (DAP)</div>
+                </div>
+
+                <div class="arrow-down"></div>
+
+                <div class="sig-box has-info mt-4 mx-auto w-3/4" onclick="toggleSigInfo(this)">
+                    <div class="text-green-700 uppercase">RCAI (Résultat Courant)</div>
+                    <div class="sig-comment">REX + Produits Financiers <br>- Charges Financières</div>
+                </div>
+
+                <div class="arrow-down"></div>
+
+                <div class="sig-box mt-4 mx-auto w-1/2 bg-green-100 border-green-500">
+                    <div class="text-green-900 font-black uppercase text-xl">Résultat Net</div>
+                    <div class="text-xs text-gray-500 mt-1">RCAI + Résultat Exceptionnel - IS - Participation</div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-black font-serif-header mb-6 border-t-4 border-gray-200 pt-8">2. Exercice Pratique</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-gray-100 p-6 border-2 border-gray-400 rounded">
+                    <h3 class="font-bold mb-4 font-mono-code">DONNÉES COMPTABLES (Extrait)</h3>
+                    <div id="sig-source-data" class="space-y-2 text-sm font-mono-code bg-white p-4 border border-gray-300 shadow-inner">
+                        </div>
+                    <button onclick="initSIGGame()" class="mt-4 text-xs underline text-gray-500 hover:text-black">Générer nouvelles données</button>
+                </div>
+
+                <div class="bg-white p-6 border-4 border-gray-900 shadow-[8px_8px_0px_0px_#ccff00]">
+                    <h3 class="font-bold mb-6 font-mono-code uppercase">Calculer les soldes</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <label>1. Marge Commerciale</label>
+                            <div class="flex items-center gap-2"><input type="number" id="inp-marge" class="hardcore-input" placeholder="?">€</div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <label>2. Production de l'ex.</label>
+                            <div class="flex items-center gap-2"><input type="number" id="inp-prod" class="hardcore-input" placeholder="?">€</div>
+                        </div>
+                        <div class="flex justify-between items-center font-bold">
+                            <label>3. Valeur Ajoutée (VA)</label>
+                            <div class="flex items-center gap-2"><input type="number" id="inp-va" class="hardcore-input" placeholder="?">€</div>
+                        </div>
+                        <div class="flex justify-between items-center font-bold">
+                            <label>4. EBE</label>
+                            <div class="flex items-center gap-2"><input type="number" id="inp-ebe" class="hardcore-input" placeholder="?">€</div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <label>5. Résultat Exploitation (REX)</label>
+                            <div class="flex items-center gap-2"><input type="number" id="inp-rex" class="hardcore-input" placeholder="?">€</div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <label>6. RCAI</label>
+                            <div class="flex items-center gap-2"><input type="number" id="inp-rcai" class="hardcore-input" placeholder="?">€</div>
+                        </div>
+                        <div class="flex justify-between items-center bg-green-50 p-2 -mx-2 border border-green-200">
+                            <label class="font-black text-green-700">7. RÉSULTAT NET</label>
+                            <div class="flex items-center gap-2"><input type="number" id="inp-rn" class="hardcore-input bg-white" placeholder="?">€</div>
+                        </div>
+                    </div>
+
+                    <button onclick="validateSIG()" class="w-full mt-6 py-3 bg-gray-900 text-[#ccff00] font-bold uppercase hover:bg-white hover:text-gray-900 border-2 border-gray-900 transition-colors">
+                        Vérifier mes calculs
+                    </button>
+                    <div id="sig-feedback" class="mt-4 text-center font-bold hidden"></div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <div class="sig-panel fixed bottom-0 left-0 w-full px-4 py-3 flex flex-col md:flex-row justify-between items-center gap-4 text-sm md:text-base">
+    <div id="footer-chap1" class="sig-panel fixed bottom-0 left-0 w-full px-4 py-3 flex flex-col md:flex-row justify-between items-center gap-4 text-sm md:text-base">
         <div class="flex flex-wrap gap-6 items-center justify-center md:justify-start">
-            <div class="flex flex-col">
-                <span class="text-[0.65rem] uppercase text-gray-400">Résultat Net</span>
-                <span id="sig-res-net" class="sig-value font-bold text-xl text-white">0 €</span>
-            </div>
+            <div class="flex flex-col"><span class="text-[0.65rem] uppercase text-gray-400">Résultat Net</span><span id="sig-res-net" class="sig-value font-bold text-xl text-white">0 €</span></div>
             <div class="w-px h-8 bg-gray-700 hidden md:block"></div>
-            <div class="flex flex-col">
-                <span class="text-[0.65rem] uppercase text-gray-400">Équilibre (Actif = Passif)</span>
-                <span id="bilan-check" class="font-bold text-lg text-red-500">NON</span>
-            </div>
+            <div class="flex flex-col"><span class="text-[0.65rem] uppercase text-gray-400">Équilibre</span><span id="bilan-check" class="font-bold text-lg text-red-500">NON</span></div>
         </div>
-
         <div class="flex gap-4">
-            <button onclick="exportToTXT()" class="px-6 py-3 bg-gray-700 text-white font-bold uppercase tracking-widest hover:bg-gray-600 transition-colors shadow-lg cursor-pointer rounded-sm flex items-center gap-2 text-xs md:text-sm">
-                📁 Exporter pour IA
-            </button>
-            <button id="validate-btn" onclick="validate()" class="px-8 py-3 bg-[#ccff00] text-gray-900 font-black uppercase tracking-widest hover:bg-white transition-colors shadow-lg cursor-pointer rounded-sm">
-                Vérifier
-            </button>
+            <button onclick="exportToTXT()" class="px-6 py-3 bg-gray-700 text-white font-bold uppercase tracking-widest hover:bg-gray-600 transition-colors shadow-lg cursor-pointer rounded-sm flex items-center gap-2 text-xs md:text-sm">📁 Exporter</button>
+            <button id="validate-btn" onclick="validate()" class="px-8 py-3 bg-[#ccff00] text-gray-900 font-black uppercase tracking-widest hover:bg-white transition-colors shadow-lg cursor-pointer rounded-sm">Vérifier</button>
         </div>
     </div>
 
     <script>
+        // GLOBAL STATE
+        let currentChapter = 1;
         let currentDifficulty = 'EASY'; 
         let currentCompanyName = "";
         let journalEntries = [];
+        let gameItems = [];
+        let sigSolution = {}; // Stores correct SIG values
 
-        // --- VICTOIRE : LES VIPs ---
+        // VIPs
         const winners = [
-            { 
-                name: "Napoléon", 
-                img: "https://preview.redd.it/v1dgm9hm3sp91.png?auto=webp&s=d7a42b8398951654be0ae5c87f6fecf478c86044", 
-                quote: "Impossible n'est pas comptable.<br>Une victoire stratégique éclatante !"
-            },
-            { 
-                name: "Ichiban Kasuga", 
-                img: "https://gamejolt.com/p/portrait-of-ichiban-kasuga-wearing-yellow-headphones-for-an-art-com-f4dyrphy", 
-                quote: "Critique Hit sur le Bilan !<br>Tu as passé le niveau, Kyodai !"
-            },
-            { 
-                name: "Neymar JR", 
-                img: "https://www.pixelart.name/wp-content/uploads/2024/01/pixelart_name_footballer_neymar_difficult.png", 
-                quote: "GOOOOOAL !<br>Un équilibre technique tout simplement parfait."
-            },
-            { 
-                name: "Michel Houellebecq", 
-                img: "https://image.noelshack.com/fichiers/2025/49/5/1764928236-houellbcq.png", 
-                quote: "Dans un monde froid et vide,<br>ce bilan équilibré est la seule vérité tangible."
-            }
+            { name: "Napoléon", img: "https://preview.redd.it/v1dgm9hm3sp91.png?auto=webp&s=d7a42b8398951654be0ae5c87f6fecf478c86044", quote: "Impossible n'est pas comptable.<br>Une victoire stratégique éclatante !" },
+            { name: "Ichiban Kasuga", img: "https://gamejolt.com/p/portrait-of-ichiban-kasuga-wearing-yellow-headphones-for-an-art-com-f4dyrphy", quote: "Critique Hit sur le Bilan !<br>Tu as passé le niveau, Kyodai !" },
+            { name: "Neymar JR", img: "https://www.pixelart.name/wp-content/uploads/2024/01/pixelart_name_footballer_neymar_difficult.png", quote: "GOOOOOAL !<br>Un équilibre technique tout simplement parfait." },
+            { name: "Michel Houellebecq", img: "https://image.noelshack.com/fichiers/2025/49/5/1764928236-houellbcq.png", quote: "Dans un monde froid et vide,<br>ce bilan équilibré est la seule vérité tangible." }
         ];
 
-        // CONFIG
+        // CONFIG & DATA
         const prefixes = ["Boulangerie", "Garage", "Start-up", "Cabinet", "Boucherie", "Agence", "Pizzeria", "Crèche", "Pharmacie", "EHPAD"];
         const suffixes = ["'Chez Dédé'", "'Le Gouffre'", "'L'Optimiste'", "'Dernier Recours'", "'Le Blanchisseur'", "'Au Bonheur'"];
-        
         const TYPES = { CHARGE: 'CHARGE', PRODUIT: 'PRODUIT', ACTIF: 'ACTIF', PASSIF: 'PASSIF' };
         const SUBS = { EXPLOIT: 'EXPLOIT', FINANCE: 'FINANCE', EXCEP: 'EXCEP', IMMO: 'IMMO', CIRC: 'CIRC', CAPITAUX: 'CAPITAUX', DETTES: 'DETTES' };
 
-        const DATABASE_EASY = [
-            { label: "Achat Marchandises", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '607' },
-            { label: "Loyer", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '613' },
-            { label: "Salaires", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '641' },
-            { label: "Vente Marchandises", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '707' },
+        const DATABASE_FULL = [
+            { label: "Achats de marchandises", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '607' },
+            { label: "Variation de stocks (stockage)", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '603' },
+            { label: "Impôts, taxes et versements", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '63' },
+            { label: "Salaires et traitements", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '641' },
+            { label: "Charges sociales", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '645' },
+            { label: "Dotations aux amortissements", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '681' },
+            { label: "Intérêts payés", type: TYPES.CHARGE, sub: SUBS.FINANCE, code: '66' },
+            { label: "Produits des participations", type: TYPES.PRODUIT, sub: SUBS.FINANCE, code: '76' },
+            { label: "Ventes de marchandises (CA)", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '707' },
+            { label: "Redevances (brevets, licences)", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '751' },
+            { label: "Quotes-parts de résultat", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '755' },
+            { label: "Subventions d'exploitation", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '74' },
+            { label: "Produits exceptionnels", type: TYPES.PRODUIT, sub: SUBS.EXCEP, code: '771' },
+            { label: "Charges exceptionnelles", type: TYPES.CHARGE, sub: SUBS.EXCEP, code: '671' },
+            { label: "Intérêts reçus", type: TYPES.PRODUIT, sub: SUBS.FINANCE, code: '76' },
+            { label: "Dotations aux provisions", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '681' },
+            { label: "Autres charges d'exploitation", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '65' },
+            { label: "Reprises sur amortissements", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '78' },
+            { label: "Val. Comptable Elts Cédés (VCEAC)", type: TYPES.CHARGE, sub: SUBS.EXCEP, code: '675' },
+            { label: "Prod. Cession Elts Actif (PCEA)", type: TYPES.PRODUIT, sub: SUBS.EXCEP, code: '775' },
             { label: "Capital Social", type: TYPES.PASSIF, sub: SUBS.CAPITAUX, code: '101' },
-            { label: "Emprunts", type: TYPES.PASSIF, sub: SUBS.DETTES, code: '164' },
-            { label: "Stock Final", type: TYPES.ACTIF, sub: SUBS.CIRC, code: '37' }
+            { label: "Emprunts Bancaires", type: TYPES.PASSIF, sub: SUBS.DETTES, code: '164' },
+            { label: "Stock Final Marchandises", type: TYPES.ACTIF, sub: SUBS.CIRC, code: '37' }
         ];
 
-        let gameItems = [];
-
-        // --- TUTO ENGINE ---
-        let currentSlide = 1;
-        const totalSlides = 3;
-
-        function openTuto() {
-            document.getElementById('tuto-modal').classList.remove('hidden');
-            showSlide(1);
-        }
-        function closeTuto() {
-            document.getElementById('tuto-modal').classList.add('hidden');
-        }
-        function changeSlide(direction) {
-            showSlide(currentSlide + direction);
-        }
-        function showSlide(n) {
-            if (n < 1 || n > totalSlides) return;
-            currentSlide = n;
+        // --- CHAPTER NAVIGATION ---
+        function switchChapter(chapId) {
+            currentChapter = chapId;
+            // Tabs
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(`tab-${chapId}`).classList.add('active');
             
-            // Hide all
-            for(let i=1; i<=totalSlides; i++) {
-                document.getElementById(`tuto-slide-${i}`).classList.remove('active');
-            }
-            // Show current
-            document.getElementById(`tuto-slide-${currentSlide}`).classList.add('active');
-
-            // Dots update
-            const dots = document.getElementById('tuto-dots').children;
-            for(let i=0; i<dots.length; i++) {
-                dots[i].className = (i+1 === currentSlide) ? "w-3 h-3 rounded-full bg-[#ccff00] border border-gray-900" : "w-3 h-3 rounded-full bg-gray-300";
-            }
-
-            // Buttons state
-            document.getElementById('prev-btn').disabled = (currentSlide === 1);
-            
-            if(currentSlide === totalSlides) {
-                document.getElementById('next-btn').classList.add('hidden');
-                document.getElementById('finish-btn').classList.remove('hidden');
+            // Content
+            if(chapId === 1) {
+                document.getElementById('chapter-1').classList.remove('hidden');
+                document.getElementById('chapter-2').classList.add('hidden');
+                document.getElementById('footer-chap1').classList.remove('hidden');
             } else {
-                document.getElementById('next-btn').classList.remove('hidden');
-                document.getElementById('finish-btn').classList.add('hidden');
+                document.getElementById('chapter-1').classList.add('hidden');
+                document.getElementById('chapter-2').classList.remove('hidden');
+                document.getElementById('footer-chap1').classList.add('hidden');
+                initSIGGame(); // Load SIG game
             }
         }
 
-        // --- GAME LOGIC ---
+        // --- SIG DIAGRAM INTERACTION ---
+        function toggleSigInfo(element) {
+            const comment = element.querySelector('.sig-comment');
+            if (comment.style.display === 'block') {
+                comment.style.display = 'none';
+            } else {
+                comment.style.display = 'block';
+            }
+        }
+
+        // --- SIG EXERCISE LOGIC ---
+        function initSIGGame() {
+            // Generates random data for a full CDR to analyze
+            const d = {};
+            const r = (min, max) => Math.floor(Math.random() * (max - min) + min);
+
+            // 1. Data Generation
+            d.ventes = r(20000, 50000);
+            d.achatsMarch = r(8000, 15000);
+            d.varStockMarch = r(-2000, 2000); // Negative = destockage (charge), Positive = stockage (reduction charge) -> In PCG formula: Cost = Achats - Var (+ if Stock decrease, - if increase). 
+            // SIMPLIFICATION for SIG: Marge = Ventes - (Achats - VarStock)
+            
+            d.prodVendue = r(5000, 15000);
+            d.prodStockee = r(-1000, 3000);
+            d.prodImmo = r(0, 2000); // often 0
+            
+            d.achatsMP = r(2000, 5000);
+            d.varStockMP = r(-500, 500);
+            d.servicesExt = r(3000, 8000); // 61/62
+            
+            d.subventions = r(0, 2000);
+            d.impots = r(500, 1500); // 63
+            d.personnel = r(5000, 12000); // 64
+            
+            d.autresProdExploit = r(0, 500);
+            d.autresChargesExploit = r(0, 500);
+            d.rap = r(0, 1000);
+            d.dap = r(1000, 4000);
+            
+            d.prodFi = r(0, 500);
+            d.chargesFi = r(200, 1000);
+            
+            d.prodExcep = r(0, 2000);
+            d.chargesExcep = r(0, 2000);
+            
+            d.participation = 0; // Simplify
+            d.is = 0; // Simplify or estimate
+
+            // 2. Calculate Correct SIG
+            const consoTiers = d.achatsMP - d.varStockMP + d.servicesExt; // Note on signs: VarStock Crediteur (prod) or Debiteur (Charge). Let's assume standard values.
+            // Let's stick to the visual formula provided in the diagram:
+            // Marge Co = Ventes - Achats Marchandises - (-VarStockMarch if creditor, + if debitor). 
+            // Standard convention here: "Achats consommés" = Achats - Variation (if Var = SF - SI). 
+            // Let's assume the values provided are the accounting balances.
+            // If Var Stock > 0 (Stock Increase, SF>SI), it's a CREDIT (Product-like).
+            // If Var Stock < 0 (Stock Decrease), it's a DEBIT (Charge).
+            
+            // To make it unambiguous for the player, we will display "Coût d'achat des marchandises vendues" directly or detailed lines.
+            // Let's display lines.
+            
+            const margeCo = d.ventes - d.achatsMarch + d.varStockMarch; // Assuming varStock is signed (Pos = Stockage/Profit, Neg = Destockage/Loss)
+            const production = d.prodVendue + d.prodStockee + d.prodImmo;
+            const va = margeCo + production - (d.achatsMP - d.varStockMP + d.servicesExt);
+            const ebe = va + d.subventions - d.impots - d.personnel;
+            const rex = ebe + d.autresProdExploit - d.autresChargesExploit + d.rap - d.dap;
+            const rcai = rex + d.prodFi - d.chargesFi;
+            const rn = rcai + (d.prodExcep - d.chargesExcep) - d.is - d.participation;
+
+            sigSolution = { margeCo, production, va, ebe, rex, rcai, rn };
+
+            // 3. Render Source Data
+            const html = `
+                <div class="flex justify-between"><span>Ventes Marchandises (707)</span><span>${d.ventes} €</span></div>
+                <div class="flex justify-between"><span>Achats Marchandises (607)</span><span>${d.achatsMarch} €</span></div>
+                <div class="flex justify-between"><span>Var. Stocks March. (6037)</span><span>${d.varStockMarch} €</span></div>
+                <div class="border-t border-gray-300 my-1"></div>
+                <div class="flex justify-between"><span>Prod. Vendue (Biens/Services)</span><span>${d.prodVendue} €</span></div>
+                <div class="flex justify-between"><span>Prod. Stockée/Immo</span><span>${d.prodStockee + d.prodImmo} €</span></div>
+                <div class="flex justify-between"><span>Achats MP & Autres Appro (601/602)</span><span>${d.achatsMP} €</span></div>
+                <div class="flex justify-between"><span>Var. Stock MP (6031)</span><span>${d.varStockMP} €</span></div>
+                <div class="flex justify-between"><span>Services Extérieurs (61/62)</span><span>${d.servicesExt} €</span></div>
+                <div class="border-t border-gray-300 my-1"></div>
+                <div class="flex justify-between"><span>Subventions d'exploit. (74)</span><span>${d.subventions} €</span></div>
+                <div class="flex justify-between"><span>Impôts & Taxes (63)</span><span>${d.impots} €</span></div>
+                <div class="flex justify-between"><span>Charges Personnel (64)</span><span>${d.personnel} €</span></div>
+                <div class="border-t border-gray-300 my-1"></div>
+                <div class="flex justify-between"><span>Autres Prod / Charges Exploit.</span><span>${d.autresProdExploit - d.autresChargesExploit} €</span></div>
+                <div class="flex justify-between"><span>Reprises (RAP) (78)</span><span>${d.rap} €</span></div>
+                <div class="flex justify-between"><span>Dotations (DAP) (68)</span><span>${d.dap} €</span></div>
+                <div class="border-t border-gray-300 my-1"></div>
+                <div class="flex justify-between"><span>Produits Financiers</span><span>${d.prodFi} €</span></div>
+                <div class="flex justify-between"><span>Charges Financières</span><span>${d.chargesFi} €</span></div>
+                <div class="flex justify-between text-gray-500 text-xs"><span>Résultat Exceptionnel</span><span>${d.prodExcep - d.chargesExcep} €</span></div>
+            `;
+            document.getElementById('sig-source-data').innerHTML = html;
+            
+            // Clear inputs
+            document.querySelectorAll('#chapter-2 input').forEach(i => { i.value = ''; i.classList.remove('bg-red-100', 'bg-green-100'); });
+            document.getElementById('sig-feedback').classList.add('hidden');
+        }
+
+        function validateSIG() {
+            const inputs = {
+                margeCo: parseInt(document.getElementById('inp-marge').value),
+                production: parseInt(document.getElementById('inp-prod').value),
+                va: parseInt(document.getElementById('inp-va').value),
+                ebe: parseInt(document.getElementById('inp-ebe').value),
+                rex: parseInt(document.getElementById('inp-rex').value),
+                rcai: parseInt(document.getElementById('inp-rcai').value),
+                rn: parseInt(document.getElementById('inp-rn').value)
+            };
+
+            let errors = 0;
+            const check = (key, id) => {
+                const el = document.getElementById(id);
+                // Allow small margin of error? No, exact calculation.
+                if (inputs[key] === sigSolution[key]) {
+                    el.classList.add('bg-green-100');
+                    el.classList.remove('bg-red-100');
+                } else {
+                    el.classList.add('bg-red-100');
+                    el.classList.remove('bg-green-100');
+                    errors++;
+                }
+            };
+
+            check('margeCo', 'inp-marge');
+            check('production', 'inp-prod');
+            check('va', 'inp-va');
+            check('ebe', 'inp-ebe');
+            check('rex', 'inp-rex');
+            check('rcai', 'inp-rcai');
+            check('rn', 'inp-rn');
+
+            const fb = document.getElementById('sig-feedback');
+            fb.classList.remove('hidden');
+            if (errors === 0) {
+                fb.innerText = "Tout est correct ! Excellent analyste.";
+                fb.className = "mt-4 text-center font-bold text-green-600";
+                // Show Victory Modal for SIG
+                document.getElementById('victory-content').innerHTML = `
+                    <h2 class="text-4xl font-black font-mono-code uppercase text-[#dc2626] transform -rotate-2">Analyste Confirmé !</h2>
+                    <p class="font-serif-header italic text-gray-600 mt-4">Les SIG n'ont plus de secrets pour toi.</p>
+                `;
+                document.getElementById('victory-modal').classList.remove('hidden');
+            } else {
+                fb.innerText = `Il y a ${errors} erreurs. Vérifie tes formules.`;
+                fb.className = "mt-4 text-center font-bold text-red-600";
+            }
+        }
+
+        // --- CHAPTER 1 JS LOGIC (Existing) ---
+        function initStandardMode() {
+            gameItems = [];
+            const selection = [...DATABASE_FULL].sort(() => 0.5 - Math.random()).slice(0, 12);
+            let tC=0, tP=0, tA=0, tPas=0;
+            selection.forEach((op, i) => {
+                const amount = Math.floor(Math.random()*4000)+100;
+                gameItems.push({...op, id:`op-${i}`, amount});
+                if(op.type===TYPES.CHARGE) tC+=amount; if(op.type===TYPES.PRODUIT) tP+=amount; if(op.type===TYPES.ACTIF) tA+=amount; if(op.type===TYPES.PASSIF) tPas+=amount;
+            });
+            const res = tP - tC;
+            gameItems.push({ id:'op-res', label:"Résultat Net", type:TYPES.PASSIF, sub:SUBS.CAPITAUX, code:'120', amount:res });
+            tPas += res;
+            const bank = tPas - tA;
+            if(bank>=0) gameItems.push({id:'op-bank', label:"Banque (Solde)", type:TYPES.ACTIF, sub:SUBS.CIRC, code:'512', amount:bank});
+            else gameItems.push({id:'op-bank', label:"Découvert", type:TYPES.PASSIF, sub:SUBS.DETTES, code:'512', amount:Math.abs(bank)});
+            renderCards(); updateCalculations();
+        }
+
+        function initHardcoreMode() {
+            gameItems = []; const journalDiv = document.getElementById('journal-content'); const ledger = {}; const durationMul = parseInt(document.getElementById('game-duration').value);
+            let currentSupplierDebt=0, currentCustomerReceivable=0;
+            const impact = (label, type, sub, code, amount, isDebit) => {
+                const key = code; if(!ledger[key]) ledger[key]={label, type, sub, code, balance:0};
+                if(type===TYPES.ACTIF || type===TYPES.CHARGE) ledger[key].balance+=isDebit?amount:-amount; else ledger[key].balance+=isDebit?-amount:amount;
+            };
+            const addEntry = (date, text) => { journalEntries.push(`${date} : ${text}`); const p=document.createElement('p'); p.innerHTML=`<strong>${date}</strong> : ${text}`; p.className="border-b border-blue-200 pb-1"; journalDiv.appendChild(p); };
+            let currentDate=new Date(2024,0,1); const nextDate=()=>{currentDate.setDate(currentDate.getDate()+Math.floor(Math.random()*5)+2); return currentDate.toLocaleDateString('fr-FR');};
+            
+            const capital=30000; impact("Capital Social", TYPES.PASSIF, SUBS.CAPITAUX, '101', capital, false); impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', capital, true); addEntry("01/01/2024", `Capital social : ${capital}€.`);
+            const loops=4*durationMul; 
+            for(let i=0; i<loops; i++) {
+                const rand=Math.random();
+                if(rand<0.15){ const v=2000,p=2500; impact("Val. Comptable Elts Cédés", TYPES.CHARGE, SUBS.EXCEP, '675', v, true); impact("Prod. Cession Elts Actif", TYPES.PRODUIT, SUBS.EXCEP, '775', p, false); impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', p, true); addEntry(nextDate(), `Cession actif (VNC:${v}€) pour ${p}€.`); }
+                else if(rand<0.25){ const s=1000; impact("Subventions d'exploitation", TYPES.PRODUIT, SUBS.EXPLOIT, '74', s, false); impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', s, true); addEntry(nextDate(), `Subvention reçue : ${s}€.`); }
+                else if(rand<0.7){ const a=1000+Math.floor(Math.random()*2000); if(Math.random()>0.5){ impact("Achats de marchandises", TYPES.CHARGE, SUBS.EXPLOIT, '607', a, true); impact("Dettes Fournisseurs", TYPES.PASSIF, SUBS.DETTES, '401', a, false); currentSupplierDebt+=a; addEntry(nextDate(), `Achat marchandise crédit : ${a}€.`); } else { impact("Ventes de marchandises", TYPES.PRODUIT, SUBS.EXPLOIT, '707', a, false); impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', a, true); addEntry(nextDate(), `Vente comptant : ${a}€.`); } }
+            }
+            impact("Salaires", TYPES.CHARGE, SUBS.EXPLOIT, '641', 3000, true); impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', 3000, false); addEntry(nextDate(), "Salaires : 3000€.");
+            const stock=5000; impact("Stock Final Marchandises", TYPES.ACTIF, SUBS.CIRC, '37', stock, true); impact("Variation de stocks", TYPES.CHARGE, SUBS.EXPLOIT, '603', stock, false); addEntry("31/12/2024", `Stock final : ${stock}€.`);
+            
+            let tC=0, tP=0; Object.values(ledger).forEach(acc=>{if(acc.type===TYPES.CHARGE)tC+=acc.balance;if(acc.type===TYPES.PRODUIT)tP+=acc.balance;});
+            ledger['120']={label:"Résultat (à calculer !)", type:TYPES.PASSIF, sub:SUBS.CAPITAUX, code:'120', balance:tP-tC};
+            Object.values(ledger).forEach((acc, i)=>{if(Math.abs(acc.balance)>0) gameItems.push({id:`op-${i}`, label:acc.label, type:acc.type, sub:acc.sub, code:acc.code, amount:acc.balance, isHardcore:true});});
+            renderCards(); updateCalculations();
+        }
 
         function setDifficulty(mode) {
             currentDifficulty = mode;
             document.querySelectorAll('.diff-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`btn-${mode.toLowerCase()}`).classList.add('active');
-            
             const journal = document.getElementById('journal-panel');
             const slider = document.getElementById('duration-control');
-            
-            if(mode === 'HARDCORE') {
-                journal.classList.remove('hidden');
-                slider.classList.remove('hidden');
-            } else {
-                journal.classList.add('hidden');
-                slider.classList.add('hidden');
-            }
+            if(mode === 'HARDCORE') { journal.classList.remove('hidden'); slider.classList.remove('hidden'); } else { journal.classList.add('hidden'); slider.classList.add('hidden'); }
             initGame();
         }
-
         function initGame() {
-            currentCompanyName = `${prefixes[Math.floor(Math.random() * prefixes.length)]} ${suffixes[Math.floor(Math.random() * suffixes.length)]}`;
+            currentCompanyName = `${prefixes[Math.floor(Math.random()*prefixes.length)]} ${suffixes[Math.floor(Math.random()*suffixes.length)]}`;
             document.getElementById('company-name').innerText = currentCompanyName;
-            closeModal();
-            journalEntries = [];
-            
+            closeModal(); journalEntries = [];
             document.querySelectorAll('.drop-zone div[id^="zone-"]').forEach(z => z.innerHTML = '');
-            document.getElementById('source-zone').innerHTML = '';
-            document.getElementById('journal-content').innerHTML = '';
-            
-            const btn = document.getElementById('validate-btn');
-            btn.innerText = "Vérifier";
-            btn.classList.replace('bg-white', 'bg-[#ccff00]');
-
-            if (currentDifficulty === 'HARDCORE') {
-                initHardcoreMode();
-            } else {
-                initStandardMode();
-            }
+            document.getElementById('source-zone').innerHTML = ''; document.getElementById('journal-content').innerHTML = '';
+            const btn = document.getElementById('validate-btn'); btn.innerText = "Vérifier"; btn.classList.replace('bg-white', 'bg-[#ccff00]');
+            if(currentDifficulty === 'HARDCORE') initHardcoreMode(); else initStandardMode();
         }
-
-        function initStandardMode() {
-            gameItems = [];
-            const selection = [...DATABASE_EASY].sort(() => 0.5 - Math.random()).slice(0, 10);
-            let tC = 0, tP = 0, tA = 0, tPas = 0;
-
-            selection.forEach((op, i) => {
-                const amount = Math.floor(Math.random() * 4000) + 100;
-                gameItems.push({ ...op, id: `op-${i}`, amount });
-                if(op.type === TYPES.CHARGE) tC += amount;
-                if(op.type === TYPES.PRODUIT) tP += amount;
-                if(op.type === TYPES.ACTIF) tA += amount;
-                if(op.type === TYPES.PASSIF) tPas += amount;
-            });
-
-            const res = tP - tC;
-            gameItems.push({ id: 'op-res', label: "Résultat", type: TYPES.PASSIF, sub: SUBS.CAPITAUX, code: '120', amount: res });
-            tPas += res;
-
-            const bank = tPas - tA;
-            if (bank >= 0) gameItems.push({ id: 'op-bank', label: "Banque (Solde)", type: TYPES.ACTIF, sub: SUBS.CIRC, code: '512', amount: bank });
-            else gameItems.push({ id: 'op-bank', label: "Découvert", type: TYPES.PASSIF, sub: SUBS.DETTES, code: '512', amount: Math.abs(bank) });
-
-            renderCards();
-            updateCalculations();
-        }
-
-        function initHardcoreMode() {
-            gameItems = [];
-            const journalDiv = document.getElementById('journal-content');
-            const ledger = {}; 
-            const durationMul = parseInt(document.getElementById('game-duration').value);
-
-            let currentSupplierDebt = 0;
-            let currentCustomerReceivable = 0;
-
-            const impact = (label, type, sub, code, amount, isDebit) => {
-                const key = code; 
-                if(!ledger[key]) ledger[key] = { label, type, sub, code, balance: 0 };
-                if (type === TYPES.ACTIF || type === TYPES.CHARGE) {
-                    ledger[key].balance += isDebit ? amount : -amount;
-                } else {
-                    ledger[key].balance += isDebit ? -amount : amount;
-                }
-            };
-
-            const addEntry = (date, text) => {
-                journalEntries.push(`${date} : ${text}`);
-                const p = document.createElement('p');
-                p.innerHTML = `<strong>${date}</strong> : ${text}`;
-                p.className = "border-b border-blue-200 pb-1";
-                journalDiv.appendChild(p);
-            };
-
-            let currentDate = new Date(2024, 0, 1);
-            const nextDate = (days = 5) => {
-                currentDate.setDate(currentDate.getDate() + Math.floor(Math.random() * days) + 2);
-                return currentDate.toLocaleDateString('fr-FR');
-            };
-
-            const capital = 20000 + (Math.floor(Math.random() * 10) * 1000);
-            impact("Capital Social", TYPES.PASSIF, SUBS.CAPITAUX, '101', capital, false);
-            impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', capital, true);
-            addEntry("01/01/2024", `Apport en capital de ${capital}€.`);
-
-            const loops = 3 * durationMul; 
-            for(let i=0; i<loops; i++) {
-                const rand = Math.random();
-                let action = '';
-                
-                if (currentSupplierDebt > 500 && Math.random() > 0.6) action = 'PAY_DEBT';
-                else if (currentCustomerReceivable > 500 && Math.random() > 0.6) action = 'RECEIVE_PAYMENT';
-                else {
-                    if(rand < 0.4) action = 'BUY_STOCK';
-                    else if(rand < 0.7) action = 'SELL_GOODS';
-                    else action = 'EXPENSE';
-                }
-
-                if (action === 'PAY_DEBT') {
-                    const amount = Math.floor(currentSupplierDebt * (0.5 + Math.random() * 0.5));
-                    impact("Dettes Fournisseurs", TYPES.PASSIF, SUBS.DETTES, '401', amount, true); 
-                    impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', amount, false);
-                    currentSupplierDebt -= amount;
-                    addEntry(nextDate(), `Paiement partiel fournisseur (${amount}€).`);
-                } 
-                else if (action === 'RECEIVE_PAYMENT') {
-                    const amount = Math.floor(currentCustomerReceivable * (0.5 + Math.random() * 0.5));
-                    impact("Créances Clients", TYPES.ACTIF, SUBS.CIRC, '411', amount, false); 
-                    impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', amount, true);
-                    currentCustomerReceivable -= amount;
-                    addEntry(nextDate(), `Encaissement client (${amount}€).`);
-                }
-                else if (action === 'BUY_STOCK') {
-                    const amount = Math.floor(Math.random() * 2000) + 500;
-                    if(Math.random() > 0.3) {
-                        impact("Achat Marchandises", TYPES.CHARGE, SUBS.EXPLOIT, '607', amount, true);
-                        impact("Dettes Fournisseurs", TYPES.PASSIF, SUBS.DETTES, '401', amount, false);
-                        currentSupplierDebt += amount;
-                        addEntry(nextDate(), `Achat marchandise à crédit (${amount}€).`);
-                    } else {
-                        impact("Achat Marchandises", TYPES.CHARGE, SUBS.EXPLOIT, '607', amount, true);
-                        impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', amount, false);
-                        addEntry(nextDate(), `Achat marchandise comptant (${amount}€).`);
-                    }
-                }
-                else if (action === 'SELL_GOODS') {
-                    const amount = Math.floor(Math.random() * 3000) + 1000;
-                    if(Math.random() > 0.4) {
-                        impact("Vente Marchandises", TYPES.PRODUIT, SUBS.EXPLOIT, '707', amount, false);
-                        impact("Créances Clients", TYPES.ACTIF, SUBS.CIRC, '411', amount, true);
-                        currentCustomerReceivable += amount;
-                        addEntry(nextDate(), `Vente marchandise à crédit (${amount}€).`);
-                    } else {
-                        impact("Vente Marchandises", TYPES.PRODUIT, SUBS.EXPLOIT, '707', amount, false);
-                        impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', amount, true);
-                        addEntry(nextDate(), `Vente marchandise comptant (${amount}€).`);
-                    }
-                }
-                else if (action === 'EXPENSE') {
-                    const amount = 200 + Math.floor(Math.random() * 500);
-                    impact("Charges Diverses", TYPES.CHARGE, SUBS.EXPLOIT, '600', amount, true);
-                    impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', amount, false);
-                    addEntry(nextDate(), `Paiement frais divers (${amount}€).`);
-                }
-            }
-
-            const immoPrice = 6000;
-            const years = 5;
-            impact("Matériel Industriel", TYPES.ACTIF, SUBS.IMMO, '215', immoPrice, true);
-            impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', immoPrice, false);
-            addEntry("01/07/2024", `Achat Matériel Industriel comptant : ${immoPrice}€. Amortissable linéairement sur ${years} ans.`);
-
-            const dap = (immoPrice / years) * (6/12);
-            impact("Dotation Amortissements", TYPES.CHARGE, SUBS.EXPLOIT, '681', dap, true);
-            impact("Amortissements Cumulés", TYPES.ACTIF, SUBS.IMMO, '281', dap, false); 
-            addEntry("31/12/2024", `Inventaire : Enregistrement de l'amortissement du matériel.`);
-
-            let tC = 0, tP = 0;
-            Object.values(ledger).forEach(acc => {
-                if(acc.type === TYPES.CHARGE) tC += acc.balance;
-                if(acc.type === TYPES.PRODUIT) tP += acc.balance;
-            });
-            const result = tP - tC;
-            ledger['120'] = { label: "Résultat (à calculer !)", type: TYPES.PASSIF, sub: SUBS.CAPITAUX, code: '120', balance: result };
-
-            Object.values(ledger).forEach((acc, i) => {
-                if (Math.abs(acc.balance) > 0) {
-                    gameItems.push({
-                        id: `op-${i}`, label: acc.label, type: acc.type, sub: acc.sub, code: acc.code,
-                        amount: acc.balance,
-                        isHardcore: true
-                    });
-                }
-            });
-
-            renderCards();
-            updateCalculations();
-        }
-
-        function renderCards() {
-            const sourceZone = document.getElementById('source-zone');
-            gameItems.sort(() => 0.5 - Math.random()).forEach(item => {
-                sourceZone.appendChild(createCard(item));
-            });
-        }
-
+        function renderCards() { const z = document.getElementById('source-zone'); gameItems.sort(() => 0.5 - Math.random()).forEach(i => z.appendChild(createCard(i))); }
         function createCard(item) {
-            const div = document.createElement('div');
-            div.id = item.id;
-            div.className = "sketchy-card p-2 cursor-grab animate-pop mb-2 text-sm"; 
-            div.draggable = true;
-            div.dataset.type = item.type;
-            div.dataset.sub = item.sub;
-            div.dataset.trueAmount = item.amount;
-            div.dataset.currentAmount = currentDifficulty === 'HARDCORE' ? 0 : item.amount;
-            div.dataset.label = item.label;
-
-            let displayAmount, codeDisplay;
-
-            if (currentDifficulty === 'HARDCORE') {
-                displayAmount = `<input type="number" class="hardcore-input" placeholder="?" onmousedown="event.stopPropagation()" oninput="updateCardAmount(this)"> €`;
-                codeDisplay = `<span class="font-mono-code text-[0.65rem] bg-gray-200 px-1 rounded text-gray-800 hidden"></span>`; 
-            } else {
-                displayAmount = `${item.amount.toLocaleString('fr-FR')} €`;
-                if (currentDifficulty === 'NORMAL') {
-                    codeDisplay = ``;
-                } else {
-                    codeDisplay = `<span class="font-mono-code text-[0.65rem] bg-gray-200 px-1 rounded text-gray-800">${item.code}</span>`;
-                }
-            }
-
-            div.innerHTML = `
-                <div class="flex justify-between items-start pointer-events-none">
-                    <span class="font-bold leading-tight pr-2 text-gray-900">${item.label}</span>
-                    ${codeDisplay}
-                </div>
-                <div class="mt-1 text-right font-mono-code font-bold text-gray-600">
-                    ${displayAmount}
-                </div>
-            `;
-
-            div.addEventListener('dragstart', (e) => {
-                if(e.target.tagName === 'INPUT') { e.preventDefault(); return; }
-                e.target.classList.remove('valid-success', 'valid-error');
-                e.dataTransfer.setData("text", e.target.id);
-                setTimeout(() => e.target.classList.add('dragging'), 0);
-            });
-            div.addEventListener('dragend', (e) => {
-                e.target.classList.remove('dragging');
-                updateCalculations();
-            });
+            const div = document.createElement('div'); div.id = item.id; div.className = "sketchy-card p-2 cursor-grab animate-pop mb-2 text-sm"; div.draggable = true;
+            div.dataset.type = item.type; div.dataset.sub = item.sub; div.dataset.trueAmount = item.amount; div.dataset.currentAmount = currentDifficulty === 'HARDCORE' ? 0 : item.amount; div.dataset.label = item.label;
+            let display = (currentDifficulty === 'HARDCORE') ? `<input type="number" class="hardcore-input" placeholder="?" onmousedown="event.stopPropagation()" oninput="updateCardAmount(this)"> €` : `${item.amount.toLocaleString('fr-FR')} €`;
+            let code = (currentDifficulty === 'EASY') ? `<span class="font-mono-code text-[0.65rem] bg-gray-200 px-1 rounded text-gray-800">${item.code}</span>` : ``;
+            div.innerHTML = `<div class="flex justify-between items-start pointer-events-none"><span class="font-bold leading-tight pr-2 text-gray-900">${item.label}</span>${code}</div><div class="mt-1 text-right font-mono-code font-bold text-gray-600">${display}</div>`;
+            div.addEventListener('dragstart', (e) => { if(e.target.tagName === 'INPUT') {e.preventDefault(); return;} e.target.classList.remove('valid-success', 'valid-error'); e.dataTransfer.setData("text", e.target.id); setTimeout(() => e.target.classList.add('dragging'), 0); });
+            div.addEventListener('dragend', (e) => { e.target.classList.remove('dragging'); updateCalculations(); });
             return div;
         }
-
-        function updateCardAmount(input) {
-            const card = input.closest('.sketchy-card');
-            card.dataset.currentAmount = parseInt(input.value) || 0;
-            updateCalculations();
-        }
-
+        function updateCardAmount(input) { input.closest('.sketchy-card').dataset.currentAmount = parseInt(input.value) || 0; updateCalculations(); }
         function allowDrop(ev) { ev.preventDefault(); }
         function drop(ev) {
-            ev.preventDefault();
-            const data = ev.dataTransfer.getData("text");
-            const draggedElement = document.getElementById(data);
-            if(!draggedElement) return;
-
-            let target = ev.target;
-            while (target && !target.classList.contains('drop-zone') && target.id !== 'source-zone') target = target.parentNode;
-            if (!target) return;
-            
+            ev.preventDefault(); const data = ev.dataTransfer.getData("text"); const el = document.getElementById(data); if(!el) return;
+            let target = ev.target; while(target && !target.classList.contains('drop-zone') && target.id !== 'source-zone') target = target.parentNode; if(!target) return;
             let container = target.classList.contains('drop-zone') ? target.querySelector('div[id^="zone-"]') : target;
-            if(container) {
-                container.appendChild(draggedElement);
-                if(container.id !== 'source-zone') draggedElement.style.transform = `rotate(${Math.random() * 2 - 1}deg)`;
-                else draggedElement.style.transform = 'none';
-            }
+            if(container) { container.appendChild(el); el.style.transform = container.id !== 'source-zone' ? `rotate(${Math.random() * 2 - 1}deg)` : 'none'; }
             updateCalculations();
         }
-
         function updateCalculations() {
-            const sumZone = (id) => {
-                const zone = document.getElementById(id);
-                if(!zone) return 0;
-                let total = 0;
-                for(let child of zone.children) total += parseInt(child.dataset.currentAmount || 0);
-                return total;
-            };
-
-            const map = {
-                'zone-charge-exploit': 'total-charge-exploit',
-                'zone-charge-finance': 'total-charge-finance',
-                'zone-charge-excep': 'total-charge-excep',
-                'zone-produit-exploit': 'total-produit-exploit',
-                'zone-produit-finance': 'total-produit-finance',
-                'zone-produit-excep': 'total-produit-excep',
-                'zone-actif-immo': 'total-actif-immo',
-                'zone-actif-circ': 'total-actif-circ',
-                'zone-passif-capitaux': 'total-passif-capitaux',
-                'zone-passif-dettes': 'total-passif-dettes'
-            };
-
-            for(const [z, d] of Object.entries(map)) document.getElementById(d).innerText = sumZone(z).toLocaleString('fr-FR') + ' €';
-
-            const tA = sumZone('zone-actif-immo') + sumZone('zone-actif-circ');
-            const tP = sumZone('zone-passif-capitaux') + sumZone('zone-passif-dettes');
-
-            const charges = sumZone('zone-charge-exploit') + sumZone('zone-charge-finance') + sumZone('zone-charge-excep');
-            const prods = sumZone('zone-produit-exploit') + sumZone('zone-produit-finance') + sumZone('zone-produit-excep');
-            
+            const sum = (id) => { const z = document.getElementById(id); if(!z) return 0; let t = 0; for(let c of z.children) t += parseInt(c.dataset.currentAmount || 0); return t; };
+            const m = { 'zone-charge-exploit': 'total-charge-exploit', 'zone-charge-finance': 'total-charge-finance', 'zone-charge-excep': 'total-charge-excep', 'zone-produit-exploit': 'total-produit-exploit', 'zone-produit-finance': 'total-produit-finance', 'zone-produit-excep': 'total-produit-excep', 'zone-actif-immo': 'total-actif-immo', 'zone-actif-circ': 'total-actif-circ', 'zone-passif-capitaux': 'total-passif-capitaux', 'zone-passif-dettes': 'total-passif-dettes' };
+            for(const [z, d] of Object.entries(m)) document.getElementById(d).innerText = sum(z).toLocaleString('fr-FR') + ' €';
+            const tA = sum('zone-actif-immo') + sum('zone-actif-circ'); const tP = sum('zone-passif-capitaux') + sum('zone-passif-dettes');
+            const charges = sum('zone-charge-exploit') + sum('zone-charge-finance') + sum('zone-charge-excep'); const prods = sum('zone-produit-exploit') + sum('zone-produit-finance') + sum('zone-produit-excep');
             document.getElementById('sig-res-net').innerText = (prods - charges).toLocaleString('fr-FR') + ' €';
-
             const check = document.getElementById('bilan-check');
-            if(tA > 0 && Math.abs(tA - tP) < 2) {
-                check.innerText = "OUI";
-                check.className = "font-bold text-lg text-[#ccff00]";
-            } else {
-                check.innerText = "NON";
-                check.className = "font-bold text-lg text-red-500";
-            }
+            if(tA > 0 && Math.abs(tA - tP) < 2) { check.innerText = "OUI"; check.className = "font-bold text-lg text-[#ccff00]"; } else { check.innerText = "NON"; check.className = "font-bold text-lg text-red-500"; }
         }
-
         function validate() {
-            let total = 0, errors = 0;
-            document.querySelectorAll('.drop-zone').forEach(zone => {
-                const expT = zone.dataset.type;
-                const expS = zone.dataset.subtype;
-                for(let item of zone.querySelector('div[id^="zone-"]').children) {
-                    total++;
-                    let posOk = (item.dataset.type === expT && item.dataset.sub === expS);
-                    let valOk = true;
-                    if(currentDifficulty === 'HARDCORE') {
-                        valOk = Math.abs(parseInt(item.dataset.currentAmount)) === Math.abs(parseInt(item.dataset.trueAmount));
-                    }
-                    
-                    item.classList.remove('valid-success', 'valid-error');
-                    if(posOk && valOk) item.classList.add('valid-success');
-                    else { item.classList.add('valid-error'); errors++; }
+            let err = 0, total = 0;
+            document.querySelectorAll('.drop-zone').forEach(z => {
+                const expT = z.dataset.type; const expS = z.dataset.subtype;
+                for(let item of z.querySelector('div[id^="zone-"]').children) {
+                    total++; let posOk = (item.dataset.type === expT && item.dataset.sub === expS);
+                    let valOk = true; if(currentDifficulty === 'HARDCORE') valOk = Math.abs(parseInt(item.dataset.currentAmount)) === Math.abs(parseInt(item.dataset.trueAmount));
+                    item.classList.remove('valid-success', 'valid-error'); if(posOk && valOk) item.classList.add('valid-success'); else { item.classList.add('valid-error'); err++; }
                 }
             });
-            
-            const left = document.getElementById('source-zone').children.length;
-            const bal = document.getElementById('bilan-check').innerText === "OUI";
-            const btn = document.getElementById('validate-btn');
-
-            if(errors === 0 && left === 0 && bal) {
+            const left = document.getElementById('source-zone').children.length; const bal = document.getElementById('bilan-check').innerText === "OUI"; const btn = document.getElementById('validate-btn');
+            if(err === 0 && left === 0 && bal) {
                 btn.innerText = "Parfait !";
-                
-                // RANDOM WINNER GENERATOR
                 const winner = winners[Math.floor(Math.random() * winners.length)];
-                const victoryContent = `
-                    <img src="${winner.img}" alt="${winner.name}" class="w-32 h-32 mx-auto mb-4 border-4 border-gray-900 rounded-full bg-[#ccff00] pixelated-img object-cover">
-                    <h2 class="text-4xl font-black font-mono-code uppercase text-[#dc2626] leading-tight mb-2 transform -rotate-2">${winner.name}</h2>
-                    <p class="font-serif-header italic text-gray-600 text-sm mt-4">"${winner.quote}"</p>
-                `;
-                
-                document.getElementById('victory-content').innerHTML = victoryContent;
+                document.getElementById('victory-content').innerHTML = `<img src="${winner.img}" alt="${winner.name}" class="w-32 h-32 mx-auto mb-4 border-4 border-gray-900 rounded-full bg-[#ccff00] pixelated-img object-cover"><h2 class="text-4xl font-black font-mono-code uppercase text-[#dc2626] leading-tight mb-2 transform -rotate-2">${winner.name}</h2><p class="font-serif-header italic text-gray-600 text-sm mt-4">"${winner.quote}"</p>`;
                 document.getElementById('victory-modal').classList.remove('hidden');
-            } else {
-                btn.innerText = `${errors} Erreurs / ${left} Restants`;
-                setTimeout(() => btn.innerText = "Vérifier", 2000);
-            }
+            } else { btn.innerText = `${err} Erreurs / ${left} Restants`; setTimeout(() => btn.innerText = "Vérifier", 2000); }
         }
-
         function exportToTXT() {
-            let content = `EXERCICE COMPTABILITE - ${currentCompanyName}\n`;
-            content += `DIFFICULTE: ${currentDifficulty}\n\n`;
-            
-            content += "=== JOURNAL DES OPERATIONS ===\n";
-            if(journalEntries.length > 0) {
-                journalEntries.forEach(e => content += e + "\n");
-            } else {
-                content += "(Mode Easy - Pas de journal, génération aléatoire)\n";
-            }
-            
-            content += "\n=== ETAT DU JEU (REPONSES UTILISATEUR) ===\n";
-            
-            const zones = document.querySelectorAll('.drop-zone, #source-zone');
-            zones.forEach(z => {
-                let zoneName = z.id;
-                if(z.dataset.type) zoneName = `${z.dataset.type} - ${z.dataset.subtype || 'ROOT'}`;
-                
-                const container = z.querySelector('div[id^="zone-"]') || z;
-                
-                if(container.children.length > 0) {
-                    content += `\nZONE: ${zoneName}\n`;
-                    for(let item of container.children) {
-                        const userVal = item.dataset.currentAmount;
-                        const trueVal = item.dataset.trueAmount;
-                        const label = item.dataset.label;
-                        
-                        content += ` - CARTE: "${label}" | Valeur Saisie: ${userVal} | Valeur Attendue: ${trueVal}\n`;
-                    }
-                }
+            let c = `EXERCICE - ${currentCompanyName}\nDIFFICULTE: ${currentDifficulty}\n\n=== JOURNAL ===\n${journalEntries.join('\n')}\n\n=== REPONSES ===\n`;
+            document.querySelectorAll('.drop-zone, #source-zone').forEach(z => {
+                let n = z.id; if(z.dataset.type) n = `${z.dataset.type}-${z.dataset.subtype}`;
+                const cont = z.querySelector('div[id^="zone-"]') || z;
+                for(let i of cont.children) c += `ZONE: ${n} | CARTE: ${i.dataset.label} | SAISIE: ${i.dataset.currentAmount} | ATTENDU: ${i.dataset.trueAmount}\n`;
             });
-
-            const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = `compta_export_${Date.now()}.txt`;
-            a.click();
+            const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([c], { type: "text/plain" })); a.download = `compta_export.txt`; a.click();
         }
-
         function closeModal() { document.getElementById('victory-modal').classList.add('hidden'); }
-        
-        // Show Tuto on First Load only
-        window.addEventListener('DOMContentLoaded', () => {
-            if(!localStorage.getItem('tutoSeenV18')) {
-                openTuto();
-                localStorage.setItem('tutoSeenV18', 'true');
-            }
-            initGame();
-        });
-
+        window.addEventListener('DOMContentLoaded', initGame);
     </script>
 </body>
 </html>
