@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compta Boostée - V21 SIG ULTIMATE</title>
+    <title>Compta Boostée - V22 SIG DIAGRAM</title>
     
     <link rel="icon" href="https://iili.io/fuLcJvs.png" type="image/png">
 
@@ -18,6 +18,8 @@
             --paper: #ffffff;
             --soft-grid: #e5e7eb;
             --ledger-line: #bfdbfe;
+            --sig-green: #dcfce7; /* Green background for results */
+            --sig-gray: #f3f4f6; /* Gray background for calculations */
         }
         
         body {
@@ -50,61 +52,80 @@
             z-index: 50;
         }
 
-        /* SIG DIAGRAM STYLES */
+        /* === NEW SIG DIAGRAM STYLES === */
         .sig-box {
-            background: white;
-            border: 3px solid var(--dark);
             padding: 1rem;
             text-align: center;
             font-weight: 800;
-            text-transform: uppercase;
             font-family: 'Roboto Mono', monospace;
             border-radius: 4px;
             position: relative;
             transition: all 0.2s;
             cursor: pointer;
             box-shadow: 3px 3px 0px rgba(0,0,0,0.1);
+            border: 3px solid var(--dark);
+            /* Removed text-transform: uppercase here to allow mixed case in bubbles */
         }
+        /* Title inside the box remains uppercase */
+        .sig-box-title {
+            text-transform: uppercase;
+        }
+
+        .sig-box-green { background-color: var(--sig-green); color: var(--dark); }
+        .sig-box-gray { background-color: var(--sig-gray); color: #4b5563; font-size: 0.9rem; }
+
         .sig-box:hover {
-            background-color: var(--neon-yellow);
+            background-color: var(--neon-yellow) !important;
+            color: var(--dark) !important;
             box-shadow: 5px 5px 0px 0px var(--dark);
             transform: translate(-2px, -2px);
         }
         
+        /* NEW NOTEBOOK STYLE BUBBLE */
         .sig-bubble {
             display: none;
             position: absolute;
             left: 105%;
             top: 50%;
             transform: translateY(-50%);
-            width: 250px;
-            border: 2px dashed var(--dark);
-            background: #fffbeb;
-            padding: 10px;
-            font-size: 0.85rem;
+            width: 280px;
+            /* Notebook paper style */
+            background-color: #fffbeb;
+            background-image: repeating-linear-gradient(transparent, transparent 27px, #bfdbfe 28px);
+            background-size: 100% 28px;
+            line-height: 28px;
+            padding: 15px 15px 15px 25px; /* Extra left padding for margin */
+            
+            border: 2px solid var(--dark);
+            font-size: 0.9rem;
             text-align: left;
             font-weight: normal;
-            border-radius: 10px;
-            font-family: 'Gloria Hallelujah', cursive;
+            font-family: 'Gloria Hallelujah', cursive; /* Handwritten font */
             z-index: 20;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 5px 5px 10px rgba(0,0,0,0.2);
+            border-radius: 2px 15px 2px 15px/15px 2px 15px 2px; /* Sketchy corners */
+        }
+        /* Red margin line for notebook */
+        .sig-bubble::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #ef4444;
+            opacity: 0.5;
         }
         
-        /* Flèche de liaison */
+        /* Connectors */
         .arrow-down {
-            width: 0; 
-            height: 0; 
+            width: 0; height: 0; 
             border-left: 10px solid transparent;
             border-right: 10px solid transparent;
             border-top: 15px solid var(--dark);
-            margin: 10px auto;
-        }
-        .line-down {
-            width: 4px;
-            height: 25px;
-            background: var(--dark);
             margin: 0 auto;
         }
+        .line-down { width: 4px; height: 20px; background: var(--dark); margin: 0 auto; }
 
         /* GENERAL UI */
         .drop-zone {
@@ -180,7 +201,7 @@
                     <h1 class="text-4xl md:text-5xl font-extrabold tracking-tighter uppercase italic transform -rotate-1">
                         COMPTA<span class="text-[#ccff00] bg-gray-900 px-2 transform skew-x-12 inline-block">BOOSTÉE</span>
                     </h1>
-                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V21 ULTIMATE</span>
+                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V22 DIAGRAM</span>
                 </div>
                 <h2 id="company-name" class="mt-2 text-xl font-serif-header font-bold text-gray-800 border-b-2 border-[#ccff00] inline-block">Chargement...</h2>
             </div>
@@ -271,74 +292,122 @@
         <div id="chapter-2" class="hidden">
             <h2 class="text-3xl font-black font-serif-header mb-8 text-center">L'Organigramme des SIG</h2>
             
-            <div class="max-w-3xl mx-auto mb-16 relative">
+            <div class="max-w-3xl mx-auto mb-16 relative flex flex-col items-center">
                 
-                <div class="grid grid-cols-2 gap-10 mb-2">
-                    <div class="sig-box" onclick="toggleSigInfo(this)">
-                        MARGE COMMERCIALE
+                <div class="grid grid-cols-2 gap-6 w-full mb-2">
+                    <div class="sig-box sig-box-green" onclick="toggleSigInfo(this)">
+                        <span class="sig-box-title">MARGE COMMERCIALE</span>
                         <div class="sig-bubble">
-                            On comptabilise la différence entre les ventes et le coût d'achat des marchandises vendues.<br>
-                            ⚠️ <strong>Attention :</strong> Ne pas oublier la variation de stock !
+                            Différence entre les ventes de marchandises et leur coût d'achat.<br>
+                            ⚠️ <strong>Important :</strong> Penser à intégrer la variation de stock de marchandises ici !
                         </div>
                     </div>
-                    <div class="sig-box" onclick="toggleSigInfo(this)">
-                        PRODUCTION DE L'EXERCICE
+                    <div class="sig-box sig-box-green" onclick="toggleSigInfo(this)">
+                         <span class="sig-box-title">PRODUCTION DE L'EXERCICE</span>
                         <div class="sig-bubble" style="left: auto; right: 105%;">
-                            Production Vendue + Stockée + Immobilisée.<br>
-                            <em>Ne prend pas en compte le coût des matières premières ici.</em>
+                            Somme de la Production Vendue + Stockée + Immobilisée.<br>
+                            <em>(Le coût des matières premières n'est pas encore déduit).</em>
                         </div>
                     </div>
                 </div>
 
                 <div class="line-down"></div>
+
+                <div class="sig-box sig-box-gray w-2/3" onclick="toggleSigInfo(this)">
+                    - Consommations en provenance des tiers
+                    <div class="sig-bubble">
+                        Achats de matières premières (+/- Variation de stock MP) + Autres achats et charges externes (Loyer, Énergie, Pub...).
+                    </div>
+                </div>
+
                 <div class="arrow-down"></div>
 
-                <div class="sig-box w-2/3 mx-auto" onclick="toggleSigInfo(this)">
-                    VALEUR AJOUTÉE (VA)
+                <div class="sig-box sig-box-green w-2/3" onclick="toggleSigInfo(this)">
+                     <span class="sig-box-title">VALEUR AJOUTÉE (VA)</span>
                     <div class="sig-bubble">
-                        Marge + Production <br>- Conso en provenance des tiers (Achats MP, Services extérieurs...).
+                        C'est la richesse brute créée par l'entreprise :<br>
+                        (Marge + Production) - Consommations intermédiaires.
                     </div>
                 </div>
 
                 <div class="line-down"></div>
+
+                 <div class="sig-box sig-box-gray w-2/3" onclick="toggleSigInfo(this)">
+                    + Subventions d'exploit.<br>
+                    - Impôts et taxes<br>
+                    - Charges de personnel
+                    <div class="sig-bubble">
+                        On ajoute les aides de l'État et on retire ce qui est versé à l'État (taxes) et aux salariés (salaires + charges sociales).
+                    </div>
+                </div>
+
                 <div class="arrow-down"></div>
 
-                <div class="sig-box w-2/3 mx-auto" onclick="toggleSigInfo(this)">
-                    EBE (Excédent Brut d'Exploitation)
+                <div class="sig-box sig-box-green w-2/3" onclick="toggleSigInfo(this)">
+                     <span class="sig-box-title">EBE (Excédent Brut d'Exploitation)</span>
                     <div class="sig-bubble">
-                        VA + Subventions d'exploitation <br>- Impôts et taxes <br>- Charges de personnel.
+                        Le cash-flow opérationnel avant amortissements et frais financiers. Indicateur clé de la performance pure.
                     </div>
                 </div>
 
                 <div class="line-down"></div>
-                <div class="arrow-down"></div>
 
-                <div class="sig-box w-2/3 mx-auto" onclick="toggleSigInfo(this)">
-                    REX (Résultat d'Exploitation)
+                <div class="sig-box sig-box-gray w-2/3" onclick="toggleSigInfo(this)">
+                    - Dotations (DAP)<br>
+                    + Reprises (RAP)<br>
+                    +/- Autres charges/prod.
                     <div class="sig-bubble">
-                        EBE + Autres produits <br>- Autres charges <br>+ Reprises (RAP) <br>- Dotations (DAP).
-                        <br><em>On intègre ici l'usure du matériel.</em>
+                        On prend en compte l'usure du matériel (Amortissements) et les risques (Provisions). Ce ne sont pas des sorties de cash.
                     </div>
                 </div>
 
-                <div class="line-down"></div>
                 <div class="arrow-down"></div>
 
-                <div class="sig-box w-2/3 mx-auto bg-green-50 border-green-700 text-green-900" onclick="toggleSigInfo(this)">
-                    RCAI (Résultat Courant)
+                <div class="sig-box sig-box-green w-2/3" onclick="toggleSigInfo(this)">
+                     <span class="sig-box-title">REX (Résultat d'Exploitation)</span>
                     <div class="sig-bubble">
-                        REX + Produits Financiers <br>- Charges Financières.
+                        Le résultat de l'activité normale et courante de l'entreprise, après prise en compte de l'usure des actifs.
                     </div>
                 </div>
 
-                <div class="line-down"></div>
+                 <div class="line-down"></div>
+
+                 <div class="sig-box sig-box-gray w-2/3" onclick="toggleSigInfo(this)">
+                    + Produits Financiers<br>
+                    - Charges Financières
+                    <div class="sig-bubble">
+                        Coût de l'endettement (Intérêts d'emprunt) et gains sur placements.
+                    </div>
+                </div>
+
                 <div class="arrow-down"></div>
 
-                <div class="sig-box w-2/3 mx-auto bg-[#ccff00] border-gray-900" style="transform: scale(1.1);">
-                    RÉSULTAT NET COMPTABLE
-                    <div class="text-xs normal-case mt-1 font-mono-code">RCAI + Résultat Exceptionnel - IS</div>
+                <div class="sig-box sig-box-green w-2/3" onclick="toggleSigInfo(this)">
+                     <span class="sig-box-title">RCAI (Résultat Courant)</span>
+                    <div class="sig-bubble">
+                        REX + Résultat Financier. C'est le résultat avant événements exceptionnels et impôts.
+                    </div>
+                </div>
+
+                 <div class="line-down"></div>
+
+                  <div class="sig-box sig-box-gray w-2/3" onclick="toggleSigInfo(this)">
+                    +/- Résultat Exceptionnel<br>
+                    - Impôt sur les sociétés (IS)<br>
+                    - Participation
+                    <div class="sig-bubble">
+                        La dernière ligne droite : on ajoute/retire les éléments non récurrents (ex: vente d'immeuble) et on paie le fisc.
+                    </div>
+                </div>
+
+                <div class="arrow-down"></div>
+
+                <div class="sig-box sig-box-green w-3/4 border-4" style="transform: scale(1.1); background-color: #ccff00;">
+                     <span class="sig-box-title text-xl">RÉSULTAT NET COMPTABLE</span>
+                    <div class="text-sm normal-case mt-1 font-mono-code font-bold">Ce qui reste vraiment dans la poche des actionnaires.</div>
                 </div>
             </div>
+
 
             <h2 class="text-2xl font-black font-serif-header mb-6 border-t-4 border-gray-200 pt-8">Exercice Pratique</h2>
             
