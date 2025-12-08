@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compta Boostée - V24 STABLE</title>
+    <title>Compta Boostée - V25 FINAL</title>
     
     <link rel="icon" href="https://iili.io/fuLcJvs.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -11,163 +11,59 @@
     <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
 
     <style>
-        :root {
-            --neon-yellow: #ccff00;
-            --dark: #1a1a1a;
-            --paper: #ffffff;
-            --soft-grid: #e5e7eb;
-            --ledger-line: #bfdbfe;
-            --sig-green: #dcfce7;
-            --sig-gray: #f3f4f6;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
-            color: var(--dark);
-            background-image: linear-gradient(var(--soft-grid) 1px, transparent 1px),
-            linear-gradient(90deg, var(--soft-grid) 1px, transparent 1px);
-            background-size: 20px 20px;
-            padding-bottom: 140px; 
-        }
-
+        :root { --neon-yellow: #ccff00; --dark: #1a1a1a; --paper: #ffffff; --soft-grid: #e5e7eb; --ledger-line: #bfdbfe; --sig-green: #dcfce7; --sig-gray: #f3f4f6; }
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; color: var(--dark); background-image: linear-gradient(var(--soft-grid) 1px, transparent 1px), linear-gradient(90deg, var(--soft-grid) 1px, transparent 1px); background-size: 20px 20px; padding-bottom: 140px; }
         .font-serif-header { font-family: 'Playfair Display', serif; }
         .font-mono-code { font-family: 'Roboto Mono', monospace; }
         .font-hand { font-family: 'Gloria Hallelujah', cursive; }
 
-        /* --- UI ELEMENTS --- */
-        .sketchy-card {
-            background: var(--paper);
-            border: 2px solid var(--dark);
-            border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
-            box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.8);
-            transition: all 0.2s ease;
-            color: var(--dark);
-            cursor: grab;
-        }
+        /* UI ELEMENTS */
+        .sketchy-card { background: var(--paper); border: 2px solid var(--dark); border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.8); transition: all 0.2s ease; color: var(--dark); cursor: grab; }
         .sketchy-card:active { cursor: grabbing; }
-        .sketchy-card:hover {
-            transform: translateY(-2px) rotate(1deg);
-            box-shadow: 4px 4px 0px 0px var(--neon-yellow);
-            z-index: 50;
-        }
-
-        .drop-zone {
-            transition: background-color 0.3s, border-color 0.3s;
-            border: 2px dashed #9ca3af;
-            background-color: rgba(255, 255, 255, 0.4);
-            display: flex; flex-direction: column;
-        }
+        .sketchy-card:hover { transform: translateY(-2px) rotate(1deg); box-shadow: 4px 4px 0px 0px var(--neon-yellow); z-index: 50; }
+        .drop-zone { transition: background-color 0.3s, border-color 0.3s; border: 2px dashed #9ca3af; background-color: rgba(255, 255, 255, 0.4); display: flex; flex-direction: column; }
         .drop-zone:hover { border-color: var(--dark); background-color: rgba(255, 255, 255, 0.9); }
+        .block-header { background: var(--dark); color: #fff; padding: 4px 8px; font-family: 'Roboto Mono', monospace; font-size: 0.75rem; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
+        .zone-total { margin-top: auto; border-top: 2px dotted var(--dark); padding-top: 4px; text-align: right; font-family: 'Roboto Mono', monospace; font-weight: bold; font-size: 0.8rem; }
 
-        .block-header {
-            background: var(--dark); color: #fff; padding: 4px 8px;
-            font-family: 'Roboto Mono', monospace; font-size: 0.75rem; text-transform: uppercase;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .zone-total {
-            margin-top: auto; border-top: 2px dotted var(--dark); padding-top: 4px;
-            text-align: right; font-family: 'Roboto Mono', monospace; font-weight: bold; font-size: 0.8rem;
-        }
-
-        /* --- CALCULATRICE --- */
-        #calc-bubble {
-            position: fixed; bottom: 100px; right: 30px;
-            width: 60px; height: 60px;
-            background-color: var(--dark); color: var(--neon-yellow);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 2rem; cursor: pointer;
-            box-shadow: 4px 4px 0px rgba(0,0,0,0.3); z-index: 60;
-            transition: transform 0.2s; border: 3px solid white;
-        }
+        /* CALCULATOR */
+        #calc-bubble { position: fixed; bottom: 100px; right: 30px; width: 60px; height: 60px; background-color: var(--dark); color: var(--neon-yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; box-shadow: 4px 4px 0px rgba(0,0,0,0.3); z-index: 60; transition: transform 0.2s; border: 3px solid white; }
         #calc-bubble:hover { transform: scale(1.1) rotate(10deg); }
-
-        #calc-window {
-            position: fixed; bottom: 170px; right: 30px;
-            width: 280px; background-color: white;
-            border: 4px solid var(--dark); border-radius: 8px;
-            box-shadow: 10px 10px 0px rgba(0,0,0,0.4);
-            z-index: 60; display: none; font-family: 'Roboto Mono', monospace;
-        }
-        #calc-header {
-            background-color: var(--dark); color: var(--neon-yellow);
-            padding: 10px; font-weight: bold; display: flex; justify-content: space-between;
-            align-items: center; cursor: move;
-        }
-        #calc-display {
-            width: 100%; height: 60px; border: none; border-bottom: 4px solid var(--dark);
-            text-align: right; padding: 10px; font-size: 1.8rem; outline: none; background: #f3f4f6;
-        }
-        .calc-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
-            background: var(--dark); padding: 2px;
-        }
-        .calc-btn {
-            background: white; border: none; padding: 15px 0;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: background 0.1s;
-        }
+        #calc-window { position: fixed; bottom: 170px; right: 30px; width: 280px; background-color: white; border: 4px solid var(--dark); border-radius: 8px; box-shadow: 10px 10px 0px rgba(0,0,0,0.4); z-index: 60; display: none; font-family: 'Roboto Mono', monospace; }
+        #calc-header { background-color: var(--dark); color: var(--neon-yellow); padding: 10px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; cursor: move; }
+        #calc-display { width: 100%; height: 60px; border: none; border-bottom: 4px solid var(--dark); text-align: right; padding: 10px; font-size: 1.8rem; outline: none; background: #f3f4f6; }
+        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: var(--dark); padding: 2px; }
+        .calc-btn { background: white; border: none; padding: 15px 0; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: background 0.1s; }
         .calc-btn:hover { background: #e5e7eb; }
-        .calc-btn.op { background: #fef08a; } 
-        .calc-btn.eq { background: var(--neon-yellow); }
-        .calc-btn.clear { background: #fca5a5; }
+        .calc-btn.op { background: #fef08a; } .calc-btn.eq { background: var(--neon-yellow); } .calc-btn.clear { background: #fca5a5; }
 
-        /* --- SIG DIAGRAM --- */
-        .sig-box {
-            padding: 1rem; text-align: center; font-weight: 800; font-family: 'Roboto Mono', monospace;
-            border-radius: 4px; position: relative; transition: all 0.2s; cursor: pointer;
-            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); border: 3px solid var(--dark);
-        }
+        /* SIG DIAGRAM */
+        .sig-box { padding: 1rem; text-align: center; font-weight: 800; font-family: 'Roboto Mono', monospace; border-radius: 4px; position: relative; transition: all 0.2s; cursor: pointer; box-shadow: 3px 3px 0px rgba(0,0,0,0.1); border: 3px solid var(--dark); }
         .sig-box-title { text-transform: uppercase; }
         .sig-box-green { background-color: var(--sig-green); color: var(--dark); }
         .sig-box-gray { background-color: var(--sig-gray); color: #4b5563; font-size: 0.9rem; }
-        .sig-box:hover {
-            background-color: var(--neon-yellow) !important; color: var(--dark) !important;
-            box-shadow: 5px 5px 0px 0px var(--dark); transform: translate(-2px, -2px);
-        }
-        .sig-bubble {
-            display: none; position: absolute; left: 105%; top: 50%; transform: translateY(-50%);
-            width: 280px; background-color: #fffbeb;
-            background-image: repeating-linear-gradient(transparent, transparent 27px, #bfdbfe 28px);
-            background-size: 100% 28px; line-height: 28px; padding: 15px 15px 15px 25px;
-            border: 2px solid var(--dark); font-size: 0.9rem; text-align: left; font-weight: normal;
-            font-family: 'Gloria Hallelujah', cursive; z-index: 20;
-            box-shadow: 5px 5px 10px rgba(0,0,0,0.2); border-radius: 2px 15px 2px 15px;
-        }
-        .sig-bubble::before {
-            content: ''; position: absolute; left: 15px; top: 0; bottom: 0; width: 2px; background-color: #ef4444; opacity: 0.5;
-        }
+        .sig-box:hover { background-color: var(--neon-yellow) !important; color: var(--dark) !important; box-shadow: 5px 5px 0px 0px var(--dark); transform: translate(-2px, -2px); }
+        .sig-bubble { display: none; position: absolute; left: 105%; top: 50%; transform: translateY(-50%); width: 280px; background-color: #fffbeb; background-image: repeating-linear-gradient(transparent, transparent 27px, #bfdbfe 28px); background-size: 100% 28px; line-height: 28px; padding: 15px 15px 15px 25px; border: 2px solid var(--dark); font-size: 0.9rem; text-align: left; font-weight: normal; font-family: 'Gloria Hallelujah', cursive; z-index: 20; box-shadow: 5px 5px 10px rgba(0,0,0,0.2); border-radius: 2px 15px 2px 15px; }
+        .sig-bubble::before { content: ''; position: absolute; left: 15px; top: 0; bottom: 0; width: 2px; background-color: #ef4444; opacity: 0.5; }
         .arrow-down { width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 15px solid var(--dark); margin: 0 auto; }
         .line-down { width: 4px; height: 20px; background: var(--dark); margin: 0 auto; }
 
-        /* --- OTHERS --- */
-        .journal-paper {
-            background-color: #fefce8;
-            background-image: repeating-linear-gradient(var(--ledger-line) 0 1px, transparent 1px 100%);
-            background-size: 100% 2rem; line-height: 2rem; box-shadow: 5px 5px 15px rgba(0,0,0,0.1); border-left: 4px double #ef4444;
-        }
-        .hardcore-input {
-            border: none; border-bottom: 3px solid var(--dark); background: rgba(0,0,0,0.05);
-            text-align: right; font-family: 'Roboto Mono', monospace; width: 100px;
-            font-weight: bold; color: var(--dark); padding-right: 5px;
-        }
+        /* OTHERS */
+        .journal-paper { background-color: #fefce8; background-image: repeating-linear-gradient(var(--ledger-line) 0 1px, transparent 1px 100%); background-size: 100% 2rem; line-height: 2rem; box-shadow: 5px 5px 15px rgba(0,0,0,0.1); border-left: 4px double #ef4444; }
+        .hardcore-input { border: none; border-bottom: 3px solid var(--dark); background: rgba(0,0,0,0.05); text-align: right; font-family: 'Roboto Mono', monospace; width: 100px; font-weight: bold; color: var(--dark); padding-right: 5px; }
         .hardcore-input:focus { outline: none; background: #ccff00; }
-        
         .diff-btn { transition: all 0.2s; }
         .diff-btn.active { background-color: var(--neon-yellow); color: var(--dark); font-weight: 800; box-shadow: inset 2px 2px 0px rgba(0,0,0,0.1); }
-        
         .pixelated-img { image-rendering: pixelated; }
         .valid-success { background-color: #d9f99d !important; border-color: #365314; }
         .valid-error { background-color: #fca5a5 !important; border-color: #7f1d1d; }
-        
         .sig-panel { background: var(--dark); color: #fff; border-top: 4px solid var(--neon-yellow); box-shadow: 0 -10px 30px rgba(0,0,0,0.3); z-index: 50; }
-        
         .nav-tab { cursor: pointer; padding: 10px 20px; font-weight: bold; font-family: 'Roboto Mono'; border-top-left-radius: 8px; border-top-right-radius: 8px; border: 2px solid transparent; border-bottom: none; opacity: 0.6; }
         .nav-tab.active { background: #f3f4f6; border-color: var(--dark); border-bottom: 2px solid #f3f4f6; opacity: 1; color: var(--dark); transform: translateY(2px); }
         .nav-tab:hover:not(.active) { opacity: 1; background: rgba(255,255,255,0.5); }
-
         .action-btn { padding: 0.5rem 1rem; background-color: white; border: 2px solid var(--dark); box-shadow: 3px 3px 0px 0px var(--neon-yellow); font-weight: bold; font-family: 'Roboto Mono', monospace; text-transform: uppercase; font-size: 0.75rem; cursor: pointer; transition: all 0.1s; }
         .action-btn:hover { box-shadow: none; transform: translate(2px, 2px); }
-        
+        .dragging { opacity: 0.4; transform: scale(0.9); }
         .animate-pop { animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         @keyframes pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
     </style>
@@ -175,33 +71,14 @@
 <body class="selection:bg-[#ccff00] min-h-screen relative">
 
     <div id="calc-bubble" onclick="toggleCalc()">🧮</div>
-    
     <div id="calc-window">
-        <div id="calc-header">
-            <span>CALC-O-MATIC</span>
-            <span class="cursor-pointer hover:text-white" onclick="toggleCalc()">✖</span>
-        </div>
+        <div id="calc-header"><span>CALC-O-MATIC</span><span class="cursor-pointer hover:text-white" onclick="toggleCalc()">✖</span></div>
         <input type="text" id="calc-display" readonly>
         <div class="calc-grid">
-            <button class="calc-btn" onclick="calcAppend('1')">1</button>
-            <button class="calc-btn" onclick="calcAppend('2')">2</button>
-            <button class="calc-btn" onclick="calcAppend('3')">3</button>
-            <button class="calc-btn op" onclick="calcAppend('+')">+</button>
-            
-            <button class="calc-btn" onclick="calcAppend('4')">4</button>
-            <button class="calc-btn" onclick="calcAppend('5')">5</button>
-            <button class="calc-btn" onclick="calcAppend('6')">6</button>
-            <button class="calc-btn op" onclick="calcAppend('-')">-</button>
-            
-            <button class="calc-btn" onclick="calcAppend('7')">7</button>
-            <button class="calc-btn" onclick="calcAppend('8')">8</button>
-            <button class="calc-btn" onclick="calcAppend('9')">9</button>
-            <button class="calc-btn op" onclick="calcAppend('*')">x</button>
-            
-            <button class="calc-btn clear" onclick="calcClear()">C</button>
-            <button class="calc-btn" onclick="calcAppend('0')">0</button>
-            <button class="calc-btn eq" onclick="calcResult()">=</button>
-            <button class="calc-btn op" onclick="calcAppend('/')">/</button>
+            <button class="calc-btn" onclick="calcAppend('1')">1</button><button class="calc-btn" onclick="calcAppend('2')">2</button><button class="calc-btn" onclick="calcAppend('3')">3</button><button class="calc-btn op" onclick="calcAppend('+')">+</button>
+            <button class="calc-btn" onclick="calcAppend('4')">4</button><button class="calc-btn" onclick="calcAppend('5')">5</button><button class="calc-btn" onclick="calcAppend('6')">6</button><button class="calc-btn op" onclick="calcAppend('-')">-</button>
+            <button class="calc-btn" onclick="calcAppend('7')">7</button><button class="calc-btn" onclick="calcAppend('8')">8</button><button class="calc-btn" onclick="calcAppend('9')">9</button><button class="calc-btn op" onclick="calcAppend('*')">x</button>
+            <button class="calc-btn clear" onclick="calcClear()">C</button><button class="calc-btn" onclick="calcAppend('0')">0</button><button class="calc-btn eq" onclick="calcResult()">=</button><button class="calc-btn op" onclick="calcAppend('/')">/</button>
         </div>
     </div>
 
@@ -228,12 +105,11 @@
     </div>
 
     <div class="max-w-[1800px] mx-auto p-4 md:p-6">
-        
         <header class="mb-2 flex flex-col xl:flex-row justify-between items-end border-b-4 border-gray-900 pb-4 border-double gap-4">
             <div>
                 <div class="flex items-center gap-3">
                     <h1 class="text-4xl md:text-5xl font-extrabold tracking-tighter uppercase italic transform -rotate-1">COMPTA<span class="text-[#ccff00] bg-gray-900 px-2 transform skew-x-12 inline-block">BOOSTÉE</span></h1>
-                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V24 STABLE</span>
+                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V25 FINAL</span>
                 </div>
                 <h2 id="company-name" class="mt-2 text-xl font-serif-header font-bold text-gray-800 border-b-2 border-[#ccff00] inline-block">Chargement...</h2>
             </div>
@@ -385,7 +261,6 @@
     </div>
 
     <script>
-        // DRAG ELEMENT (Calculator)
         function dragElement(elmnt) {
             var pos1=0, pos2=0, pos3=0, pos4=0;
             if(document.getElementById(elmnt.id + "-header")) document.getElementById(elmnt.id + "-header").onmousedown = dragMouseDown;
@@ -396,133 +271,154 @@
         }
         dragElement(document.getElementById("calc-window"));
 
-        // CALCULATOR LOGIC
         function toggleCalc() { const w=document.getElementById('calc-window'); w.style.display = (w.style.display==='block') ? 'none' : 'block'; }
         function calcAppend(v) { document.getElementById('calc-display').value += v; }
         function calcClear() { document.getElementById('calc-display').value = ''; }
         function calcResult() { try { const r=Function('"use strict";return ('+document.getElementById('calc-display').value+')')(); document.getElementById('calc-display').value=r; } catch(e){ document.getElementById('calc-display').value='Err'; } }
 
-        // APP LOGIC
         let currentChapter=1, currentDifficulty='EASY', currentCompanyName="", journalEntries=[], gameItems=[], sigSolution={};
-        const winners = [
-            { name: "Napoléon", img: "https://preview.redd.it/v1dgm9hm3sp91.png?auto=webp&s=d7a42b8398951654be0ae5c87f6fecf478c86044", quote: "Impossible n'est pas comptable." },
-            { name: "Neymar JR", img: "https://www.pixelart.name/wp-content/uploads/2024/01/pixelart_name_footballer_neymar_difficult.png", quote: "GOOOOOAL !" }
-        ];
-        const prefixes = ["Boulangerie", "Garage", "Start-up", "Cabinet", "Boucherie"]; const suffixes = ["'Chez Dédé'", "'Le Gouffre'", "'L'Optimiste'"];
+        const winners = [{ name: "Napoléon", img: "https://preview.redd.it/v1dgm9hm3sp91.png?auto=webp&s=d7a42b8398951654be0ae5c87f6fecf478c86044", quote: "Impossible n'est pas comptable." }, { name: "Ichiban Kasuga", img: "https://gamejolt.com/p/portrait-of-ichiban-kasuga-wearing-yellow-headphones-for-an-art-com-f4dyrphy", quote: "Critique Hit sur le Bilan !" }, { name: "Neymar JR", img: "https://www.pixelart.name/wp-content/uploads/2024/01/pixelart_name_footballer_neymar_difficult.png", quote: "GOOOOOAL !" }, { name: "Michel Houellebecq", img: "https://image.noelshack.com/fichiers/2025/49/5/1764928236-houellbcq.png", quote: "La seule vérité tangible." }];
+        const prefixes = ["Boulangerie", "Garage", "Start-up", "Cabinet", "Boucherie", "Agence", "Pizzeria", "Crèche", "Pharmacie", "EHPAD"]; const suffixes = ["'Chez Dédé'", "'Le Gouffre'", "'L'Optimiste'", "'Dernier Recours'", "'Le Blanchisseur'", "'Au Bonheur'"];
         const TYPES = { CHARGE: 'CHARGE', PRODUIT: 'PRODUIT', ACTIF: 'ACTIF', PASSIF: 'PASSIF' };
         const SUBS = { EXPLOIT: 'EXPLOIT', FINANCE: 'FINANCE', EXCEP: 'EXCEP', IMMO: 'IMMO', CIRC: 'CIRC', CAPITAUX: 'CAPITAUX', DETTES: 'DETTES' };
         const DATABASE_FULL = [
-            { label: "Achats Marchandises", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '607' },
-            { label: "Ventes Marchandises", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '707' },
-            { label: "Salaires", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '641' },
-            { label: "Capital Social", type: TYPES.PASSIF, sub: SUBS.CAPITAUX, code: '101' },
-            { label: "Banque", type: TYPES.ACTIF, sub: SUBS.CIRC, code: '512' }
+            { label: "Achats de marchandises", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '607' }, { label: "Variation de stocks (stockage)", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '603' }, { label: "Impôts, taxes et versements", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '63' }, { label: "Salaires et traitements", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '641' }, { label: "Charges sociales", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '645' }, { label: "Dotations aux amortissements", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '681' }, { label: "Intérêts payés", type: TYPES.CHARGE, sub: SUBS.FINANCE, code: '66' }, { label: "Produits des participations", type: TYPES.PRODUIT, sub: SUBS.FINANCE, code: '76' }, { label: "Ventes de marchandises (CA)", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '707' }, { label: "Redevances (brevets, licences)", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '751' }, { label: "Quotes-parts de résultat", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '755' }, { label: "Subventions d'exploitation", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '74' }, { label: "Produits exceptionnels", type: TYPES.PRODUIT, sub: SUBS.EXCEP, code: '771' }, { label: "Charges exceptionnelles", type: TYPES.CHARGE, sub: SUBS.EXCEP, code: '671' }, { label: "Intérêts reçus", type: TYPES.PRODUIT, sub: SUBS.FINANCE, code: '76' }, { label: "Dotations aux provisions", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '681' }, { label: "Autres charges d'exploitation", type: TYPES.CHARGE, sub: SUBS.EXPLOIT, code: '65' }, { label: "Reprises sur amortissements", type: TYPES.PRODUIT, sub: SUBS.EXPLOIT, code: '78' }, { label: "Val. Comptable Elts Cédés (VCEAC)", type: TYPES.CHARGE, sub: SUBS.EXCEP, code: '675' }, { label: "Prod. Cession Elts Actif (PCEA)", type: TYPES.PRODUIT, sub: SUBS.EXCEP, code: '775' }, { label: "Capital Social", type: TYPES.PASSIF, sub: SUBS.CAPITAUX, code: '101' }, { label: "Emprunts Bancaires", type: TYPES.PASSIF, sub: SUBS.DETTES, code: '164' }, { label: "Stock Final Marchandises", type: TYPES.ACTIF, sub: SUBS.CIRC, code: '37' }
         ];
 
         function switchChapter(id) {
-            currentChapter = id;
-            document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
-            document.getElementById(`tab-${id}`).classList.add('active');
-            if(id===1){ document.getElementById('chapter-1').classList.remove('hidden'); document.getElementById('chapter-2').classList.add('hidden'); document.getElementById('footer-chap1').classList.remove('hidden'); }
+            currentChapter = id; document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active')); document.getElementById(`tab-${id}`).classList.add('active');
+            if(id===1){ document.getElementById('chapter-1').classList.remove('hidden'); document.getElementById('chapter-2').classList.add('hidden'); document.getElementById('footer-chap1').classList.remove('hidden'); } 
             else { document.getElementById('chapter-1').classList.add('hidden'); document.getElementById('chapter-2').classList.remove('hidden'); document.getElementById('footer-chap1').classList.add('hidden'); initSIGGame(); }
         }
-
         function toggleSigInfo(el) { const b=el.querySelector('.sig-bubble'); if(b) b.style.display = (b.style.display==='block')?'none':'block'; }
-
         function initSIGGame() {
             const r = (min, max) => Math.floor(Math.random() * (max - min) + min);
             const d = { ventes: r(20000,50000), achats: r(8000,15000), prod: r(5000,10000), ext: r(3000,5000), pers: r(5000,8000), dap: r(1000,2000), fin: r(500,1000), is: 0 };
             sigSolution = {
-                margeCo: d.ventes - d.achats,
-                production: d.prod,
-                va: (d.ventes - d.achats) + d.prod - d.ext,
-                ebe: ((d.ventes - d.achats) + d.prod - d.ext) - d.pers,
-                rex: ((d.ventes - d.achats) + d.prod - d.ext) - d.pers - d.dap,
-                rcai: (((d.ventes - d.achats) + d.prod - d.ext) - d.pers - d.dap) - d.fin,
-                rn: (((d.ventes - d.achats) + d.prod - d.ext) - d.pers - d.dap) - d.fin
+                margeCo: d.ventes - d.achats, production: d.prod, va: (d.ventes - d.achats) + d.prod - d.ext,
+                ebe: ((d.ventes - d.achats) + d.prod - d.ext) - d.pers, rex: ((d.ventes - d.achats) + d.prod - d.ext) - d.pers - d.dap,
+                rcai: (((d.ventes - d.achats) + d.prod - d.ext) - d.pers - d.dap) - d.fin, rn: (((d.ventes - d.achats) + d.prod - d.ext) - d.pers - d.dap) - d.fin
             };
-            const html = `
-                <div class="flex justify-between border-b"><span>Ventes Marchandises</span><span>${d.ventes} €</span></div>
-                <div class="flex justify-between border-b"><span>Achats Marchandises</span><span>${d.achats} €</span></div>
-                <div class="flex justify-between border-b"><span>Production Vendue</span><span>${d.prod} €</span></div>
-                <div class="flex justify-between border-b"><span>Services Extérieurs</span><span>${d.ext} €</span></div>
-                <div class="flex justify-between border-b"><span>Charges Personnel</span><span>${d.pers} €</span></div>
-                <div class="flex justify-between border-b"><span>Dotations (DAP)</span><span>${d.dap} €</span></div>
-                <div class="flex justify-between border-b"><span>Charges Financières</span><span>${d.fin} €</span></div>
-            `;
+            const html = `<div class="flex justify-between border-b"><span>Ventes Marchandises</span><span>${d.ventes} €</span></div><div class="flex justify-between border-b"><span>Achats Marchandises</span><span>${d.achats} €</span></div><div class="flex justify-between border-b"><span>Production Vendue</span><span>${d.prod} €</span></div><div class="flex justify-between border-b"><span>Services Extérieurs</span><span>${d.ext} €</span></div><div class="flex justify-between border-b"><span>Charges Personnel</span><span>${d.pers} €</span></div><div class="flex justify-between border-b"><span>Dotations (DAP)</span><span>${d.dap} €</span></div><div class="flex justify-between border-b"><span>Charges Financières</span><span>${d.fin} €</span></div>`;
             document.getElementById('sig-source-data').innerHTML = html;
-            document.querySelectorAll('#chapter-2 input').forEach(i=>{i.value=''; i.classList.remove('bg-red-100','bg-green-100')});
-            document.getElementById('sig-feedback').classList.add('hidden');
+            document.querySelectorAll('#chapter-2 input').forEach(i => { i.value = ''; i.classList.remove('bg-red-100','bg-green-100')}); document.getElementById('sig-feedback').classList.add('hidden');
         }
-
         function validateSIG() {
-            const inputs = {
-                margeCo: parseInt(document.getElementById('inp-marge').value),
-                production: parseInt(document.getElementById('inp-prod').value),
-                va: parseInt(document.getElementById('inp-va').value),
-                ebe: parseInt(document.getElementById('inp-ebe').value),
-                rex: parseInt(document.getElementById('inp-rex').value),
-                rcai: parseInt(document.getElementById('inp-rcai').value),
-                rn: parseInt(document.getElementById('inp-rn').value)
-            };
-            let err = 0;
-            for(let k in inputs) {
-                const el = document.querySelector(`input[id^="inp-${k.substring(0,2)}"]`);
-                if(el) {
-                    if(inputs[k] === sigSolution[k]) { el.classList.add('bg-green-100'); el.classList.remove('bg-red-100'); }
-                    else { el.classList.add('bg-red-100'); el.classList.remove('bg-green-100'); err++; }
-                }
-            }
-            const fb = document.getElementById('sig-feedback');
-            fb.classList.remove('hidden');
-            if(err===0) { fb.innerText="PARFAIT !"; fb.className="mt-4 text-center font-bold text-green-600"; }
-            else { fb.innerText=`${err} Erreurs`; fb.className="mt-4 text-center font-bold text-red-600"; }
+            const inputs = { margeCo: parseInt(document.getElementById('inp-marge').value), production: parseInt(document.getElementById('inp-prod').value), va: parseInt(document.getElementById('inp-va').value), ebe: parseInt(document.getElementById('inp-ebe').value), rex: parseInt(document.getElementById('inp-rex').value), rcai: parseInt(document.getElementById('inp-rcai').value), rn: parseInt(document.getElementById('inp-rn').value) };
+            let err = 0; for(let k in inputs) { const el = document.querySelector(`input[id^="inp-${k.substring(0,2)}"]`); if(el) { if(inputs[k] === sigSolution[k]) { el.classList.add('bg-green-100'); el.classList.remove('bg-red-100'); } else { el.classList.add('bg-red-100'); el.classList.remove('bg-green-100'); err++; } } }
+            const fb = document.getElementById('sig-feedback'); fb.classList.remove('hidden');
+            if(err===0) { fb.innerText="PARFAIT !"; fb.className="mt-4 text-center font-bold text-green-600"; const winner = winners[Math.floor(Math.random() * winners.length)]; document.getElementById('victory-content').innerHTML = `<img src="${winner.img}" alt="${winner.name}" class="w-32 h-32 mx-auto mb-4 border-4 border-gray-900 rounded-full bg-[#ccff00] pixelated-img object-cover"><h2 class="text-4xl font-black font-mono-code uppercase text-[#dc2626] leading-tight mb-2 transform -rotate-2">${winner.name}</h2><p class="font-serif-header italic text-gray-600 text-sm mt-4">"${winner.quote}"</p>`; document.getElementById('victory-modal').classList.remove('hidden'); } else { fb.innerText=`${err} Erreurs`; fb.className="mt-4 text-center font-bold text-red-600"; }
         }
-
-        function initGame() {
-            currentCompanyName = `${prefixes[Math.floor(Math.random()*prefixes.length)]} ${suffixes[Math.floor(Math.random()*suffixes.length)]}`;
-            document.getElementById('company-name').innerText = currentCompanyName;
-            document.getElementById('source-zone').innerHTML = '';
-            document.querySelectorAll('.drop-zone div[id^="zone-"]').forEach(z=>z.innerHTML='');
-            
-            // Generate basic items for demo (Simplified logic from V21 for stability)
-            const d = DATABASE_FULL.slice(0, 5);
-            d.forEach((item, i) => {
-                const div = document.createElement('div');
-                div.className = "sketchy-card p-2 cursor-grab animate-pop mb-2 text-sm";
-                div.draggable = true;
-                div.innerHTML = `<div class="flex justify-between"><span class="font-bold">${item.label}</span></div><div class="text-right font-mono-code">1000 €</div>`;
-                div.dataset.type = item.type; div.dataset.sub = item.sub;
-                div.addEventListener('dragstart', (e)=>{ e.dataTransfer.setData("text", div.id); setTimeout(()=>div.classList.add('dragging'),0); });
-                div.addEventListener('dragend', ()=>div.classList.remove('dragging'));
-                div.id = `card-${i}`;
-                document.getElementById('source-zone').appendChild(div);
-            });
-        }
-
-        function setDifficulty(mode) {
-            currentDifficulty = mode;
-            document.querySelectorAll('.diff-btn').forEach(b=>b.classList.remove('active'));
-            document.getElementById(`btn-${mode.toLowerCase()}`).classList.add('active');
-            const j=document.getElementById('journal-panel');
-            if(mode==='HARDCORE') j.classList.remove('hidden'); else j.classList.add('hidden');
-            initGame();
-        }
-
         function openTuto() { document.getElementById('tuto-modal').classList.remove('hidden'); }
         function closeTuto() { document.getElementById('tuto-modal').classList.add('hidden'); }
         function closeModal() { document.getElementById('victory-modal').classList.add('hidden'); }
         
-        function allowDrop(e) { e.preventDefault(); }
-        function drop(e) {
-            e.preventDefault(); const id=e.dataTransfer.getData("text"); const el=document.getElementById(id);
-            if(e.target.className.includes('drop-zone') || e.target.id==='source-zone') e.target.appendChild(el);
-            else if(e.target.parentElement.className.includes('drop-zone')) e.target.parentElement.appendChild(el);
+        function setDifficulty(mode) {
+            currentDifficulty = mode; document.querySelectorAll('.diff-btn').forEach(btn => btn.classList.remove('active')); document.getElementById(`btn-${mode.toLowerCase()}`).classList.add('active');
+            const journal = document.getElementById('journal-panel'); const slider = document.getElementById('duration-control');
+            if(mode === 'HARDCORE') { journal.classList.remove('hidden'); slider.classList.remove('hidden'); } else { journal.classList.add('hidden'); slider.classList.add('hidden'); }
+            initGame();
         }
-        function validate() { alert("Vérification..."); } // Placeholder for logic reuse
-        function exportToTXT() { alert("Export..."); } // Placeholder for logic reuse
+        function initGame() {
+            currentCompanyName = `${prefixes[Math.floor(Math.random()*prefixes.length)]} ${suffixes[Math.floor(Math.random()*suffixes.length)]}`;
+            document.getElementById('company-name').innerText = currentCompanyName;
+            closeModal(); journalEntries = [];
+            document.querySelectorAll('.drop-zone div[id^="zone-"]').forEach(z => z.innerHTML = '');
+            document.getElementById('source-zone').innerHTML = ''; document.getElementById('journal-content').innerHTML = '';
+            const btn = document.getElementById('validate-btn'); btn.innerText = "Vérifier"; btn.classList.replace('bg-white', 'bg-[#ccff00]');
+            // RESTORED LOGIC FROM V19
+            if(currentDifficulty === 'HARDCORE') initHardcoreMode(); else initStandardMode();
+        }
 
-        window.addEventListener('DOMContentLoaded', initGame);
+        // --- GAME ENGINES (RESTORED) ---
+        function initStandardMode() {
+            gameItems = []; const selection = [...DATABASE_FULL].sort(() => 0.5 - Math.random()).slice(0, 12); let tC=0, tP=0, tA=0, tPas=0;
+            selection.forEach((op, i) => { const amount = Math.floor(Math.random()*4000)+100; gameItems.push({...op, id:`op-${i}`, amount}); if(op.type===TYPES.CHARGE) tC+=amount; if(op.type===TYPES.PRODUIT) tP+=amount; if(op.type===TYPES.ACTIF) tA+=amount; if(op.type===TYPES.PASSIF) tPas+=amount; });
+            const res = tP - tC; gameItems.push({ id:'op-res', label:"Résultat Net", type:TYPES.PASSIF, sub:SUBS.CAPITAUX, code:'120', amount:res }); tPas += res;
+            const bank = tPas - tA; if(bank>=0) gameItems.push({id:'op-bank', label:"Banque (Solde)", type:TYPES.ACTIF, sub:SUBS.CIRC, code:'512', amount:bank}); else gameItems.push({id:'op-bank', label:"Découvert", type:TYPES.PASSIF, sub:SUBS.DETTES, code:'512', amount:Math.abs(bank)});
+            renderCards(); updateCalculations();
+        }
+        function initHardcoreMode() {
+            gameItems = []; const journalDiv = document.getElementById('journal-content'); const ledger = {}; const durationMul = parseInt(document.getElementById('game-duration').value);
+            let currentSupplierDebt=0, currentCustomerReceivable=0;
+            const impact = (label, type, sub, code, amount, isDebit) => { const key = code; if(!ledger[key]) ledger[key]={label, type, sub, code, balance:0}; if(type===TYPES.ACTIF || type===TYPES.CHARGE) ledger[key].balance+=isDebit?amount:-amount; else ledger[key].balance+=isDebit?-amount:amount; };
+            const addEntry = (date, text) => { journalEntries.push(`${date} : ${text}`); const p=document.createElement('p'); p.innerHTML=`<strong>${date}</strong> : ${text}`; p.className="border-b border-blue-200 pb-1"; journalDiv.appendChild(p); };
+            let currentDate=new Date(2024,0,1); const nextDate=()=>{currentDate.setDate(currentDate.getDate()+Math.floor(Math.random()*5)+2); return currentDate.toLocaleDateString('fr-FR');};
+            const capital=30000; impact("Capital Social", TYPES.PASSIF, SUBS.CAPITAUX, '101', capital, false); impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', capital, true); addEntry("01/01/2024", `Capital social : ${capital}€.`);
+            const loops=4*durationMul; 
+            for(let i=0; i<loops; i++) {
+                const rand=Math.random();
+                if(rand<0.15){ const v=2000,p=2500; impact("Val. Comptable Elts Cédés", TYPES.CHARGE, SUBS.EXCEP, '675', v, true); impact("Prod. Cession Elts Actif", TYPES.PRODUIT, SUBS.EXCEP, '775', p, false); impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', p, true); addEntry(nextDate(), `Cession actif (VNC:${v}€) pour ${p}€.`); }
+                else if(rand<0.25){ const s=1000; impact("Subventions d'exploitation", TYPES.PRODUIT, SUBS.EXPLOIT, '74', s, false); impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', s, true); addEntry(nextDate(), `Subvention reçue : ${s}€.`); }
+                else if(rand<0.7){ const a=1000+Math.floor(Math.random()*2000); if(Math.random()>0.5){ impact("Achats de marchandises", TYPES.CHARGE, SUBS.EXPLOIT, '607', a, true); impact("Dettes Fournisseurs", TYPES.PASSIF, SUBS.DETTES, '401', a, false); currentSupplierDebt+=a; addEntry(nextDate(), `Achat marchandise crédit : ${a}€.`); } else { impact("Ventes de marchandises", TYPES.PRODUIT, SUBS.EXPLOIT, '707', a, false); impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', a, true); addEntry(nextDate(), `Vente comptant : ${a}€.`); } }
+            }
+            impact("Salaires et traitements", TYPES.CHARGE, SUBS.EXPLOIT, '641', 3000, true); impact("Banque", TYPES.ACTIF, SUBS.CIRC, '512', 3000, false); addEntry(nextDate(), "Salaires : 3000€.");
+            const stock=5000; impact("Stock Final Marchandises", TYPES.ACTIF, SUBS.CIRC, '37', stock, true); impact("Variation de stocks (stockage)", TYPES.CHARGE, SUBS.EXPLOIT, '603', stock, false); addEntry("31/12/2024", `Stock final : ${stock}€.`);
+            let tC=0, tP=0; Object.values(ledger).forEach(acc=>{if(acc.type===TYPES.CHARGE)tC+=acc.balance;if(acc.type===TYPES.PRODUIT)tP+=acc.balance;});
+            ledger['120']={label:"Résultat (à calculer !)", type:TYPES.PASSIF, sub:SUBS.CAPITAUX, code:'120', balance:tP-tC};
+            Object.values(ledger).forEach((acc, i)=>{if(Math.abs(acc.balance)>0) gameItems.push({id:`op-${i}`, label:acc.label, type:acc.type, sub:acc.sub, code:acc.code, amount:acc.balance, isHardcore:true});});
+            renderCards(); updateCalculations();
+        }
+
+        function renderCards() { const z = document.getElementById('source-zone'); gameItems.sort(() => 0.5 - Math.random()).forEach(i => z.appendChild(createCard(i))); }
+        function createCard(item) {
+            const div = document.createElement('div'); div.id = item.id; div.className = "sketchy-card p-2 cursor-grab animate-pop mb-2 text-sm"; div.draggable = true;
+            div.dataset.type = item.type; div.dataset.sub = item.sub; div.dataset.trueAmount = item.amount; div.dataset.currentAmount = currentDifficulty === 'HARDCORE' ? 0 : item.amount; div.dataset.label = item.label;
+            let display = (currentDifficulty === 'HARDCORE') ? `<input type="number" class="hardcore-input" placeholder="?" onmousedown="event.stopPropagation()" oninput="updateCardAmount(this)"> €` : `${item.amount.toLocaleString('fr-FR')} €`;
+            let code = (currentDifficulty === 'EASY') ? `<span class="font-mono-code text-[0.65rem] bg-gray-200 px-1 rounded text-gray-800">${item.code}</span>` : ``;
+            div.innerHTML = `<div class="flex justify-between items-start pointer-events-none"><span class="font-bold leading-tight pr-2 text-gray-900">${item.label}</span>${code}</div><div class="mt-1 text-right font-mono-code font-bold text-gray-600">${display}</div>`;
+            div.addEventListener('dragstart', (e) => { if(e.target.tagName === 'INPUT') {e.preventDefault(); return;} e.target.classList.remove('valid-success', 'valid-error'); e.dataTransfer.setData("text", e.target.id); setTimeout(() => e.target.classList.add('dragging'), 0); });
+            div.addEventListener('dragend', (e) => { e.target.classList.remove('dragging'); updateCalculations(); });
+            return div;
+        }
+        function updateCardAmount(input) { input.closest('.sketchy-card').dataset.currentAmount = parseInt(input.value) || 0; updateCalculations(); }
+        function allowDrop(ev) { ev.preventDefault(); }
+        function drop(ev) {
+            ev.preventDefault(); const data = ev.dataTransfer.getData("text"); const el = document.getElementById(data); if(!el) return;
+            let target = ev.target; while(target && !target.classList.contains('drop-zone') && target.id !== 'source-zone') target = target.parentNode; if(!target) return;
+            let container = target.classList.contains('drop-zone') ? target.querySelector('div[id^="zone-"]') : target;
+            if(container) { container.appendChild(el); el.style.transform = container.id !== 'source-zone' ? `rotate(${Math.random() * 2 - 1}deg)` : 'none'; }
+            updateCalculations();
+        }
+        function updateCalculations() {
+            const sum = (id) => { const z = document.getElementById(id); if(!z) return 0; let t = 0; for(let c of z.children) t += parseInt(c.dataset.currentAmount || 0); return t; };
+            const m = { 'zone-charge-exploit': 'total-charge-exploit', 'zone-charge-finance': 'total-charge-finance', 'zone-charge-excep': 'total-charge-excep', 'zone-produit-exploit': 'total-produit-exploit', 'zone-produit-finance': 'total-produit-finance', 'zone-produit-excep': 'total-produit-excep', 'zone-actif-immo': 'total-actif-immo', 'zone-actif-circ': 'total-actif-circ', 'zone-passif-capitaux': 'total-passif-capitaux', 'zone-passif-dettes': 'total-passif-dettes' };
+            for(const [z, d] of Object.entries(m)) document.getElementById(d).innerText = sum(z).toLocaleString('fr-FR') + ' €';
+            const tA = sum('zone-actif-immo') + sum('zone-actif-circ'); const tP = sum('zone-passif-capitaux') + sum('zone-passif-dettes');
+            const charges = sum('zone-charge-exploit') + sum('zone-charge-finance') + sum('zone-charge-excep'); const prods = sum('zone-produit-exploit') + sum('zone-produit-finance') + sum('zone-produit-excep');
+            document.getElementById('sig-res-net').innerText = (prods - charges).toLocaleString('fr-FR') + ' €';
+            const check = document.getElementById('bilan-check');
+            if(tA > 0 && Math.abs(tA - tP) < 2) { check.innerText = "OUI"; check.className = "font-bold text-lg text-[#ccff00]"; } else { check.innerText = "NON"; check.className = "font-bold text-lg text-red-500"; }
+        }
+        function validate() {
+            let err = 0, total = 0;
+            document.querySelectorAll('.drop-zone').forEach(z => {
+                const expT = z.dataset.type; const expS = z.dataset.subtype;
+                for(let item of z.querySelector('div[id^="zone-"]').children) {
+                    total++; let posOk = (item.dataset.type === expT && item.dataset.sub === expS);
+                    let valOk = true; if(currentDifficulty === 'HARDCORE') valOk = Math.abs(parseInt(item.dataset.currentAmount)) === Math.abs(parseInt(item.dataset.trueAmount));
+                    item.classList.remove('valid-success', 'valid-error'); if(posOk && valOk) item.classList.add('valid-success'); else { item.classList.add('valid-error'); err++; }
+                }
+            });
+            const left = document.getElementById('source-zone').children.length; const bal = document.getElementById('bilan-check').innerText === "OUI"; const btn = document.getElementById('validate-btn');
+            if(err === 0 && left === 0 && bal) {
+                btn.innerText = "Parfait !";
+                const winner = winners[Math.floor(Math.random() * winners.length)];
+                document.getElementById('victory-content').innerHTML = `<img src="${winner.img}" alt="${winner.name}" class="w-32 h-32 mx-auto mb-4 border-4 border-gray-900 rounded-full bg-[#ccff00] pixelated-img object-cover"><h2 class="text-4xl font-black font-mono-code uppercase text-[#dc2626] leading-tight mb-2 transform -rotate-2">${winner.name}</h2><p class="font-serif-header italic text-gray-600 text-sm mt-4">"${winner.quote}"</p>`;
+                document.getElementById('victory-modal').classList.remove('hidden');
+            } else { btn.innerText = `${err} Erreurs / ${left} Restants`; setTimeout(() => btn.innerText = "Vérifier", 2000); }
+        }
+        function exportToTXT() {
+            let c = `EXERCICE - ${currentCompanyName}\nDIFFICULTE: ${currentDifficulty}\n\n=== JOURNAL ===\n${journalEntries.join('\n')}\n\n=== REPONSES ===\n`;
+            document.querySelectorAll('.drop-zone, #source-zone').forEach(z => {
+                let n = z.id; if(z.dataset.type) n = `${z.dataset.type}-${z.dataset.subtype}`;
+                const cont = z.querySelector('div[id^="zone-"]') || z;
+                for(let i of cont.children) c += `ZONE: ${n} | CARTE: ${i.dataset.label} | SAISIE: ${i.dataset.currentAmount} | ATTENDU: ${i.dataset.trueAmount}\n`;
+            });
+            const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([c], { type: "text/plain" })); a.download = `compta_export.txt`; a.click();
+        }
+        function closeModal() { document.getElementById('victory-modal').classList.add('hidden'); }
+        window.addEventListener('DOMContentLoaded', () => { if(!localStorage.getItem('tutoSeenV25')) { openTuto(); localStorage.setItem('tutoSeenV25', 'true'); } initGame(); });
     </script>
 </body>
 </html>
