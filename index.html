@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compta Boostée - V27 LEADERBOARD</title>
+    <title>Compta Boostée - ONLINE</title>
     
     <link rel="icon" href="https://iili.io/fuLcJvs.png" type="image/png">
     
@@ -40,7 +40,7 @@
         .calc-btn:hover { background: #e5e7eb; }
         .calc-btn.op { background: #fef08a; } .calc-btn.eq { background: var(--neon-yellow); } .calc-btn.clear { background: #fca5a5; }
 
-        /* SIG */
+        /* SIG DIAGRAM */
         .sig-box { padding: 1rem; text-align: center; font-weight: 800; font-family: 'Roboto Mono', monospace; border-radius: 4px; position: relative; transition: all 0.2s; cursor: pointer; box-shadow: 3px 3px 0px rgba(0,0,0,0.1); border: 3px solid var(--dark); }
         .sig-box-title { text-transform: uppercase; }
         .sig-box-green { background-color: var(--sig-green); color: var(--dark); }
@@ -70,7 +70,7 @@
         .animate-pop { animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         @keyframes pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
-        /* LEADERBOARD TABLE */
+        /* LEADERBOARD */
         .lb-table { width: 100%; border-collapse: collapse; font-family: 'Roboto Mono', monospace; }
         .lb-table th { text-align: left; padding: 8px; background: var(--dark); color: white; border-bottom: 4px solid var(--neon-yellow); }
         .lb-table td { padding: 8px; border-bottom: 1px solid #ddd; }
@@ -97,7 +97,7 @@
         <div class="bg-white border-4 border-gray-900 p-6 md:p-8 relative max-w-3xl w-full shadow-[15px_15px_0px_0px_rgba(255,255,255,0.2)] flex flex-col" style="border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; min-height: 500px;">
             <button onclick="closeTuto()" class="absolute top-4 right-6 text-4xl font-bold text-gray-400 hover:text-red-500 transition-colors cursor-pointer z-50">&times;</button>
             <div class="mb-6 border-b-2 border-gray-100 pb-4">
-                <h2 class="text-3xl font-black font-mono-code uppercase border-b-4 border-[#ccff00] inline-block transform -rotate-1">Guide</h2>
+                <h2 class="text-3xl font-black font-mono-code uppercase border-b-4 border-[#ccff00] inline-block transform -rotate-1">Guide du Comptable</h2>
             </div>
             <div class="flex-grow p-4 text-center space-y-4">
                 <p>1. <strong>Bilan & CDR</strong> : Glissez les comptes dans les bonnes cases pour équilibrer le bilan.</p>
@@ -112,17 +112,14 @@
         <div class="bg-white border-4 border-gray-900 p-6 relative max-w-lg w-full shadow-[10px_10px_0px_0px_#ccff00]" style="border-radius: 5px 25px 5px 25px;">
             <button onclick="closeLeaderboard()" class="absolute top-2 right-4 text-3xl font-bold text-gray-400 hover:text-gray-900 transition-colors cursor-pointer">&times;</button>
             <h2 class="text-3xl font-black font-mono-code uppercase text-center mb-6">🏆 Hall of Fame</h2>
-            <div id="lb-content" class="min-h-[200px]">
-                Chargement...
-            </div>
+            <div id="lb-content" class="min-h-[200px]">Chargement...</div>
         </div>
     </div>
 
     <div id="victory-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden flex items-center justify-center z-[100] backdrop-blur-sm">
         <div class="bg-white border-4 border-gray-900 p-8 relative max-w-md w-full text-center shadow-[10px_10px_0px_0px_#dc2626] animate-pop" style="border-radius: 5px 25px 5px 25px;">
             <button onclick="closeModal()" class="absolute top-2 right-4 text-3xl font-bold text-gray-400 hover:text-gray-900 transition-colors cursor-pointer">&times;</button>
-            <div class="relative z-10" id="victory-content">
-                </div>
+            <div class="relative z-10" id="victory-content"></div>
             
             <div class="mt-6 pt-6 border-t-2 border-gray-200">
                 <p class="font-bold text-sm mb-2 uppercase">Entrez dans la légende</p>
@@ -136,12 +133,11 @@
     </div>
 
     <div class="max-w-[1800px] mx-auto p-4 md:p-6">
-        
         <header class="mb-2 flex flex-col xl:flex-row justify-between items-end border-b-4 border-gray-900 pb-4 border-double gap-4">
             <div>
                 <div class="flex items-center gap-3">
                     <h1 class="text-4xl md:text-5xl font-extrabold tracking-tighter uppercase italic transform -rotate-1">COMPTA<span class="text-[#ccff00] bg-gray-900 px-2 transform skew-x-12 inline-block">BOOSTÉE</span></h1>
-                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V27 RANKED</span>
+                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V28 ONLINE</span>
                 </div>
                 <h2 id="company-name" class="mt-2 text-xl font-serif-header font-bold text-gray-800 border-b-2 border-[#ccff00] inline-block">Chargement...</h2>
             </div>
@@ -297,17 +293,15 @@
     </div>
 
     <script>
-        // CONFIGURATION SUPABASE (REMPLACER ICI !)
-        const SUPABASE_URL = 'https://rytqvuvvwzrclwhyvibh.supabase.co'; 
+        // CONFIG SUPABASE
+        const SUPABASE_URL = 'https://rytqvuvvwzrclwhyvibh.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_QqrKcXVitloRJWnOtC3hzA_xs__gxtT';
-        
-        // Initialisation du client (si les clés sont présentes)
         let supabase;
         try {
-            if(SUPABASE_URL !== 'https://rytqvuvvwzrclwhyvibh.supabase.co') {
+            if(window.supabase) {
                 supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             }
-        } catch(e) { console.log("Supabase non configuré"); }
+        } catch(e) { console.error("Err Supabase", e); }
 
         function dragElement(elmnt) {
             var pos1=0, pos2=0, pos3=0, pos4=0;
@@ -336,7 +330,7 @@
             { name: "Astérion le Bon", img: "https://i.postimg.cc/VrRm0GSt/image.png", quote: "Oh, darling. Tes comptes sont... exquis." }
         ];
 
-        const prefixes = ["Boulangerie", "Garage", "Start-up", "Cabinet", "Boucherie"]; const suffixes = ["'Chez Dédé'", "'Le Gouffre'", "'L'Optimiste'"];
+        const prefixes = ["Boulangerie", "Garage", "Start-up", "Cabinet", "Boucherie", "Agence", "Pizzeria", "Crèche", "Pharmacie", "EHPAD"]; const suffixes = ["'Chez Dédé'", "'Le Gouffre'", "'L'Optimiste'", "'Dernier Recours'", "'Le Blanchisseur'", "'Au Bonheur'"];
         const TYPES = { CHARGE: 'CHARGE', PRODUIT: 'PRODUIT', ACTIF: 'ACTIF', PASSIF: 'PASSIF' };
         const SUBS = { EXPLOIT: 'EXPLOIT', FINANCE: 'FINANCE', EXCEP: 'EXCEP', IMMO: 'IMMO', CIRC: 'CIRC', CAPITAUX: 'CAPITAUX', DETTES: 'DETTES' };
         const DATABASE_FULL = [
@@ -370,7 +364,6 @@
                 const winner = winners[Math.floor(Math.random() * winners.length)];
                 document.getElementById('victory-content').innerHTML = `<img src="${winner.img}" alt="${winner.name}" class="w-32 h-32 mx-auto mb-4 border-4 border-gray-900 rounded-full bg-[#ccff00] pixelated-img object-cover"><h2 class="text-4xl font-black font-mono-code uppercase text-[#dc2626] leading-tight mb-2 transform -rotate-2">${winner.name}</h2><p class="font-serif-header italic text-gray-600 text-sm mt-4">"${winner.quote}"</p>`;
                 document.getElementById('victory-modal').classList.remove('hidden');
-                // Auto-score for SIG not implemented in this demo, just visual victory
             } else { fb.innerText=`${err} Erreurs`; fb.className="mt-4 text-center font-bold text-red-600"; }
         }
         function openTuto() { document.getElementById('tuto-modal').classList.remove('hidden'); }
@@ -390,7 +383,6 @@
             document.querySelectorAll('.drop-zone div[id^="zone-"]').forEach(z => z.innerHTML = '');
             document.getElementById('source-zone').innerHTML = ''; document.getElementById('journal-content').innerHTML = '';
             const btn = document.getElementById('validate-btn'); btn.innerText = "Vérifier"; btn.classList.replace('bg-white', 'bg-[#ccff00]');
-            // RESTORED LOGIC FROM V19
             if(currentDifficulty === 'HARDCORE') initHardcoreMode(); else initStandardMode();
         }
 
@@ -484,56 +476,28 @@
         function closeModal() { document.getElementById('victory-modal').classList.add('hidden'); }
         function closeLeaderboard() { document.getElementById('leaderboard-modal').classList.add('hidden'); }
         
-        // LEADERBOARD LOGIC
-        function openLeaderboard() {
-            document.getElementById('leaderboard-modal').classList.remove('hidden');
-            fetchLeaderboard();
-        }
-        
+        // LEADERBOARD
+        function openLeaderboard() { document.getElementById('leaderboard-modal').classList.remove('hidden'); fetchLeaderboard(); }
         async function fetchLeaderboard() {
-            const container = document.getElementById('lb-content');
-            if (!supabase) { container.innerHTML = "Backend non configuré."; return; }
-            
+            const c = document.getElementById('lb-content');
+            if (!supabase) { c.innerHTML = "Backend non configuré (Voir console pour info)."; return; }
             const { data, error } = await supabase.from('leaderboard').select('*').order('score', { ascending: false }).limit(10);
-            if(error) { container.innerHTML = "Erreur de chargement."; return; }
-            
-            let html = `<table class="lb-table"><thead><tr><th>#</th><th>Joueur</th><th>Victoires</th></tr></thead><tbody>`;
-            data.forEach((row, i) => {
-                let rankClass = "";
-                if(i===0) rankClass="lb-rank-1"; else if(i===1) rankClass="lb-rank-2"; else if(i===2) rankClass="lb-rank-3";
-                html += `<tr><td class="${rankClass}">${i+1}</td><td class="${rankClass}">${row.username}</td><td>${row.score}</td></tr>`;
-            });
-            html += `</tbody></table>`;
-            container.innerHTML = html;
+            if(error) { c.innerHTML = "Erreur de chargement."; console.error(error); return; }
+            let h = `<table class="lb-table"><thead><tr><th>#</th><th>Joueur</th><th>Victoires</th></tr></thead><tbody>`;
+            data.forEach((r, i) => { let cl = ""; if(i===0) cl="lb-rank-1"; else if(i===1) cl="lb-rank-2"; else if(i===2) cl="lb-rank-3"; h += `<tr><td class="${cl}">${i+1}</td><td class="${cl}">${r.username}</td><td>${r.score}</td></tr>`; });
+            h += `</tbody></table>`; c.innerHTML = h;
         }
-
         async function saveScore() {
-            const username = document.getElementById('player-name').value.trim().toUpperCase();
-            if(!username) return;
-            const status = document.getElementById('save-status');
-            status.innerText = "Sauvegarde...";
-            
-            if(!supabase) { status.innerText = "Erreur: Pas de backend."; return; }
-
-            // Check if user exists
-            const { data } = await supabase.from('leaderboard').select('*').eq('username', username).single();
-            
-            if (data) {
-                // Update
-                await supabase.from('leaderboard').update({ score: data.score + 1 }).eq('id', data.id);
-            } else {
-                // Insert
-                await supabase.from('leaderboard').insert([{ username: username, score: 1 }]);
-            }
-            
-            status.innerText = "Score enregistré !";
-            setTimeout(() => {
-                closeModal();
-                openLeaderboard();
-            }, 1000);
+            const u = document.getElementById('player-name').value.trim().toUpperCase(); if(!u) return;
+            const s = document.getElementById('save-status'); s.innerText = "Sauvegarde...";
+            if(!supabase) { s.innerText = "Erreur: Pas de backend."; return; }
+            const { data } = await supabase.from('leaderboard').select('*').eq('username', u).single();
+            if (data) await supabase.from('leaderboard').update({ score: data.score + 1 }).eq('id', data.id);
+            else await supabase.from('leaderboard').insert([{ username: u, score: 1 }]);
+            s.innerText = "Score enregistré !"; setTimeout(() => { closeModal(); openLeaderboard(); }, 1000);
         }
 
-        window.addEventListener('DOMContentLoaded', () => { if(!localStorage.getItem('tutoSeenV19')) { openTuto(); localStorage.setItem('tutoSeenV19', 'true'); } initGame(); });
+        window.addEventListener('DOMContentLoaded', () => { if(!localStorage.getItem('tutoSeenV25')) { openTuto(); localStorage.setItem('tutoSeenV25', 'true'); } initGame(); });
     </script>
 </body>
 </html>
