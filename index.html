@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compta Boostée - V25 FINAL</title>
+    <title>Compta Boostée - V26 VIP</title>
     
     <link rel="icon" href="https://iili.io/fuLcJvs.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -109,7 +109,7 @@
             <div>
                 <div class="flex items-center gap-3">
                     <h1 class="text-4xl md:text-5xl font-extrabold tracking-tighter uppercase italic transform -rotate-1">COMPTA<span class="text-[#ccff00] bg-gray-900 px-2 transform skew-x-12 inline-block">BOOSTÉE</span></h1>
-                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V25 FINAL</span>
+                    <span class="bg-gray-200 text-xs px-2 py-1 font-mono-code rounded border border-gray-400">V26 VIP</span>
                 </div>
                 <h2 id="company-name" class="mt-2 text-xl font-serif-header font-bold text-gray-800 border-b-2 border-[#ccff00] inline-block">Chargement...</h2>
             </div>
@@ -277,7 +277,18 @@
         function calcResult() { try { const r=Function('"use strict";return ('+document.getElementById('calc-display').value+')')(); document.getElementById('calc-display').value=r; } catch(e){ document.getElementById('calc-display').value='Err'; } }
 
         let currentChapter=1, currentDifficulty='EASY', currentCompanyName="", journalEntries=[], gameItems=[], sigSolution={};
-        const winners = [{ name: "Napoléon", img: "https://preview.redd.it/v1dgm9hm3sp91.png?auto=webp&s=d7a42b8398951654be0ae5c87f6fecf478c86044", quote: "Impossible n'est pas comptable." }, { name: "Ichiban Kasuga", img: "https://gamejolt.com/p/portrait-of-ichiban-kasuga-wearing-yellow-headphones-for-an-art-com-f4dyrphy", quote: "Critique Hit sur le Bilan !" }, { name: "Neymar JR", img: "https://www.pixelart.name/wp-content/uploads/2024/01/pixelart_name_footballer_neymar_difficult.png", quote: "GOOOOOAL !" }, { name: "Michel Houellebecq", img: "https://image.noelshack.com/fichiers/2025/49/5/1764928236-houellbcq.png", quote: "La seule vérité tangible." }];
+        
+        // --- NEW VIP LIST ---
+        const winners = [
+            { name: "Napoléon", img: "https://preview.redd.it/v1dgm9hm3sp91.png?auto=webp&s=d7a42b8398951654be0ae5c87f6fecf478c86044", quote: "Impossible n'est pas comptable." },
+            { name: "Ichiban Kasuga", img: "https://i.postimg.cc/VrRm0GSt/image.png", quote: "Critique Hit sur le Bilan !" },
+            { name: "Neymar JR", img: "https://www.pixelart.name/wp-content/uploads/2024/01/pixelart_name_footballer_neymar_difficult.png", quote: "GOOOOOAL !" },
+            { name: "Michel Houellebecq", img: "https://image.noelshack.com/fichiers/2025/49/5/1764928236-houellbcq.png", quote: "La seule vérité tangible." },
+            { name: "Macron Calvitie", img: "https://i.postimg.cc/nj6MTwVx/image.png", quote: "Je traverse la rue, je vous le trouve l'équilibre." },
+            { name: "Karl Marx", img: "https://i.postimg.cc/KRc4fLx2/image.png", quote: "C'est la lutte finale... du bilan." },
+            { name: "Astérion le Bon", img: "https://i.postimg.cc/VrRm0GSt/image.png", quote: "Oh, darling. Tes comptes sont... exquis." }
+        ];
+
         const prefixes = ["Boulangerie", "Garage", "Start-up", "Cabinet", "Boucherie", "Agence", "Pizzeria", "Crèche", "Pharmacie", "EHPAD"]; const suffixes = ["'Chez Dédé'", "'Le Gouffre'", "'L'Optimiste'", "'Dernier Recours'", "'Le Blanchisseur'", "'Au Bonheur'"];
         const TYPES = { CHARGE: 'CHARGE', PRODUIT: 'PRODUIT', ACTIF: 'ACTIF', PASSIF: 'PASSIF' };
         const SUBS = { EXPLOIT: 'EXPLOIT', FINANCE: 'FINANCE', EXCEP: 'EXCEP', IMMO: 'IMMO', CIRC: 'CIRC', CAPITAUX: 'CAPITAUX', DETTES: 'DETTES' };
@@ -418,7 +429,7 @@
             const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([c], { type: "text/plain" })); a.download = `compta_export.txt`; a.click();
         }
         function closeModal() { document.getElementById('victory-modal').classList.add('hidden'); }
-        window.addEventListener('DOMContentLoaded', () => { if(!localStorage.getItem('tutoSeenV25')) { openTuto(); localStorage.setItem('tutoSeenV25', 'true'); } initGame(); });
+        window.addEventListener('DOMContentLoaded', () => { if(!localStorage.getItem('tutoSeenV19')) { openTuto(); localStorage.setItem('tutoSeenV19', 'true'); } initGame(); });
     </script>
 </body>
 </html>
